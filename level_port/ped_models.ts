@@ -15,7 +15,7 @@
 
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { STAGINGS } from "./ported_levels.ts";
+import { stagingFolders } from "./ported_levels.ts";
 
 export const FILE = "peds.json";
 
@@ -49,10 +49,10 @@ export function writeAdditions(staging: string, additions: Additions): void {
     fs.writeFileSync(path.join(staging, FILE), `${JSON.stringify(additions, null, 1)}\n`);
 }
 
-// Every staging folder's additions in the game folder, merged (in STAGINGS' order).
+// Every staging folder's additions in the game folder, merged (in stagingFolders' order).
 export function readAdditions(game: string): Additions {
     const all: Additions = { cas: {}, profiles: [] };
-    for (const staging of STAGINGS) {
+    for (const staging of stagingFolders(game)) {
         const file = path.join(game, staging, FILE);
         if (!fs.existsSync(file)) continue;
         const one = JSON.parse(fs.readFileSync(file, "utf-8")) as Additions;

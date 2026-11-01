@@ -7,7 +7,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { test } from "node:test";
 import { SystemExit } from "../lib/py.ts";
-import { MANIFEST } from "./ported_levels.ts";
+import { MANIFEST, STAGINGS, stagingFolders } from "./ported_levels.ts";
 import { freshLevelFolder, isStagingFolder, MARKER, prepareStaging } from "./staging.ts";
 
 function scratch(): string {
@@ -86,6 +86,23 @@ test("a folder a stopped convert left (marker, no levels.json) is still ours", (
         assert.ok(isStagingFolder(out));
         prepareStaging(out, true);
         assert.deepEqual(fs.readdirSync(out), [MARKER]);
+    } finally {
+        fs.rmSync(root, { recursive: true, force: true });
+    }
+});
+
+test("stagingFolders: this project's converters first, then any other output with a levels.json, by name", () => {
+    const root = scratch();
+    try {
+        write(path.join(root, "thug2-decomp-zzz", MANIFEST), '{"levels": []}');
+        write(path.join(root, "thug2-decomp-aaa", MANIFEST), '{"levels": []}');
+        write(path.join(root, "thug2-decomp-data", "scripts", "x.qb"));
+        write(path.join(root, "thug2-decomp-thaw-bmx", "thaw_bmx.json"));
+        write(path.join(root, "Data", "pre", "qb_scripts.prx"));
+        const found = stagingFolders(root);
+        assert.deepEqual(found.slice(0, STAGINGS.length), [...STAGINGS]);
+        assert.deepEqual(found.slice(STAGINGS.length), ["thug2-decomp-aaa", "thug2-decomp-zzz"]);
+        assert.deepEqual(stagingFolders(path.join(root, "none")), [...STAGINGS]);
     } finally {
         fs.rmSync(root, { recursive: true, force: true });
     }

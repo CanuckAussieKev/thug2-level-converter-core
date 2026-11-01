@@ -20,6 +20,8 @@
 //   setup_script  (optional) a script of the level's .qb the level structure names as its setup_script (THPS3's
 //                 start scripts)
 //   startup_script (optional) the same for the level structure's startup_script (THUG1's: loads its sounds)
+// and, at the top level next to `levels`, an optional `title`: the level select section's title for a converter this
+// project doesn't know (stagingFolders; "TONY HAWK'S ..." - this project's converters' sections have their own).
 //
 // The manifest is read with pyJsonLoads and written with pyJsonDumps (lib/py.ts): a float stays a float (the
 // lighting's mod factors, "1.0"), and the file's bytes are Python's (indent 1, ASCII, CRLF line ends on Windows).
@@ -108,10 +110,29 @@ function truthy(value: unknown): boolean {
     return true;
 }
 
+// The staging folders in a THUG2 folder: STAGINGS (this project's converters, in their order), then any other
+// thug2-decomp-* folder holding a levels.json - another converter's output - by name. A converter of another game
+// needs nothing here to be installed: make_menu_level lists its levels in a level select section of their own, titled
+// by its levels.json's `title` (else the folder's name).
+export function stagingFolders(game: string): string[] {
+    let names: string[];
+    try {
+        names = fs.readdirSync(game);
+    } catch {
+        return [...STAGINGS];
+    }
+    const known = new Set<string>(STAGINGS.map((s) => s.toLowerCase()));
+    const others = names
+        .filter((n) => /^thug2-decomp-/i.test(n) && !known.has(n.toLowerCase()))
+        .filter((n) => fs.existsSync(path.join(game, n, MANIFEST)))
+        .sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+    return [...STAGINGS, ...others];
+}
+
 export function loadManifest(game: string): Manifest | null {
     // Every converted level of every staging folder, or null when there are none.
     const levels: LevelEntry[] = [];
-    for (const staging of STAGINGS) {
+    for (const staging of stagingFolders(game)) {
         const manifest = readManifest(pyJoin(game, staging, MANIFEST));
         if (!truthy(manifest)) continue;
         for (const entry of manifest!.levels) levels.push({ ...entry, staging });
@@ -234,7 +255,7 @@ export function installFiles(game: string, overlay: string, manifest: Manifest |
     // The converted levels (every staging folder's) into the overlay's levels folder.
     void manifest;
     const installed: string[] = [];
-    for (const staging of STAGINGS) {
+    for (const staging of stagingFolders(game)) {
         const source = path.join(game, staging, "levels");
         if (!fs.existsSync(source) || !fs.statSync(source).isDirectory()) continue;
         for (const entry of fs.readdirSync(source)) {

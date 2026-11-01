@@ -1,8 +1,8 @@
 // NOT ORIGINAL - THUGPRO's hand edits to its ports of THUG1's levels, as data our converter applies (the THUGPRO
-// compatibility register, tools/pipeline/compat/thugpro/README.md, TP-32 ... TP-39; the user's decision 2026-10-20: everything
+// compatibility register, thug2-level-converter-core/compat/thugpro/README.md, TP-32 ... TP-39; the user's decision 2026-10-20: everything
 // THUGPRO changed in our ported levels is data in the register, switched by --compat). The data is extracted from
-// THUGPRO's install against THUG1's own files by `node tools/pipeline/thug1_levels/thugpro_compare.ts --extract-thugpro`
-// (thugpro_edits.handEdits) into tools/pipeline/compat/thugpro/thug1_levels.json - never typed in. Sections (each by level code):
+// THUGPRO's install against THUG1's own files by `node thug1_levels/thugpro_compare.ts --extract-thugpro`
+// (thugpro_edits.handEdits) into thug2-level-converter-core/compat/thugpro/thug1_levels.json - never typed in. Sections (each by level code):
 //   moved_nodes        TP-32  {node: {pos, angles}}: nodes THUGPRO moved (not the spawns: TP-31's)
 //   net_presence       TP-33  {absent: [...], present: [...]}: AbsentInNetGames put on / taken off
 //   created_at_start   TP-34  {on: [...], off: [...]}: CreatedAtStart put on / taken off
@@ -21,11 +21,11 @@
 // a number, a float {"float": x}, a string {"string": s}, a vector {"vector": [x, y, z]} ({"pair": [a, b]}), a list a
 // list. `--compat none` leaves every section out (then the output is the same as before these entries).
 
-import { FormatError } from "../level_port/binio.ts";
-import * as qb from "../level_port/qb.ts";
-import { Name, type QbValue, Struct, Vector } from "../level_port/qb.ts";
-import * as thug2Col from "../level_port/thug2_col.ts";
-import { Float, hex8 } from "../lib/py.ts";
+import { FormatError } from "thug2-level-converter-core/level_port/binio.ts";
+import * as qb from "thug2-level-converter-core/level_port/qb.ts";
+import { Name, type QbValue, Struct, Vector } from "thug2-level-converter-core/level_port/qb.ts";
+import * as thug2Col from "thug2-level-converter-core/level_port/thug2_col.ts";
+import { Float, hex8 } from "thug2-level-converter-core/lib/py.ts";
 
 export type Json = string | number | boolean | null | Json[] | { [key: string]: Json };
 

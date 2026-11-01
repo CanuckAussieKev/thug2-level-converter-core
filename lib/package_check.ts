@@ -6,8 +6,9 @@
 //   - "commands" names every command-line tool ("<folder>/<tool>.ts" - what thug2-content-pipeline's run.ts runs): a
 //     module with a main block (isMain(import.meta.url)) is listed, and only those;
 //   - every import of another thug2-* repository names a dependency of this one, pinned to a commit of it by https
-//     (git+https://github.com/CanuckAussieKev/<name>.git#<commit>: no SSH key needed), and a module that repository
-//     exports - no reaching into another repository's internals;
+//     (git+https://git@github.com/CanuckAussieKev/<name>.git#<commit>: no SSH key needed - the user name "git" makes
+//     npm record that URL in package-lock.json; for a plain https GitHub URL it records git+ssh://, which needs a key),
+//     and a module that repository exports - no reaching into another repository's internals;
 //   - importing any module runs no command (importOutput: every module imported in a child process prints nothing and
 //     exits 0).
 
@@ -28,7 +29,7 @@ export interface PackageJson {
 // One of this project's repositories: thug2-level-converter-core, thug2-<game>-level-converter,
 // thug2-content-pipeline.
 export const OUR_PACKAGE = /^thug2-(?:level-converter-core|[a-z0-9]+-level-converter|content-pipeline)$/;
-export const PIN = /^git\+https:\/\/github\.com\/CanuckAussieKev\/(thug2-[a-z0-9-]+)\.git#([0-9a-f]{40})$/;
+export const PIN = /^git\+https:\/\/git@github\.com\/CanuckAussieKev\/(thug2-[a-z0-9-]+)\.git#([0-9a-f]{40})$/;
 
 export const readPackage = (root: string): PackageJson =>
     JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf-8")) as PackageJson;
@@ -136,7 +137,7 @@ export function packageProblems(root: string): string[] {
         const m = PIN.exec(spec);
         if (!m || m[1] !== name)
             problems.push(
-                `dependency ${name}: "${spec}" is not git+https://github.com/CanuckAussieKev/${name}.git#<commit>`,
+                `dependency ${name}: "${spec}" is not git+https://git@github.com/CanuckAussieKev/${name}.git#<commit>`,
             );
     }
     const exportsOf = new Map<string, Set<string> | null>();

@@ -63,10 +63,11 @@ in a clone; `node tools/pipeline/run.ts level_port/zfight.ts ...` in the decomp)
 
 ## Using it
 
-A converter (or any project) depends on it from git, pinned to a tagged commit by https (no SSH key needed), and
-imports its exports by name:
+A converter (or any project) depends on it from git, pinned to a tagged commit by https, and imports its exports by
+name (the user name `git@` in the URL makes npm record the https URL in package-lock.json - for a plain
+`git+https://github.com/...` it records `git+ssh://`, and `npm ci` would then want a GitHub SSH key):
 
-    "dependencies": { "thug2-level-converter-core": "git+https://github.com/CanuckAussieKev/thug2-level-converter-core.git#<commit>" }
+    "dependencies": { "thug2-level-converter-core": "git+https://git@github.com/CanuckAussieKev/thug2-level-converter-core.git#<commit>" }
 
     import * as qb from "thug2-level-converter-core/level_port/qb.ts";
 

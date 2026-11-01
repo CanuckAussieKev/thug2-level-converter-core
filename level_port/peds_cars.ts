@@ -434,7 +434,7 @@ export class Thug2Assets {
 
     constructor(thug2: string) {
         this.models = findCaseless(thug2, "Data", "models") ?? path.join(thug2, "Data", "models");
-        const data = prx.find(path.join(thug2, "Data", "pre", "qb_scripts.prx"), "scripts\\profile_ped.qb");
+        const data = prx.find(path.join(thug2, "Data", "pre", "qb_scripts.prx"), "scripts/profile_ped.qb");
         if (data === null) throw new FormatError("qb_scripts.prx: scripts\\profile_ped.qb not found");
         const globals = new qb.QbFile(data, "profile_ped.qb", true).globals;
         this.profiles = new Set(globals.map(([key]) => key.value));

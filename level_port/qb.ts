@@ -24,9 +24,9 @@ import { f32, unpackNumbers } from "../lib/struct.ts";
 import { FormatError } from "./binio.ts";
 
 // The script checksum of a name: CRC-32 of its lower case (ASCII only - raises otherwise, as Python's encode) without
-// the final inversion. Always unsigned.
+// the final inversion, "/" counted as "\" - as the game's (its name checksum treats the two alike). Always unsigned.
 export function checksum(name: string): number {
-    return (zlib.crc32(encodeAscii(name.toLowerCase())) ^ 0xffffffff) >>> 0;
+    return (zlib.crc32(encodeAscii(name.toLowerCase().replaceAll("/", "\\"))) ^ 0xffffffff) >>> 0;
 }
 
 // A checksum value (a name in the script).

@@ -6,32 +6,33 @@
 // tools/game/game_exe.ps1's Resolve-Install is the PowerShell twin (the same markers).
 
 import * as fs from "node:fs";
+import * as path from "node:path";
 import { GAME_EXE_NAMES } from "./decomp.ts";
-import { pyExit, pyJoin } from "./py.ts";
+import { pyExit } from "./py.ts";
 
 export type InstallGame = "thug2" | "thps3" | "thps4" | "thug1" | "thaw" | "thps2" | "thp8" | "thpg";
 
 export interface InstallKind {
     title: string; // for messages ("THAW")
-    // Any one of these identifies the folder; each is one or more paths ("\"-separated) that must all be under it.
+    // Any one of these identifies the folder; each is one or more paths ("/"-separated) that must all be under it.
     markers: readonly (readonly string[])[];
 }
 
 export const INSTALLS: Readonly<Record<InstallGame, InstallKind>> = {
     // the exe (THUG2.exe, or local.json's exeNames - lib/decomp.ts), or the data alone (the converters only read it)
-    thug2: { title: "THUG2", markers: [...GAME_EXE_NAMES.map((n) => [n]), ["Data\\pre\\qb_scripts.prx"]] },
-    thps3: { title: "THPS3", markers: [["Data\\Levels"]] },
+    thug2: { title: "THUG2", markers: [...GAME_EXE_NAMES.map((n) => [n]), ["Data/pre/qb_scripts.prx"]] },
+    thps3: { title: "THPS3", markers: [["Data/Levels"]] },
     // (skeletons: THPS3 has a Data\Levels too, but no skeletons)
-    thps4: { title: "THPS4", markers: [["data\\levels", "data\\skeletons"]] },
+    thps4: { title: "THPS4", markers: [["data/levels", "data/skeletons"]] },
     // (qb.pre: THUG1's scripts - THUG2's Data\pre has qb_scripts.prx instead)
-    thug1: { title: "THUG1", markers: [["Data\\pre\\qb.pre"]] },
-    thaw: { title: "THAW", markers: [["data\\worlds\\worldzones"], ["data\\pak\\qb.pak.wpc"]] },
+    thug1: { title: "THUG1", markers: [["Data/pre/qb.pre"]] },
+    thaw: { title: "THAW", markers: [["data/worlds/worldzones"], ["data/pak/qb.pak.wpc"]] },
     // (THPS2 PC: every data file in one archive)
     thps2: { title: "THPS2", markers: [["ALL.PKR"]] },
     // (THP8: the Xbox 360 game's data - game\DATA\COMPRESSED's archives and their table)
-    thp8: { title: "THP8", markers: [["DATA\\COMPRESSED\\compress.toc.xen"]] },
+    thp8: { title: "THP8", markers: [["DATA/COMPRESSED/compress.toc.xen"]] },
     // (Tony Hawk's Proving Ground: the Xbox 360 game's data, THP8's layout - its scenes are .scn)
-    thpg: { title: "THPG", markers: [["DATA\\COMPRESSED\\compress.toc.xen", "DATA\\COMPRESSED\\PAK\\qb.pak.xen"]] },
+    thpg: { title: "THPG", markers: [["DATA/COMPRESSED/compress.toc.xen", "DATA/COMPRESSED/PAK/qb.pak.xen"]] },
 };
 
 const SUBFOLDER = "Game";
@@ -51,7 +52,7 @@ export function findCaseless(folder: string, ...parts: string[]): string | null 
     for (const part of parts) {
         const match = entries(p)?.find((e) => e.toLowerCase() === part.toLowerCase());
         if (match === undefined) return null;
-        p = pyJoin(p, match);
+        p = path.join(p, match);
     }
     return p;
 }
@@ -72,7 +73,7 @@ export function findPath(folder: string, ...parts: string[]): string | null {
         if (!isDir(p)) return null;
         const match = fs.readdirSync(p).find((e) => e.toLowerCase() === part.toLowerCase());
         if (match === undefined) return null;
-        p = pyJoin(p, match);
+        p = path.join(p, match);
     }
     return p;
 }
@@ -84,7 +85,7 @@ function trimSeparators(dir: string): string {
 }
 
 function hasMarker(dir: string, game: InstallGame): boolean {
-    return INSTALLS[game].markers.some((all) => all.every((m) => findCaseless(dir, ...m.split("\\")) !== null));
+    return INSTALLS[game].markers.some((all) => all.every((m) => findCaseless(dir, ...m.split("/")) !== null));
 }
 
 // The folder holding the game's files: `dir` itself or its Game folder; null when neither has the game's markers.

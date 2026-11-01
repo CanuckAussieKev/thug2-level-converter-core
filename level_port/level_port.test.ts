@@ -17,6 +17,11 @@ import * as thug2Scene from "./thug2_scene.ts";
 
 const THUG2_TR = "C:\\Games\\THUG2\\Game\\Data\\levels\\TR";
 
+test("a checksum counts / as \\, as the game's does", () => {
+    assert.equal(checksum("levels/foo/foo.qb"), checksum("levels\\foo\\foo.qb"));
+    assert.equal(checksum("Scripts/Game/Levels.qb"), checksum("scripts\\game\\levels.qb"));
+});
+
 test("checksums are unsigned CRC-32s of the lower case name", () => {
     assert.deepEqual(
         ["Wait", "NodeArray", "TerrainType", "Links", ""].map((n) =>

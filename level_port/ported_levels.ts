@@ -28,17 +28,7 @@
 
 import * as fs from "node:fs";
 import * as path from "node:path";
-import {
-    Float,
-    pyExit,
-    pyFloatRepr,
-    pyJoin,
-    pyJsonDumps,
-    pyJsonLoads,
-    pyRepr,
-    readTextPy,
-    writeTextPy,
-} from "../lib/py.ts";
+import { Float, pyExit, pyFloatRepr, pyJsonDumps, pyJsonLoads, pyRepr, readTextPy, writeTextPy } from "../lib/py.ts";
 
 export const MANIFEST = "levels.json";
 // The staging folders, in the order their levels are listed.
@@ -133,7 +123,7 @@ export function loadManifest(game: string): Manifest | null {
     // Every converted level of every staging folder, or null when there are none.
     const levels: LevelEntry[] = [];
     for (const staging of stagingFolders(game)) {
-        const manifest = readManifest(pyJoin(game, staging, MANIFEST));
+        const manifest = readManifest(path.join(game, staging, MANIFEST));
         if (!truthy(manifest)) continue;
         for (const entry of manifest!.levels) levels.push({ ...entry, staging });
     }

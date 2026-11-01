@@ -10,12 +10,9 @@ import {
     floorDiv,
     formatFixed,
     intFromBytesLE,
-    ntJoin,
-    posixJoin,
     pyDist,
     pyFloatRepr,
     pyIntHex,
-    pyJoin,
     pyJsonDumps,
     pyJsonLoads,
     pyMax,
@@ -123,24 +120,6 @@ test("pyRepr prints dicts, lists and tuples as Python", () => {
     );
     assert.equal(pyRepr(pyTuple([1, "b"])), "(1, 'b')");
     assert.equal(pyRepr(pyTuple([1])), "(1,)");
-});
-
-test("ntJoin keeps the parts' own slashes (ntpath.join)", () => {
-    assert.equal(ntJoin("C:/x", "levels", "a.qb"), "C:/x\\levels\\a.qb");
-    assert.equal(ntJoin("C:\\x\\", "y"), "C:\\x\\y");
-    assert.equal(ntJoin("C:\\x", "D:\\y"), "D:\\y");
-});
-
-test("posixJoin: every \\ a /, an absolute part starts again (posixpath.join)", () => {
-    assert.equal(posixJoin("/games/thug2", "Data\\pre", "qb_scripts.prx"), "/games/thug2/Data/pre/qb_scripts.prx");
-    assert.equal(posixJoin("out/", "scripts\\game\\Levels.qb"), "out/scripts/game/Levels.qb");
-    assert.equal(posixJoin("out", "/abs", "x"), "/abs/x");
-    assert.equal(posixJoin("", "x"), "x");
-});
-
-test("pyJoin is the system's join", () => {
-    const join = process.platform === "win32" ? ntJoin : posixJoin;
-    assert.equal(pyJoin("a", "b\\c", "d"), join("a", "b\\c", "d"));
 });
 
 test("json: Python's dumps text and loads' floats", () => {

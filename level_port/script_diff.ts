@@ -10,7 +10,7 @@ import * as path from "node:path";
 import { helpFromHeader } from "../lib/cli.ts";
 import { unifiedDiff } from "../lib/difflib.ts";
 import { requireNs } from "../lib/neverscript.ts";
-import { isMain, print, pyJoin, pyParseInt, pyRepr, pySplitlines, readTextPy, runMain } from "../lib/py.ts";
+import { isMain, print, pyParseInt, pyRepr, pySplitlines, readTextPy, runMain } from "../lib/py.ts";
 import { finditer, sub } from "../lib/re.ts";
 
 const SCRIPT = /^script (\S+) \{(.*?)^\} *$/ms;
@@ -29,15 +29,15 @@ function scripts(file: string, tmp: string): [Map<string, string>, string] {
 
 // Python's glob.glob(<root>\levels\*\*.qb), sorted: no names starting with ".", the extension in any case (Windows).
 function qbFiles(root: string): string[] {
-    const levels = pyJoin(root, "levels");
+    const levels = path.join(root, "levels");
     const found: string[] = [];
     if (!fs.existsSync(levels) || !fs.statSync(levels).isDirectory()) return found;
     for (const dir of fs.readdirSync(levels)) {
         if (dir.startsWith(".")) continue;
-        const folder = pyJoin(levels, dir);
+        const folder = path.join(levels, dir);
         if (!fs.statSync(folder).isDirectory()) continue;
         for (const name of fs.readdirSync(folder)) {
-            if (!name.startsWith(".") && name.toLowerCase().endsWith(".qb")) found.push(pyJoin(folder, name));
+            if (!name.startsWith(".") && name.toLowerCase().endsWith(".qb")) found.push(path.join(folder, name));
         }
     }
     return found.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
@@ -62,7 +62,7 @@ export function main(argv: readonly string[] = process.argv.slice(2)): number {
         };
         const examples: [string, string, string, string, string][] = [];
         for (const f of qbFiles(newRoot)) {
-            const r = pyJoin(refRoot, path.relative(newRoot, f));
+            const r = path.join(refRoot, path.relative(newRoot, f));
             if (!fs.existsSync(r)) {
                 print("no reference:", r);
                 continue;

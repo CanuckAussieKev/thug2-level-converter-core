@@ -2,7 +2,8 @@
 // src/game/front/level_editor_layout.cpp) moved to a renamed or moved level: migrateText (moved from
 // thaw_levels/migrate_layouts.ts with the converters' split: the THPS4 and THUG1 converters' migrate_layouts use it).
 
-import { formatG, hex8, pyIntHex, pyParseFloat, pyParseInt, pySplit, pySplitlines } from "../lib/py.ts";
+import { formatG, parseFloatStrict, parseHexInt, parseIntStrict } from "../lib/numbers.ts";
+import { hex8, splitLines, splitWords } from "../lib/text.ts";
 
 // As the level editor's QuarterTurn (level_editor_scenery.cpp).
 export function quarterTurn(v: readonly number[], quarters: number): readonly number[] {
@@ -32,28 +33,28 @@ export function migrateText(
 ): [string, number] {
     const out: string[] = [];
     let moved = 0;
-    for (const line of pySplitlines(text, true)) {
+    for (const line of splitLines(text, true)) {
         let [body, hash, comment] = partition(line, "#");
         const ending = line.endsWith("\n") ? "\n" : "";
-        const words = pySplit(body);
+        const words = splitWords(body);
         if (!words.length) {
             out.push(line);
             continue;
         }
         const kind = words[0]!;
         if (kind === "scene") {
-            if (pyIntHex(words[1]!) !== oldScene) throw new RangeError(`scene ${words[1]}, not ${hex8(oldScene)}`);
+            if (parseHexInt(words[1]!) !== oldScene) throw new RangeError(`scene ${words[1]}, not ${hex8(oldScene)}`);
             words[1] = hex8(newScene);
             if (newName && hash) comment = ` ${newName}`;
         } else if (kind === "sector" || kind === "rail" || kind === "clone") {
-            const q = pyParseInt(words[2]!);
-            const offset = words.slice(3, 6).map(pyParseFloat);
+            const q = parseIntStrict(words[2]!);
+            const offset = words.slice(3, 6).map(parseFloatStrict);
             const turned = quarterTurn(d, q);
             words.splice(3, 3, ...[0, 1, 2].map((k) => number(offset[k]! + d[k]! - turned[k]!)));
             moved += 1;
         } else if (kind === "object" || kind === "copy") {
             const at = kind === "object" ? 2 : 3;
-            words.splice(at, 3, ...[0, 1, 2].map((k) => number(pyParseFloat(words[at + k]!) + d[k]!)));
+            words.splice(at, 3, ...[0, 1, 2].map((k) => number(parseFloatStrict(words[at + k]!) + d[k]!)));
             moved += 1;
         }
         let rebuilt = words.join(" ");

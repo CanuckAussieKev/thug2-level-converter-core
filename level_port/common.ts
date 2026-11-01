@@ -7,8 +7,10 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
+import { exitWith, print } from "../lib/cli.ts";
 import { WORK } from "../lib/decomp.ts";
-import { decodeCp1252, Float, print, pyExit, pyRound, roundHalfEven, writeTextPy } from "../lib/py.ts";
+import { Float, roundHalfEven, roundTo } from "../lib/numbers.ts";
+import { decodeCp1252, writeText } from "../lib/text.ts";
 import { FormatError } from "./binio.ts";
 import * as prx from "./prx.ts";
 import type { Struct } from "./qb.ts";
@@ -32,11 +34,11 @@ export function nsCompile(ns: string, text: string, target: string): void {
     try {
         const source = path.join(work, "source.ns");
         // (written as Python's text mode did: CRLF line ends on Windows)
-        writeTextPy(source, text);
+        writeText(source, text);
         const result = spawnSync(ns, ["-c", source, "-o", target, "-targetGame", "thug2"]);
         if (result.error) throw result.error;
         if (result.status !== 0 || !fs.existsSync(target)) {
-            pyExit(`ns failed on ${target}:\n${textOutput(result.stdout)}${textOutput(result.stderr)}`);
+            exitWith(`ns failed on ${target}:\n${textOutput(result.stdout)}${textOutput(result.stderr)}`);
         }
     } finally {
         fs.rmSync(work, { recursive: true, force: true });
@@ -123,12 +125,12 @@ export function lighting(struct: Struct): Record<string, number | Float> {
     for (const key of ["ambient_mod_factor", "mod_factor_0", "mod_factor_1"]) {
         const value = struct.get(key);
         if (isNumber(value)) {
-            out[`${key}_lo`] = new Float(pyRound(numberOf(value), 4));
-            out[`${key}_hi`] = new Float(pyRound(numberOf(value), 4));
+            out[`${key}_lo`] = new Float(roundTo(numberOf(value), 4));
+            out[`${key}_hi`] = new Float(roundTo(numberOf(value), 4));
         } else {
             for (const suffix of ["_lo", "_hi"]) {
                 const v = struct.get(key + suffix);
-                if (isNumber(v)) out[key + suffix] = new Float(pyRound(numberOf(v), 4));
+                if (isNumber(v)) out[key + suffix] = new Float(roundTo(numberOf(v), 4));
             }
         }
     }

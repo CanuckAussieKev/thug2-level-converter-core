@@ -6,14 +6,14 @@ following. Their licences apply to those parts.
 | Component | Where | Licence |
 |---|---|---|
 | Python's `difflib` (SequenceMatcher, its ratios, get_close_matches, unified_diff) - CPython, https://github.com/python/cpython (`Lib/difflib.py`) | `lib/difflib.ts`: a TypeScript translation of those parts, the same algorithm step by step so the results are Python's | PSF License Agreement - below |
-| CPython's `vector_norm` (`math.hypot` / `math.dist`, `Modules/mathmodule.c`) | `lib/py.ts` (`vectorNorm`, used by `pyHypot` / `pyDist`): a TypeScript translation | PSF License Agreement - below |
+| CPython's `vector_norm` (`math.hypot` / `math.dist`, `Modules/mathmodule.c`) | `lib/numbers.ts` (`vectorNorm`, used by `hypotOf` / `distanceOf`): a TypeScript translation | PSF License Agreement - below |
 | Real-ESRGAN v0.2.5.0 (Xintao Wang et al.) - https://github.com/xinntao/Real-ESRGAN: its Windows build of realesrgan-ncnn-vulkan (`realesrgan-ncnn-vulkan-20220424-windows.zip`, SHA-256 checked) with the models realesrgan-x4plus and realesrgan-x4plus-anime | **not in this repository**: downloaded on request by the content pipeline's `hd_textures/fetch.ts` into `out\` (git-ignored) and run by `level_port/hd_textures.ts` (the converters' `--hd-textures` pass) and the pipeline's HD UI. Only the textures it makes (from the user's own game files) end up in the output | Real-ESRGAN and its released models: BSD 3-clause - https://github.com/xinntao/Real-ESRGAN/blob/master/LICENSE; the ncnn front end (Real-ESRGAN-ncnn-vulkan, after nihui's realsr-ncnn-vulkan): MIT; Tencent ncnn: BSD 3-clause; the zip's vcomp140.dll is Microsoft's redistributable OpenMP runtime |
 | NeverScript (byxor; THUG2 fork by violetvandal) - https://github.com/violetvandal/NeverScript | **not in this repository**: the converters run the `ns.exe` the THUG2 decomp builds (its `tools\build_neverscript.ps1` downloads it) | no licence; its author's permission - the decomp's THIRD_PARTY_NOTICES.md |
 
 Format references read as documentation only (no code copied): thps-formats (Morten1337, MIT - the decomp's
 THIRD_PARTY_NOTICES.md) and io_thps_scene (denetii, no licence).
 
-## Python Software Foundation License (difflib.ts, py.ts's vectorNorm)
+## Python Software Foundation License (difflib.ts, numbers.ts's vectorNorm)
 
 Changes made (clause 3 below): the parts of `difflib.py` named above and `vector_norm` from `mathmodule.c` translated
 into TypeScript - sequences as arrays, no junk function (SequenceMatcher's "popular element" autojunk kept), only what

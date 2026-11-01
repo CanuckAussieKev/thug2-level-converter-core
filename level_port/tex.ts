@@ -3,7 +3,7 @@
 //   u32 checksum, width, height, mip levels, texel depth, palette depth, DXT version (1, 2 = DXT1 with alpha, 5),
 //   palette size, the palette, then per level {u32 size, data}.
 
-import { hex8 } from "../lib/py.ts";
+import { hex8 } from "../lib/text.ts";
 import { FormatError, Reader, Writer } from "./binio.ts";
 
 export interface Texture {

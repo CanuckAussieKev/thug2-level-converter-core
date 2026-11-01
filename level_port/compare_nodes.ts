@@ -11,8 +11,7 @@
 
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { helpFromHeader } from "../lib/cli.ts";
-import { isMain, print, runMain } from "../lib/py.ts";
+import { helpFromHeader, isMain, print, runMain } from "../lib/cli.ts";
 import { components } from "./components.ts";
 import { resolvedFields } from "./nodes.ts";
 import { Name, nameText, QbFile, type QbValue, Struct, tokens } from "./qb.ts";

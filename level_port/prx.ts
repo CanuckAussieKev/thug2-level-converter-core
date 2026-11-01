@@ -4,8 +4,8 @@
 //   (src/game/file/pip.cpp NextRawEntry; the LZSS: src/game/util/lzss.cpp).
 
 import * as fs from "node:fs";
-import { decodeAsciiReplace } from "../lib/py.ts";
 import { unpackNumbers } from "../lib/struct.ts";
+import { decodeAsciiReplace } from "../lib/text.ts";
 
 export function lzssDecode(data: Uint8Array, size: number): Buffer {
     // A 4096-byte window filled with spaces, writing from 4096 - 18 (as thug2-content-pipeline/menu_level/make_menu_level.ts's).

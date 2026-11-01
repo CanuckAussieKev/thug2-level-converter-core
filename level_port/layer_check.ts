@@ -10,7 +10,7 @@
 
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { isMain } from "../lib/py.ts";
+import { isMain } from "../lib/cli.ts";
 import { overlaps } from "./overlay_bias.ts";
 import * as tex from "./tex.ts";
 import * as thug2Scene from "./thug2_scene.ts";

@@ -8,7 +8,7 @@
 // 0x04; an array of structures 0x05 0x01, each followed by 0x01, 0x06; other arrays 0x05, the elements with 0x09
 // between, 0x06; an entry `name = value` is 0x16 <name> 0x07 <value>, a flag / an included structure 0x16 <name>.
 
-import { Float } from "../lib/py.ts";
+import { Float } from "../lib/numbers.ts";
 import { pack } from "../lib/struct.ts";
 import { AllArgs, Arg, Expr, Local, Name, type QbValue, Struct, tokens, Vector } from "./qb.ts";
 

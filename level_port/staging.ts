@@ -11,7 +11,7 @@
 
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { pyExit } from "../lib/py.ts";
+import { exitWith } from "../lib/cli.ts";
 import { MANIFEST } from "./ported_levels.ts";
 
 // The file that marks a folder as a converter's output (written first, so a convert that stopped half way still
@@ -32,7 +32,7 @@ export function isStagingFolder(out: string): boolean {
 
 export function prepareStaging(out: string, whole: boolean): void {
     if (!isStagingFolder(out)) {
-        pyExit(
+        exitWith(
             `${out}: not a level converter's output folder (it has other files and no ${MANIFEST}) - ` +
                 "nothing was changed; choose a new or empty folder for --out",
         );

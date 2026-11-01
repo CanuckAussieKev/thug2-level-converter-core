@@ -6,7 +6,7 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { test } from "node:test";
-import { SystemExit } from "../lib/py.ts";
+import { CliExit } from "../lib/cli.ts";
 import { MANIFEST, STAGINGS, stagingFolders } from "./ported_levels.ts";
 import { freshLevelFolder, isStagingFolder, MARKER, prepareStaging } from "./staging.ts";
 
@@ -44,7 +44,7 @@ test("a folder with other files and no marker / levels.json is refused and left 
         for (const whole of [true, false]) {
             assert.throws(
                 () => prepareStaging(game, whole),
-                (e: unknown) => e instanceof SystemExit && e.code === 1,
+                (e: unknown) => e instanceof CliExit && e.code === 1,
             );
         }
         assert.ok(fs.existsSync(path.join(game, "THUG2.exe")));

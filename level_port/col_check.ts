@@ -12,8 +12,7 @@
 
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { helpFromHeader } from "../lib/cli.ts";
-import { isMain, print, runMain } from "../lib/py.ts";
+import { helpFromHeader, isMain, print, runMain } from "../lib/cli.ts";
 import * as prx from "./prx.ts";
 import * as thug2Col from "./thug2_col.ts";
 

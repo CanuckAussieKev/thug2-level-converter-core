@@ -6,8 +6,8 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { test } from "node:test";
+import { CliExit } from "./cli.ts";
 import { findCaseless, findInstall, INSTALLS, type InstallGame, installError, resolveInstall } from "./install.ts";
-import { SystemExit } from "./py.ts";
 
 // A marker's paths under `dir`: a file when the last part has a dot, else a folder.
 function make(dir: string, marker: readonly string[]): void {
@@ -76,7 +76,7 @@ for (const game of Object.keys(INSTALLS) as InstallGame[]) {
             assert.equal(findInstall(path.join(top, "missing"), game), null);
             assert.throws(
                 () => resolveInstall(top, game),
-                (e: unknown) => e instanceof SystemExit && e.text === installError(top, game),
+                (e: unknown) => e instanceof CliExit && e.text === installError(top, game),
             );
         });
     });

@@ -196,17 +196,21 @@
       "types": "./lib/install.ts",
       "default": "./lib/install.js"
     },
+    "./lib/json.ts": {
+      "types": "./lib/json.ts",
+      "default": "./lib/json.js"
+    },
     "./lib/neverscript.ts": {
       "types": "./lib/neverscript.ts",
       "default": "./lib/neverscript.js"
     },
+    "./lib/numbers.ts": {
+      "types": "./lib/numbers.ts",
+      "default": "./lib/numbers.js"
+    },
     "./lib/package_check.ts": {
       "types": "./lib/package_check.ts",
       "default": "./lib/package_check.js"
-    },
-    "./lib/py.ts": {
-      "types": "./lib/py.ts",
-      "default": "./lib/py.js"
     },
     "./lib/re.ts": {
       "types": "./lib/re.ts",
@@ -215,6 +219,10 @@
     "./lib/struct.ts": {
       "types": "./lib/struct.ts",
       "default": "./lib/struct.js"
+    },
+    "./lib/text.ts": {
+      "types": "./lib/text.ts",
+      "default": "./lib/text.js"
     },
     "./package.json": "./package.json"
   },

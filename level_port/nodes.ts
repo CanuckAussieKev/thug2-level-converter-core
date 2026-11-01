@@ -8,9 +8,10 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { getCloseMatches } from "../lib/difflib.ts";
-import { decodeLatin1, intFromBytesLE, pyMinBy, pyParseFloat, pySum } from "../lib/py.ts";
+import { intFromBytesLE, minBy, parseFloatStrict, sumOf } from "../lib/numbers.ts";
 import { findall, type Match, search, sub } from "../lib/re.ts";
 import { pack } from "../lib/struct.ts";
+import { decodeLatin1 } from "../lib/text.ts";
 import { FormatError } from "./binio.ts";
 import * as qb from "./qb.ts";
 import { checksum, Name, type QbFile, type QbValue, type Statement, Struct, Vector } from "./qb.ts";
@@ -541,7 +542,7 @@ export function nodePosition(node: Struct): readonly number[] | null {
 
 const distance2 = (a: readonly number[], b: readonly number[]): number =>
     // (Python: sum((a[k] - b[k]) ** 2 for k in range(3)) - compensated sum; ** 2 vs * : docs/typescript.md)
-    pySum(
+    sumOf(
         [0, 1, 2].map((k) => {
             const d = a[k]! - b[k]!;
             return d * d;
@@ -584,7 +585,7 @@ export function addKillRestarts(
         }
         if (where === null) continue;
         const at = where;
-        const [, restart] = pyMinBy(restarts, (r) => distance2(r[0], at));
+        const [, restart] = minBy(restarts, (r) => distance2(r[0], at));
         const space = command.indexOf(" ");
         const head = space < 0 ? command : command.slice(0, space);
         const rest = space < 0 ? "" : ` ${command.slice(space + 1)}`;
@@ -993,10 +994,10 @@ function ground(col: thug2Col.ColFile, p: readonly number[]): [number, number, n
 function nodePos(node: string): number[] | null {
     // A node's position in THUG2's space: Pos= as it is, Position= (THPS4 / THUG1 style) with z negated.
     let m = search(/\bPos=\(([^)]*)\)/, node);
-    if (m) return m.str(1).split(",").map(pyParseFloat);
+    if (m) return m.str(1).split(",").map(parseFloatStrict);
     m = search(/\bPosition=\(([^)]*)\)/, node);
     if (m) {
-        const values = m.str(1).split(",").map(pyParseFloat);
+        const values = m.str(1).split(",").map(parseFloatStrict);
         if (values.length !== 3) throw new RangeError(`not enough values to unpack (expected 3, got ${values.length})`);
         const [x, y, z] = values as [number, number, number];
         return [x, y, -z];
@@ -1069,7 +1070,7 @@ export function groundRestarts(text: string, col: thug2Col.ColFile): [string, st
         if (!target || !bad.has(target.str(2))) return match.str(0);
         const whereP = where.get(name);
         const p = whereP?.length ? whereP : restarts.get(target.str(2))!;
-        const best = pyMinBy(good.keys(), (n) => distance2(good.get(n)!, p));
+        const best = minBy(good.keys(), (n) => distance2(good.get(n)!, p));
         report.push(`  kill ${name}: to ${best}, not ${target.str(2)} (no ground there)`);
         body = body.slice(0, target.start(2)) + best + body.slice(target.end(2));
         const whole = match.str(0);

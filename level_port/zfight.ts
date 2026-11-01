@@ -24,8 +24,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { parseArgs } from "node:util";
-import { helpFromHeader } from "../lib/cli.ts";
-import { isMain, print, runMain } from "../lib/py.ts";
+import { helpFromHeader, isMain, print, runMain } from "../lib/cli.ts";
 import * as thug2Scene from "./thug2_scene.ts";
 
 export const DEPTH_BITS = 24;

@@ -52,8 +52,7 @@
 
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { parseCli } from "../lib/cli.ts";
-import { isMain, print, pyExit, runMain } from "../lib/py.ts";
+import { exitWith, isMain, parseCli, print, runMain } from "../lib/cli.ts";
 import { emptyToggles, levelToggles, named, type Toggles, thereWhenever } from "./script_toggles.ts";
 import * as tex from "./tex.ts";
 import { texels } from "./texture_check.ts";
@@ -1442,7 +1441,7 @@ export function main(argv: readonly string[] = process.argv.slice(2)): number {
         },
     });
     const [folder, ...wanted] = positionals;
-    if (!folder) pyExit(USAGE);
+    if (!folder) exitWith(USAGE);
     const levels = wanted.length
         ? wanted
         : fs

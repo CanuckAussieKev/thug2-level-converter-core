@@ -70,8 +70,7 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { isMainThread, parentPort, Worker, workerData } from "node:worker_threads";
 import * as zlib from "node:zlib";
-import { parseCli } from "../lib/cli.ts";
-import { isMain, print, pyExit, runMain } from "../lib/py.ts";
+import { exitWith, isMain, parseCli, print, runMain } from "../lib/cli.ts";
 import { expandIncludes } from "./nodes.ts";
 import { checksum, Name, QbFile, type QbValue, Struct } from "./qb.ts";
 import { levelToggles, type Toggles, thereWhenever } from "./script_toggles.ts";
@@ -1071,7 +1070,7 @@ function findFile(dir: string, file: string): string | null {
 export function readLevel(folder: string, level: string): Level {
     const dir = findFile(folder, level) ?? path.join(folder, level);
     const scn = findFile(dir, `${level}.scn.xbx`);
-    if (!scn) pyExit(`${level}: no ${level}.scn.xbx in ${dir}`);
+    if (!scn) exitWith(`${level}: no ${level}.scn.xbx in ${dir}`);
     const scene = thug2Scene.readScene(fs.readFileSync(scn), scn);
     const colFile = findFile(dir, `${level}.col.xbx`);
     let col: thug2Col.ColFile | null = null;
@@ -1511,7 +1510,7 @@ const numbers = (s: string): number[] =>
         .split(",")
         .map((x) => {
             const n = Number(x);
-            if (!Number.isFinite(n)) pyExit(`not a number list: ${s}`);
+            if (!Number.isFinite(n)) exitWith(`not a number list: ${s}`);
             return n;
         });
 
@@ -1538,7 +1537,7 @@ export async function main(argv: readonly string[] = process.argv.slice(2)): Pro
         },
     });
     const [folder, ...wanted] = positionals;
-    if (!folder) pyExit(USAGE);
+    if (!folder) exitWith(USAGE);
     const levels = wanted.length
         ? wanted
         : fs

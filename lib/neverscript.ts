@@ -18,8 +18,8 @@ import { createHash } from "node:crypto";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
+import { exitWith, isMain, print, runMain } from "./cli.ts";
 import { DECOMP } from "./decomp.ts";
-import { isMain, print, pyExit, runMain } from "./py.ts";
 
 export const RELEASE = {
     repository: "CanuckAussieKev/NeverScript",
@@ -105,7 +105,7 @@ export function nsMissing(given?: string | null, env: NodeJS.ProcessEnv = proces
 
 // The ns to use, or exit with nsMissing's message.
 export function requireNs(given?: string | null): string {
-    return findNs(given) ?? pyExit(nsMissing(given));
+    return findNs(given) ?? exitWith(nsMissing(given));
 }
 
 export const sha256 = (data: Uint8Array): string => createHash("sha256").update(data).digest("hex");
@@ -145,17 +145,17 @@ async function main(argv: readonly string[]): Promise<number> {
         return 0;
     }
     if (rest.length || (command !== "fetch" && command !== "where"))
-        pyExit(`${USAGE}\n(fetch: download ns; where: the ns in use)`);
+        exitWith(`${USAGE}\n(fetch: download ns; where: the ns in use)`);
     if (command === "where") {
         const found = findNs();
-        if (!found) pyExit(nsMissing());
+        if (!found) exitWith(nsMissing());
         print(found);
         return 0;
     }
     try {
         print(await fetchNs());
     } catch (e) {
-        pyExit(e instanceof Error ? e.message : String(e));
+        exitWith(e instanceof Error ? e.message : String(e));
     }
     return 0;
 }

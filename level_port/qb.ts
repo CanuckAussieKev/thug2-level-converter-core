@@ -10,17 +10,9 @@
 // JavaScript can't tell 1.0 from 1, NeverScript can), a string, a boolean, an array.
 
 import * as zlib from "node:zlib";
-import {
-    decodeLatin1,
-    encodeAscii,
-    Float,
-    formatFixed,
-    hex8,
-    isAlnumChar,
-    isDigitChar,
-    pyFloatRepr,
-} from "../lib/py.ts";
+import { Float, floatText, formatFixed } from "../lib/numbers.ts";
 import { f32, unpackNumbers } from "../lib/struct.ts";
+import { decodeLatin1, encodeAscii, hex8, isAlnumChar, isDigitChar } from "../lib/text.ts";
 import { FormatError } from "./binio.ts";
 
 // The script checksum of a name: CRC-32 of its lower case (ASCII only - raises otherwise, as Python's encode) without
@@ -407,7 +399,7 @@ export function rstripNul(data: Buffer): Buffer {
 // A float as NeverScript reads it: the float32's shortest repr ("0.1", not 0.10000000149011612), fixed-point when
 // repr would use an exponent.
 export function fmtFloat(f: number): string {
-    let text = pyFloatRepr(f32(f));
+    let text = floatText(f32(f));
     if (text.includes("e") || text.includes("inf") || text.includes("nan")) text = formatFixed(f, 9);
     if (!text.includes(".")) text += ".0";
     return text;

@@ -2,8 +2,8 @@
 
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { CliExit } from "./cli.ts";
 import { parseConverterArgs } from "./converter_args.ts";
-import { SystemExit } from "./py.ts";
 
 const OPTIONS = {
     thug2: { kind: "string", default: "C:\\Games\\THUG2\\Game" },
@@ -37,7 +37,7 @@ test("converter args: errors exit 2", () => {
         for (const argv of [["build"], [], ["convert", "--bogus"], ["convert", "--out"]]) {
             assert.throws(
                 () => parse(...argv),
-                (e: unknown) => e instanceof SystemExit && e.code === 2,
+                (e: unknown) => e instanceof CliExit && e.code === 2,
             );
         }
     } finally {

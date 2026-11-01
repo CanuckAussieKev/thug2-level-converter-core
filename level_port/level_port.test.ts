@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { test } from "node:test";
-import { Float } from "../lib/py.ts";
+import { Float } from "../lib/numbers.ts";
 import { fixProfiles, nameValue, supportStreams, useModelLights } from "./nodes.ts";
 import * as pedRigs from "./ped_rigs.ts";
 import { Thug2Assets } from "./peds_cars.ts";

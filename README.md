@@ -38,9 +38,9 @@ the [THUG2 decompilation](https://github.com/CanuckAussieKev/thug2-decomp) runs 
 ## What is here
 
 - `lib/` - the tools' helpers: command lines (`cli.ts`, `converter_args.ts`), finding a game's files in the folder
-  you name (`install.ts`), where the project and the decomp are (`decomp.ts`), Python-compatible formatting and
-  parsing (`py.ts`, `struct.ts`, `re.ts`, `difflib.ts`, `files.ts`: the tools were ported from Python and give the
-  same results), edits to game scripts (`edits.ts`), BPS patches (`bps.ts`), PNG images and frame series
+  you name (`install.ts`), where the project and the decomp are (`decomp.ts`), number, text and JSON formatting the
+  output depends on byte for byte (`numbers.ts`, `text.ts`, `json.ts`), binary packing (`struct.ts`), regular
+  expressions (`re.ts`), text diffs (`difflib.ts`), CSV files (`files.ts`), edits to game scripts (`edits.ts`), BPS patches (`bps.ts`), PNG images and frame series
   (`frame_diff.ts`), and the check of a repository's package.json (`package_check.ts`: every repository's
   `package.test.ts`).
 - `level_port/` - THUG2's scene, collision, texture, archive, script, skeleton and animation formats and what the

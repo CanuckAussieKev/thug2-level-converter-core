@@ -23,12 +23,15 @@
 // and, at the top level next to `levels`, an optional `title`: the level select section's title for a converter this
 // project doesn't know (stagingFolders; "TONY HAWK'S ..." - this project's converters' sections have their own).
 //
-// The manifest is read with pyJsonLoads and written with pyJsonDumps (lib/py.ts): a float stays a float (the
+// The manifest is read with parseJson and written with jsonText (lib/json.ts): a float stays a float (the
 // lighting's mod factors, "1.0"), and the file's bytes are Python's (indent 1, ASCII, CRLF line ends on Windows).
 
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { Float, pyExit, pyFloatRepr, pyJsonDumps, pyJsonLoads, pyRepr, readTextPy, writeTextPy } from "../lib/py.ts";
+import { exitWith } from "../lib/cli.ts";
+import { jsonText, parseJson } from "../lib/json.ts";
+import { Float, floatText } from "../lib/numbers.ts";
+import { readText, valueText, writeText } from "../lib/text.ts";
 
 export const MANIFEST = "levels.json";
 // The staging folders, in the order their levels are listed.
@@ -68,13 +71,13 @@ export interface Manifest {
 
 export function readManifest(file: string): Manifest | null {
     if (!fs.existsSync(file)) return null;
-    return pyJsonLoads(readTextPy(file)) as Manifest | null;
+    return parseJson(readText(file)) as Manifest | null;
 }
 
 // A convert of some levels only (`convert foun`) updates their entries and keeps the others already in the staging
 // folder's list - before, it wrote just the levels of that run and the level select lost the rest.
 export function writeManifest(file: string, manifest: unknown): void {
-    writeTextPy(file, pyJsonDumps(mergeManifest(readManifest(file), manifest as Manifest), 1));
+    writeText(file, jsonText(mergeManifest(readManifest(file), manifest as Manifest), 1));
 }
 
 export function mergeManifest(old: Manifest | null, fresh: Manifest): Manifest {
@@ -129,7 +132,7 @@ export function loadManifest(game: string): Manifest | null {
     }
     const numbers = levels.map((e) => e.level_num);
     if (new Set(numbers).size !== numbers.length) {
-        pyExit(`converted levels: a level select number is used twice (${pyRepr(numbers)})`);
+        exitWith(`converted levels: a level select number is used twice (${valueText(numbers)})`);
     }
     // (the level names are the load scripts' and folders' names: two staging folders naming a level alike - e.g. two
     // converters using a game's bare level name - would replace one with the other in Levels.qb)
@@ -139,7 +142,7 @@ export function loadManifest(game: string): Manifest | null {
         const staging = e.staging ?? "";
         for (const name of new Set([e.level, loadOf(e)].map((n) => n.toLowerCase()))) {
             const level = seen.get(name);
-            if (level !== undefined) pyExit(`converted levels: ${name} is named twice (${level} and ${staging})`);
+            if (level !== undefined) exitWith(`converted levels: ${name} is named twice (${level} and ${staging})`);
             seen.set(name, staging);
         }
     }
@@ -148,7 +151,7 @@ export function loadManifest(game: string): Manifest | null {
         const mine = `sky:${e.staging ?? ""}`;
         const other = seen.get(e.sky.toLowerCase());
         if (other !== undefined && other !== mine) {
-            pyExit(`converted levels: ${e.sky} is named twice (${other.replace(/^sky:/, "")} and ${e.staging})`);
+            exitWith(`converted levels: ${e.sky} is named twice (${other.replace(/^sky:/, "")} and ${e.staging})`);
         }
         seen.set(e.sky.toLowerCase(), mine);
     }
@@ -172,8 +175,8 @@ function percentD(value: number | Float): string {
 
 // Python's "%s" % value of a lighting value: repr(float(value)) for a float, the int as it is.
 function lightingText(value: unknown): string {
-    if (value instanceof Float) return pyFloatRepr(value.value);
-    if (typeof value === "number") return Number.isInteger(value) ? String(value) : pyFloatRepr(value);
+    if (value instanceof Float) return floatText(value.value);
+    if (typeof value === "number") return Number.isInteger(value) ? String(value) : floatText(value);
     return String(value);
 }
 
@@ -222,7 +225,7 @@ export function levelsQbText(manifest: Manifest): string {
 
 export function addToLevels(text: string, manifest: Manifest): string {
     const anchor = "\nscript Load_TestLevel {";
-    if (text.split(anchor).length - 1 !== 1) pyExit("Levels.qb: Load_TestLevel not found once");
+    if (text.split(anchor).length - 1 !== 1) exitWith("Levels.qb: Load_TestLevel not found once");
     // (a function as the replacement: a string one would read "$&" / "$1")
     return text.replace(anchor, () => `\n${levelsQbText(manifest)}${anchor.slice(1)}`);
 }

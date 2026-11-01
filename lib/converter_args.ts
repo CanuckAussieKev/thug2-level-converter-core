@@ -3,7 +3,7 @@
 // (argparse's nargs="*": the values up to the next option). Options may be shortened to a unique prefix, as argparse
 // allows. Errors go to stderr with exit code 2, as argparse's.
 
-import { pyExit } from "./py.ts";
+import { exitWith } from "./cli.ts";
 
 export type OptionKind = "string" | "flag" | "list";
 
@@ -22,7 +22,7 @@ export interface ParsedArgs {
 
 function fail(prog: string, usage: string, message: string): never {
     process.stderr.write(`usage: ${prog} ${usage}\n${prog}: error: ${message}\n`);
-    pyExit(2);
+    exitWith(2);
 }
 
 export function parseConverterArgs(
@@ -46,7 +46,7 @@ export function parseConverterArgs(
         const arg = argv[i]!;
         if (arg === "-h" || arg === "--help") {
             process.stdout.write(`usage: ${prog} ${usage}\n`);
-            pyExit(0);
+            exitWith(0);
         }
         if (!arg.startsWith("--") || arg === "--") {
             if (arg !== "--") positionals.push(arg);

@@ -21,8 +21,9 @@
 // scale (254 / the farthest vertex of the object), rounded up. A ray test (0x00413B50) skips the faces whose reach is
 // below the ray's distance from the box minimum times the scale: 0 there makes a face all but uncollidable.
 
-import { hex8, pyDist, pyMax, pyMin, roundHalfEven } from "../lib/py.ts";
+import { distanceOf, maxOf, minOf, roundHalfEven } from "../lib/numbers.ts";
 import { f32, pack } from "../lib/struct.ts";
+import { hex8 } from "../lib/text.ts";
 import { FormatError, Reader, Writer } from "./binio.ts";
 
 export const VERSION = 10;
@@ -311,14 +312,14 @@ export function setReaches(o: ColObject): void {
         o.reach = Buffer.alloc(0);
         return;
     }
-    // (Python's math.dist, not a plain square root of the sum: pyDist)
-    let farthest = pyMax(o.verts.map((v) => pyDist(v, origin)));
+    // (Python's math.dist, not a plain square root of the sum: distanceOf)
+    let farthest = maxOf(o.verts.map((v) => distanceOf(v, origin)));
     if (!farthest) farthest = 1.0;
     const scale = f32(254.0 / farthest);
     o.value = pack("<f", scale);
     o.reach = Buffer.from(
         o.faces.map((face) => {
-            const far = pyMax([face[2], face[3], face[4]].map((i) => pyDist(vertex(o.verts, i), origin)));
+            const far = maxOf([face[2], face[3], face[4]].map((i) => distanceOf(vertex(o.verts, i), origin)));
             const value = Math.min(255, Math.ceil(far * scale) + 1);
             if (Number.isNaN(value)) throw new RangeError("cannot convert float NaN to integer");
             return value;
@@ -353,8 +354,8 @@ export function buildTree(verts: readonly (readonly number[])[], faces: readonly
             const right: number[] = [];
             for (const f of faceIds) {
                 const values = [coord(f, 2, axis), coord(f, 3, axis), coord(f, 4, axis)];
-                if (pyMin(values) < split) left.push(f);
-                if (pyMax(values) >= split) right.push(f);
+                if (minOf(values) < split) left.push(f);
+                if (maxOf(values) >= split) right.push(f);
             }
             const duplicates = left.length + right.length - faceIds.length;
             if (best === null || duplicates < best[0]) best = [duplicates, axis, point, left, right];

@@ -7,11 +7,12 @@ import { spawnSync } from "node:child_process";
 import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
-import { helpFromHeader } from "../lib/cli.ts";
+import { helpFromHeader, isMain, print, runMain } from "../lib/cli.ts";
 import { unifiedDiff } from "../lib/difflib.ts";
 import { requireNs } from "../lib/neverscript.ts";
-import { isMain, print, pyParseInt, pyRepr, pySplitlines, readTextPy, runMain } from "../lib/py.ts";
+import { parseIntStrict } from "../lib/numbers.ts";
 import { finditer, sub } from "../lib/re.ts";
+import { readText, splitLines, valueText } from "../lib/text.ts";
 
 const SCRIPT = /^script (\S+) \{(.*?)^\} *$/ms;
 
@@ -19,7 +20,7 @@ function scripts(file: string, tmp: string): [Map<string, string>, string] {
     const out = path.join(tmp, "x.ns");
     const result = spawnSync(requireNs(), ["-d", file, "-o", out]);
     if (result.error) throw result.error;
-    let text = readTextPy(out, "replace");
+    let text = readText(out, "replace");
     const found = new Map<string, string>();
     for (const m of finditer(SCRIPT, text)) found.set(m.str(1), m.str(0));
     text = sub(/^__register_checksums__.*$/m, "", text);
@@ -47,7 +48,7 @@ export function main(argv: readonly string[] = process.argv.slice(2)): number {
     if (argv.length < 2)
         throw new RangeError("list index out of range (usage: script_diff <new staging> <reference staging> [show N])");
     const [newRoot, refRoot] = argv as [string, string];
-    const show = argv.length > 2 ? pyParseInt(argv[2]!) : 0;
+    const show = argv.length > 2 ? parseIntStrict(argv[2]!) : 0;
     const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "tmp"));
     try {
         const total = new Map([
@@ -87,10 +88,10 @@ export function main(argv: readonly string[] = process.argv.slice(2)): number {
                 }
             }
         }
-        print(pyRepr(total));
+        print(valueText(total));
         for (const [level, name, kind, x, y] of examples.slice(0, show)) {
             print("=====", level, name, kind);
-            for (const line of unifiedDiff(pySplitlines(y), pySplitlines(x), "ref", "new", "", "", 1, "")) print(line);
+            for (const line of unifiedDiff(splitLines(y), splitLines(x), "ref", "new", "", "", 1, "")) print(line);
         }
         return 0;
     } finally {

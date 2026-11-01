@@ -21,9 +21,8 @@
 
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { helpFromHeader } from "../lib/cli.ts";
+import { helpFromHeader, isMain, print, runMain } from "../lib/cli.ts";
 import { findCaseless, resolveInstall } from "../lib/install.ts";
-import { isMain, print, runMain } from "../lib/py.ts";
 import * as prx from "./prx.ts";
 import { checksum, Name, nameText, QbFile, type QbValue, Struct, tokens } from "./qb.ts";
 

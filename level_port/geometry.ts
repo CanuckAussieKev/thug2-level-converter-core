@@ -2,8 +2,9 @@
 // scn.xbx) become THUG2's per-mesh vertex buffers, and collision objects become THUG2's version 10 ones (in memory;
 // thug2-thps4-level-converter/thps4_levels and thug2-thug1-level-converter/thug1_levels write them).
 
-import { hex8, pyBytes, pyMax, pyMin, pySum, roundHalfEven } from "../lib/py.ts";
+import { maxOf, minOf, roundHalfEven, sumOf } from "../lib/numbers.ts";
 import { pack } from "../lib/struct.ts";
+import { bytesOf, hex8 } from "../lib/text.ts";
 import * as thug2Col from "./thug2_col.ts";
 import * as thug2Scene from "./thug2_scene.ts";
 
@@ -27,15 +28,15 @@ export function pixelShader(material: thug2Scene.Material): number {
 }
 
 export function bounds(points: readonly (readonly number[])[]): [number[], number[], number[], number] {
-    const lo = [0, 1, 2].map((k) => pyMin(points.map((p) => p[k]!)));
-    const hi = [0, 1, 2].map((k) => pyMax(points.map((p) => p[k]!)));
+    const lo = [0, 1, 2].map((k) => minOf(points.map((p) => p[k]!)));
+    const hi = [0, 1, 2].map((k) => maxOf(points.map((p) => p[k]!)));
     const center = [0, 1, 2].map((k) => (lo[k]! + hi[k]!) / 2);
-    // (Python: sum(... ** 2) - a compensated sum (pySum); x ** 2 there is the C library's pow, x * x here: the same
+    // (Python: sum(... ** 2) - a compensated sum (sumOf); x ** 2 there is the C library's pow, x * x here: the same
     // but for one in ~2000 values a last-bit difference, gone in the float32 the sphere is written as)
     const radius = Math.sqrt(
-        pyMax(
+        maxOf(
             points.map((p) =>
-                pySum(
+                sumOf(
                     [0, 1, 2].map((k) => {
                         const d = p[k]! - center[k]!;
                         return d * d;
@@ -215,8 +216,8 @@ export function convertCol(
             if (!keepTriggers(o.checksum)) flags &= ~thug2Col.FACE_TRIGGER;
             faces.push([flags, terrain, a, b, c]);
         }
-        let lo = [0, 1, 2].map((k) => pyMin(verts.map((v) => v[k]!)));
-        let hi = [0, 1, 2].map((k) => pyMax(verts.map((v) => v[k]!)));
+        let lo = [0, 1, 2].map((k) => minOf(verts.map((v) => v[k]!)));
+        let hi = [0, 1, 2].map((k) => maxOf(verts.map((v) => v[k]!)));
         // Fixed-point vertices (sixteenths, up to 4096 units from the box minimum) as the shipped files use for
         // most objects; small faces (u8 vertex indices) when they fit.
         const fixed = [0, 1, 2].every((k) => hi[k]! - lo[k]! < 4000.0);
@@ -226,7 +227,7 @@ export function convertCol(
             const base = lo;
             verts = verts.map((v) => [0, 1, 2].map((k) => base[k]! + roundHalfEven((v[k]! - base[k]!) * 16.0) / 16.0));
             const fixedVerts = verts;
-            hi = [0, 1, 2].map((k) => pyMax(fixedVerts.map((v) => v[k]!)));
+            hi = [0, 1, 2].map((k) => maxOf(fixedVerts.map((v) => v[k]!)));
         }
         const ints = o.intensities;
         const out: thug2Col.ColObject = {
@@ -236,7 +237,7 @@ export function convertCol(
             fixedVerts: fixed ? 1 : 0,
             bbox: [lo[0]!, lo[1]!, lo[2]!, 1.0, hi[0]!, hi[1]!, hi[2]!, 1.0],
             verts,
-            intensities: Buffer.isBuffer(ints) ? ints : pyBytes(ints.map((i) => i[0]!)),
+            intensities: Buffer.isBuffer(ints) ? ints : bytesOf(ints.map((i) => i[0]!)),
             faces,
             reach: Buffer.alloc(0),
             bsp: { kind: "leaf", faces: [], low: 3 },

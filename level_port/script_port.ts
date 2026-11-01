@@ -32,8 +32,9 @@
 // the contexts were added in.)
 
 import * as path from "node:path";
-import { decodeLatin1, encodeLatin1, hex8, sortedNumbers } from "../lib/py.ts";
+import { sortedNumbers } from "../lib/numbers.ts";
 import { pack, unpackNumbers } from "../lib/struct.ts";
+import { decodeLatin1, encodeLatin1, hex8 } from "../lib/text.ts";
 import * as prx from "./prx.ts";
 import * as qb from "./qb.ts";
 import { checksum } from "./qb.ts";

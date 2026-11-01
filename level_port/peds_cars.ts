@@ -19,8 +19,10 @@
 
 import * as path from "node:path";
 import { findCaseless } from "../lib/install.ts";
-import { decodeLatin1, Float, hex8, intFromBytesLE, pyTruthy } from "../lib/py.ts";
+import { truthy } from "../lib/json.ts";
+import { Float, intFromBytesLE } from "../lib/numbers.ts";
 import { unpack } from "../lib/struct.ts";
+import { decodeLatin1, hex8 } from "../lib/text.ts";
 import { FormatError } from "./binio.ts";
 import * as pedRigs from "./ped_rigs.ts";
 import * as prx from "./prx.ts";
@@ -134,7 +136,7 @@ export class Builder {
         const s = new Struct([
             // (a missing position stays missing, as Python's None: toNs raises on it)
             [nameOf(n, "Pos"), pos as QbValue],
-            [nameOf(n, "Angles"), pyTruthy(angles) ? angles! : new Vector("vector", [0.0, 0.0, 0.0])],
+            [nameOf(n, "Angles"), truthy(angles) ? angles! : new Vector("vector", [0.0, 0.0, 0.0])],
             [nameOf(n, "Name"), name instanceof Name ? name : nameOf(n, name as string)],
             ...entries,
         ]);
@@ -166,7 +168,7 @@ const isInt = (v: QbValue): v is number => typeof v === "number" && Number.isInt
 
 function linksOf(node: Struct): QbValue[] {
     const links = node.get("Links");
-    if (!pyTruthy(links)) return [];
+    if (!truthy(links)) return [];
     if (!Array.isArray(links)) throw new TypeError("Links is not a list");
     return links;
 }

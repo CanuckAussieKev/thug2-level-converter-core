@@ -15,8 +15,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { parseArgs } from "node:util";
-import { helpFromHeader } from "../lib/cli.ts";
-import { isMain, print, runMain } from "../lib/py.ts";
+import { helpFromHeader, isMain, print, runMain } from "../lib/cli.ts";
 import * as dxt from "./dxt.ts";
 import * as tex from "./tex.ts";
 import * as thug2Scene from "./thug2_scene.ts";

@@ -3,31 +3,25 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { getCloseMatches, unifiedDiff } from "./difflib.ts";
+import { jsonText, parseJson } from "./json.ts";
 import {
-    decodeAsciiReplace,
-    encodeLatin1,
+    distanceOf,
     Float,
+    floatText,
     floorDiv,
+    floorMod,
     formatFixed,
     intFromBytesLE,
-    pyDist,
-    pyFloatRepr,
-    pyIntHex,
-    pyJsonDumps,
-    pyJsonLoads,
-    pyMax,
-    pyMod,
-    pyParseFloat,
-    pyRepr,
-    pyRound,
-    pySplitlines,
-    pyStrRepr,
-    pySum,
-    pyTuple,
+    maxOf,
+    parseFloatStrict,
+    parseHexInt,
     roundHalfEven,
-} from "./py.ts";
+    roundTo,
+    sumOf,
+} from "./numbers.ts";
 import { search, sub } from "./re.ts";
 import { f32, pack, StructError, unpackFrom } from "./struct.ts";
+import { asTuple, decodeAsciiReplace, encodeLatin1, quotedText, splitLines, valueText } from "./text.ts";
 
 test("roundHalfEven is Python's round(): halves to even", () => {
     assert.deepEqual([0.5, 1.5, 2.5, -0.5, -1.5, 2.4999999999999996, 3.5].map(roundHalfEven), [0, 2, 2, 0, -2, 2, 4]);
@@ -35,11 +29,11 @@ test("roundHalfEven is Python's round(): halves to even", () => {
     assert.throws(() => roundHalfEven(Number.NaN));
 });
 
-test("pyRound(x, n) rounds the exact binary value", () => {
-    assert.equal(pyRound(2.675, 2), 2.67);
-    assert.equal(pyRound(0.125, 2), 0.12);
-    assert.equal(pyRound(0.375, 2), 0.38);
-    assert.equal(pyRound(1.00005, 4), 1.0001); // (1.00005 is 1.0000500000000001 in binary)
+test("roundTo(x, n) rounds the exact binary value", () => {
+    assert.equal(roundTo(2.675, 2), 2.67);
+    assert.equal(roundTo(0.125, 2), 0.12);
+    assert.equal(roundTo(0.375, 2), 0.38);
+    assert.equal(roundTo(1.00005, 4), 1.0001); // (1.00005 is 1.0000500000000001 in binary)
 });
 
 test("formatFixed is Python's %.Nf", () => {
@@ -50,7 +44,7 @@ test("formatFixed is Python's %.Nf", () => {
     assert.equal(formatFixed(2.5, 0), "2");
 });
 
-test("pyFloatRepr is Python's repr(float)", () => {
+test("floatText is Python's repr(float)", () => {
     const cases: [number, string][] = [
         [1e16, "1e+16"],
         [1e15, "1000000000000000.0"],
@@ -65,52 +59,52 @@ test("pyFloatRepr is Python's repr(float)", () => {
         [Number.NaN, "nan"],
         [Number.NEGATIVE_INFINITY, "-inf"],
     ];
-    for (const [x, text] of cases) assert.equal(pyFloatRepr(x), text);
+    for (const [x, text] of cases) assert.equal(floatText(x), text);
 });
 
-test("pySum is Python 3.12+'s compensated sum()", () => {
-    assert.equal(pySum(Array(10).fill(0.1)), 1.0);
+test("sumOf is Python 3.12+'s compensated sum()", () => {
+    assert.equal(sumOf(Array(10).fill(0.1)), 1.0);
     assert.equal(
         Array(10)
             .fill(0.1)
             .reduce((a, b) => a + b, 0),
         0.9999999999999999,
     );
-    assert.equal(pySum([]), 0);
+    assert.equal(sumOf([]), 0);
 });
 
-test("pyDist is math.dist", () => {
-    assert.equal(pyDist([0, 0, 0], [1, 1, 1]), 1.7320508075688772);
-    assert.equal(pyDist([1e-300, 2e-300], [0, 0]), 2.2360679774997897e-300);
+test("distanceOf is math.dist", () => {
+    assert.equal(distanceOf([0, 0, 0], [1, 1, 1]), 1.7320508075688772);
+    assert.equal(distanceOf([1e-300, 2e-300], [0, 0]), 2.2360679774997897e-300);
 });
 
 test("floor division and modulo take the divisor's sign", () => {
     assert.equal(floorDiv(-7, 2), -4);
-    assert.equal(pyMod(-7, 2), 1);
-    assert.equal(pyMod(7, -2), -1);
+    assert.equal(floorMod(-7, 2), 1);
+    assert.equal(floorMod(7, -2), -1);
 });
 
 test("max / min: Python's NaN and empty behaviour", () => {
-    assert.equal(pyMax([1, Number.NaN, 3]), 3);
-    assert.throws(() => pyMax([]));
+    assert.equal(maxOf([1, Number.NaN, 3]), 3);
+    assert.throws(() => maxOf([]));
 });
 
 test("strings: splitlines, repr, hex ints, floats, latin-1, ascii", () => {
-    assert.deepEqual(pySplitlines("a\r\nb\rc\x0bd\n"), ["a", "b", "c", "d"]);
-    assert.equal(pyStrRepr("it's"), `"it's"`);
-    assert.equal(pyStrRepr("a\nb\x00"), "'a\\nb\\x00'");
-    assert.equal(pyIntHex("0x1f"), 31);
-    assert.throws(() => pyIntHex("1g"));
-    assert.equal(pyParseFloat(" 1_000.5 "), 1000.5);
-    assert.throws(() => pyParseFloat(""));
+    assert.deepEqual(splitLines("a\r\nb\rc\x0bd\n"), ["a", "b", "c", "d"]);
+    assert.equal(quotedText("it's"), `"it's"`);
+    assert.equal(quotedText("a\nb\x00"), "'a\\nb\\x00'");
+    assert.equal(parseHexInt("0x1f"), 31);
+    assert.throws(() => parseHexInt("1g"));
+    assert.equal(parseFloatStrict(" 1_000.5 "), 1000.5);
+    assert.throws(() => parseFloatStrict(""));
     assert.throws(() => encodeLatin1("\u0100"));
     assert.equal(decodeAsciiReplace(Buffer.from([0x41, 0xe9])), "A\ufffd");
     assert.equal(intFromBytesLE(Buffer.from([0xff, 0xff, 0xff, 0xff]), true), -1);
 });
 
-test("pyRepr prints dicts, lists and tuples as Python", () => {
+test("valueText prints dicts, lists and tuples as Python", () => {
     assert.equal(
-        pyRepr(
+        valueText(
             new Map<string, unknown>([
                 ["same", 0],
                 ["x", [1, 2.5, "a"]],
@@ -118,12 +112,12 @@ test("pyRepr prints dicts, lists and tuples as Python", () => {
         ),
         "{'same': 0, 'x': [1, 2.5, 'a']}",
     );
-    assert.equal(pyRepr(pyTuple([1, "b"])), "(1, 'b')");
-    assert.equal(pyRepr(pyTuple([1])), "(1,)");
+    assert.equal(valueText(asTuple([1, "b"])), "(1, 'b')");
+    assert.equal(valueText(asTuple([1])), "(1,)");
 });
 
 test("json: Python's dumps text and loads' floats", () => {
-    const text = pyJsonDumps(
+    const text = jsonText(
         new Map<string, unknown>([
             ["a", [1, new Float(2.0), "é"]],
             ["b", {}],
@@ -132,7 +126,7 @@ test("json: Python's dumps text and loads' floats", () => {
         1,
     );
     assert.equal(text, '{\n "a": [\n  1,\n  2.0,\n  "\\u00e9"\n ],\n "b": {},\n "c": []\n}');
-    const back = pyJsonLoads('{"a": [1, 2.0, NaN, "NaN"]}') as { a: unknown[] };
+    const back = parseJson('{"a": [1, 2.0, NaN, "NaN"]}') as { a: unknown[] };
     assert.equal(back.a[0], 1);
     assert.ok(back.a[1] instanceof Float);
     assert.ok(back.a[2] instanceof Float && Number.isNaN(back.a[2].value));

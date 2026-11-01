@@ -81,7 +81,9 @@ function onPath(env: NodeJS.ProcessEnv = process.env): string | null {
 export function findNs(given?: string | null, env: NodeJS.ProcessEnv = process.env): string | null {
     if (given) return isFile(given) ? given : null;
     if (env.NEVERSCRIPT) return isFile(env.NEVERSCRIPT) ? env.NEVERSCRIPT : null;
-    const candidates = [DECOMP ? path.join(DECOMP, "out", "neverscript", "ns.exe") : null, cachedNs()];
+    // (the decomp's build is a Windows exe: tools\build_neverscript.ps1)
+    const decompBuild = DECOMP && process.platform === "win32" ? path.join(DECOMP, "out", "neverscript", "ns.exe") : null;
+    const candidates = [decompBuild, cachedNs()];
     for (const file of candidates) if (file && isFile(file)) return file;
     return onPath(env);
 }

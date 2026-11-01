@@ -17,9 +17,9 @@
 // Angles as they are. The new nodes' Links are indices into the returned list: add the index of its first node
 // (offsetLinks) when they are appended to an array. Each node's trigger script is returned as NeverScript text.
 
-import * as fs from "node:fs";
 import * as path from "node:path";
-import { decodeLatin1, Float, hex8, intFromBytesLE, pyJoin, pyTruthy } from "../lib/py.ts";
+import { findCaseless } from "../lib/install.ts";
+import { decodeLatin1, Float, hex8, intFromBytesLE, pyTruthy } from "../lib/py.ts";
 import { unpack } from "../lib/struct.ts";
 import { FormatError } from "./binio.ts";
 import * as pedRigs from "./ped_rigs.ts";
@@ -433,7 +433,7 @@ export class Thug2Assets {
     readonly femaleRigs: Set<number>; // the profiles whose models are rigged to Ped_Female (ped_rigs.ts)
 
     constructor(thug2: string) {
-        this.models = path.join(thug2, "Data", "models");
+        this.models = findCaseless(thug2, "Data", "models") ?? path.join(thug2, "Data", "models");
         const data = prx.find(path.join(thug2, "Data", "pre", "qb_scripts.prx"), "scripts\\profile_ped.qb");
         if (data === null) throw new FormatError("qb_scripts.prx: scripts\\profile_ped.qb not found");
         const globals = new qb.QbFile(data, "profile_ped.qb", true).globals;
@@ -452,8 +452,11 @@ export class Thug2Assets {
             : pedRigs.MALE;
     }
 
+    // (matched without regard to case: a converter names THUG2's models as its own game spells them - Linux / macOS
+    // file names have a case, Windows' don't)
     modelExists(model: string): boolean {
-        return fs.existsSync(pyJoin(this.models, `${model.replaceAll("/", "\\")}.xbx`));
+        const parts = `${model}.xbx`.split(/[\\/]/).filter((p) => p !== "");
+        return findCaseless(this.models, ...parts) !== null;
     }
 }
 

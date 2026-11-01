@@ -1,5 +1,5 @@
 // NOT ORIGINAL - a THUG2 material of one pass, and THUG2's terrain table (moved from thps2_levels.ts with the
-// converters' split: Project 8's converter, thp8/thp8_levels.ts, makes its materials and terrains so too).
+// converters' split: Project 8's converter (thug2-thp8-level-converter, thp8/thp8_levels.ts) makes its materials and terrains so too).
 
 import * as thug2Scene from "./thug2_scene.ts";
 

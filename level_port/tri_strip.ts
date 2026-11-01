@@ -1,5 +1,5 @@
 // NOT ORIGINAL - a triangle list as one strip (moved from thps2_levels.ts with the converters' split; thps3_levels.ts
-// had the same function, and Project 8's converter, thp8/thp8_levels.ts, uses it).
+// had the same function, and Project 8's converter (thug2-thp8-level-converter, thp8/thp8_levels.ts) uses it).
 
 export function trisToStrip(tris: readonly (readonly number[])[]): number[] {
     // A triangle list as one strip, the triangles joined by degenerate ones (each starts at an even index, so its

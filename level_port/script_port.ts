@@ -181,7 +181,7 @@ export const BY_NAME: Readonly<Record<Context, ReadonlySet<string>>> = {
     [BOUNCY]: new Set(),
 };
 
-// A converter's own context (THAW's skater: thaw/thaw_scripts.ts), with its SAFE_COMPONENTS and BY_NAME
+// A converter's own context (THAW's skater: thug2-thaw-level-converter's thaw/thaw_scripts.ts), with its SAFE_COMPONENTS and BY_NAME
 // - as Python's SAFE_COMPONENTS.setdefault / BY_NAME.setdefault: a context already there is kept. Every Translator
 // made after knows it. Returns the context.
 export function addContext(context: string, components: ReadonlySet<string>, byName: ReadonlySet<string>): Context {

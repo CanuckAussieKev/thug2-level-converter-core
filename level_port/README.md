@@ -19,7 +19,7 @@ Used by `thug2-thps4-level-converter/thps4_levels` (THPS4), `thug2-thug1-level-c
   triangulated on its own - the report's FLICKER line counts everything a player sees fight, coplanar copies, gap ~0, apart); a `try_spot.ts` spot each
   (`node level_port/zfight.ts <levels folder> [<level> ...] [--top N] [--tolerance IN] [--view M] [--near IN]
   [--min-area M2] [--csv FILE]`). `findZFights` takes a Scene - a .scn.xbx read, or a converter's output before
-  it's written. `thp8/render_audit.ts zfight` names THP8's pairs and their causes.
+  it's written. thug2-thp8-level-converter's `thp8/render_audit.ts zfight` names THP8's pairs and their causes.
 - `zfight_raster.ts` - CLI (`npm run zfight-raster -- ...`): z-fighting as the player sees it - a software rasterizer
   drawing the level from the skater camera at a few hundred spots over its ground (or `--at` / `--camera`) with
   THUG2's projection (near 2, far 96000, the widened 72-degree lens), 24-bit LESSEQUAL depth, material z bias,

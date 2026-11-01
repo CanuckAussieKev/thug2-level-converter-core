@@ -94,7 +94,7 @@ GitHub Actions runs them on every push (`.github/workflows/ci.yml`).
 
 ## Versions
 
-Releases are tagged `v<major>.<minor>.<patch>`; this is `v3.0.0`: NeverScript found without the decomp
+Releases are tagged `v<major>.<minor>.<patch>`; this is `v3.1.0` (Linux and macOS: paths joined with / there, THUG2's models and scripts found without regard to case, text written with CRLF everywhere - the same output on every system; other converters' output folders found by their levels.json (ported_levels.stagingFolders); CI on Windows, Linux and macOS); `v3.0.0`: NeverScript found without the decomp
 (`lib/neverscript.ts`, `npx thug2-neverscript fetch`; `common.NS` / `nsMissing` and `decomp.ts`'s `NS_DEFAULT` are
 gone), converters' output folders made safe (`level_port/staging.ts`), THUG2's C functions as data
 (`level_port/thug2_cfuncs.ts` - the converters read no exe). `v2.0.0`: the THUGPRO profile - its register and data,

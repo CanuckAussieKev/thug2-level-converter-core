@@ -1,6 +1,6 @@
 {
   "name": "thug2-level-converter-core",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "private": true,
   "type": "module",
   "description": "THUG2 Level Converter Core: THUG2's formats and what the THUG2 level converters share (TypeScript, Node 24).",

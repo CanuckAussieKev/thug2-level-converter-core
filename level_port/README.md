@@ -7,6 +7,8 @@ Used by `thug2-thps4-level-converter/thps4_levels` (THPS4), `thug2-thug1-level-c
 - `prx.ts` - THUG2 `.prx` / THUG1 `.pre` archives (same format), LZSS.
 - `thug2_scene.ts`, `thug2_col.ts`, `tex.ts` - THUG2's scene, collision (version 10; reads THUG1's 9) and texture
   files, read and written field by field: THUG2's own files come out byte-identical (each tool's `selfcheck`).
+- `thug2_skeleton.ts` - THUG2's skeletons (.ske.xbx) and animations (.ska.xbx, the plain key forms) written and read
+  back, and the quaternion maths of their bones (THPS3's people; the content pipeline's THAW BMX).
 - `geometry.ts` - scenes with one vertex array per sector (THPS4, THUG1) to THUG2's per-mesh vertex buffers;
   collision objects to THUG2's (fixed-point vertices, BSP trees, reaches) for THPS4.
 - `overlay_bias.ts` - z bias for the layers lying on other surfaces in scenes whose source has none (THPS3, THPS4):

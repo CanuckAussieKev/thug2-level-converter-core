@@ -10,6 +10,7 @@
 
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { isMain } from "../lib/py.ts";
 import { overlaps } from "./overlay_bias.ts";
 import * as tex from "./tex.ts";
 import * as thug2Scene from "./thug2_scene.ts";
@@ -46,12 +47,14 @@ function check(folder: string, level: string): string {
     return parts.join(" | ");
 }
 
-const [folder, ...levels] = process.argv.slice(2);
-if (!folder) {
-    console.log("usage: node level_port/layer_check.ts <levels folder> [<level> ...]");
-    process.exit(2);
+if (isMain(import.meta.url)) {
+    const [folder, ...levels] = process.argv.slice(2);
+    if (!folder) {
+        console.log("usage: node level_port/layer_check.ts <levels folder> [<level> ...]");
+        process.exit(2);
+    }
+    const names = levels.length
+        ? levels
+        : fs.readdirSync(folder).filter((d) => fs.existsSync(path.join(folder, d, `${d}.scn.xbx`)));
+    for (const level of names) console.log(check(folder, level));
 }
-const names = levels.length
-    ? levels
-    : fs.readdirSync(folder).filter((d) => fs.existsSync(path.join(folder, d, `${d}.scn.xbx`)));
-for (const level of names) console.log(check(folder, level));

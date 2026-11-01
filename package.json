@@ -1,6 +1,6 @@
 {
   "name": "thug2-level-converter-core",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "description": "THUG2 Level Converter Core: THUG2's formats and what the THUG2 level converters share (TypeScript, Node 24).",
@@ -13,12 +13,220 @@
     "node": ">=24"
   },
   "exports": {
-    "./*.ts": {
-      "types": "./*.ts",
-      "default": "./*.js"
+    "./compat/compat.ts": {
+      "types": "./compat/compat.ts",
+      "default": "./compat/compat.js"
+    },
+    "./compat/hand_edits.ts": {
+      "types": "./compat/hand_edits.ts",
+      "default": "./compat/hand_edits.js"
+    },
+    "./compat/thugpro_nodes.ts": {
+      "types": "./compat/thugpro_nodes.ts",
+      "default": "./compat/thugpro_nodes.js"
+    },
+    "./level_port/binio.ts": {
+      "types": "./level_port/binio.ts",
+      "default": "./level_port/binio.js"
+    },
+    "./level_port/black_check.ts": {
+      "types": "./level_port/black_check.ts",
+      "default": "./level_port/black_check.js"
+    },
+    "./level_port/col_check.ts": {
+      "types": "./level_port/col_check.ts",
+      "default": "./level_port/col_check.js"
+    },
+    "./level_port/common.ts": {
+      "types": "./level_port/common.ts",
+      "default": "./level_port/common.js"
+    },
+    "./level_port/dxt.ts": {
+      "types": "./level_port/dxt.ts",
+      "default": "./level_port/dxt.js"
+    },
+    "./level_port/geometry.ts": {
+      "types": "./level_port/geometry.ts",
+      "default": "./level_port/geometry.js"
+    },
+    "./level_port/hd_textures.ts": {
+      "types": "./level_port/hd_textures.ts",
+      "default": "./level_port/hd_textures.js"
+    },
+    "./level_port/layouts.ts": {
+      "types": "./level_port/layouts.ts",
+      "default": "./level_port/layouts.js"
+    },
+    "./level_port/mips.ts": {
+      "types": "./level_port/mips.ts",
+      "default": "./level_port/mips.js"
+    },
+    "./level_port/movers.ts": {
+      "types": "./level_port/movers.ts",
+      "default": "./level_port/movers.js"
+    },
+    "./level_port/nodes.ts": {
+      "types": "./level_port/nodes.ts",
+      "default": "./level_port/nodes.js"
+    },
+    "./level_port/overlay_bias.ts": {
+      "types": "./level_port/overlay_bias.ts",
+      "default": "./level_port/overlay_bias.js"
+    },
+    "./level_port/ped_ai.ts": {
+      "types": "./level_port/ped_ai.ts",
+      "default": "./level_port/ped_ai.js"
+    },
+    "./level_port/ped_models.ts": {
+      "types": "./level_port/ped_models.ts",
+      "default": "./level_port/ped_models.js"
+    },
+    "./level_port/ped_rigs.ts": {
+      "types": "./level_port/ped_rigs.ts",
+      "default": "./level_port/ped_rigs.js"
+    },
+    "./level_port/peds_cars.ts": {
+      "types": "./level_port/peds_cars.ts",
+      "default": "./level_port/peds_cars.js"
+    },
+    "./level_port/ported_levels.ts": {
+      "types": "./level_port/ported_levels.ts",
+      "default": "./level_port/ported_levels.js"
+    },
+    "./level_port/prx.ts": {
+      "types": "./level_port/prx.ts",
+      "default": "./level_port/prx.js"
+    },
+    "./level_port/qb.ts": {
+      "types": "./level_port/qb.ts",
+      "default": "./level_port/qb.js"
+    },
+    "./level_port/qb_write.ts": {
+      "types": "./level_port/qb_write.ts",
+      "default": "./level_port/qb_write.js"
+    },
+    "./level_port/ramp_collision.ts": {
+      "types": "./level_port/ramp_collision.ts",
+      "default": "./level_port/ramp_collision.js"
+    },
+    "./level_port/script_check.ts": {
+      "types": "./level_port/script_check.ts",
+      "default": "./level_port/script_check.js"
+    },
+    "./level_port/script_port.ts": {
+      "types": "./level_port/script_port.ts",
+      "default": "./level_port/script_port.js"
+    },
+    "./level_port/tex.ts": {
+      "types": "./level_port/tex.ts",
+      "default": "./level_port/tex.js"
+    },
+    "./level_port/texture_check.ts": {
+      "types": "./level_port/texture_check.ts",
+      "default": "./level_port/texture_check.js"
+    },
+    "./level_port/thug2_col.ts": {
+      "types": "./level_port/thug2_col.ts",
+      "default": "./level_port/thug2_col.js"
+    },
+    "./level_port/thug2_material.ts": {
+      "types": "./level_port/thug2_material.ts",
+      "default": "./level_port/thug2_material.js"
+    },
+    "./level_port/thug2_members.ts": {
+      "types": "./level_port/thug2_members.ts",
+      "default": "./level_port/thug2_members.js"
+    },
+    "./level_port/thug2_scene.ts": {
+      "types": "./level_port/thug2_scene.ts",
+      "default": "./level_port/thug2_scene.js"
+    },
+    "./level_port/thug2_skeleton.ts": {
+      "types": "./level_port/thug2_skeleton.ts",
+      "default": "./level_port/thug2_skeleton.js"
+    },
+    "./level_port/tri_strip.ts": {
+      "types": "./level_port/tri_strip.ts",
+      "default": "./level_port/tri_strip.js"
+    },
+    "./level_port/zfight.ts": {
+      "types": "./level_port/zfight.ts",
+      "default": "./level_port/zfight.js"
+    },
+    "./level_port/zfight_gate.ts": {
+      "types": "./level_port/zfight_gate.ts",
+      "default": "./level_port/zfight_gate.js"
+    },
+    "./lib/bps.ts": {
+      "types": "./lib/bps.ts",
+      "default": "./lib/bps.js"
+    },
+    "./lib/cli.ts": {
+      "types": "./lib/cli.ts",
+      "default": "./lib/cli.js"
+    },
+    "./lib/converter_args.ts": {
+      "types": "./lib/converter_args.ts",
+      "default": "./lib/converter_args.js"
+    },
+    "./lib/decomp.ts": {
+      "types": "./lib/decomp.ts",
+      "default": "./lib/decomp.js"
+    },
+    "./lib/difflib.ts": {
+      "types": "./lib/difflib.ts",
+      "default": "./lib/difflib.js"
+    },
+    "./lib/edits.ts": {
+      "types": "./lib/edits.ts",
+      "default": "./lib/edits.js"
+    },
+    "./lib/files.ts": {
+      "types": "./lib/files.ts",
+      "default": "./lib/files.js"
+    },
+    "./lib/frame_diff.ts": {
+      "types": "./lib/frame_diff.ts",
+      "default": "./lib/frame_diff.js"
+    },
+    "./lib/install.ts": {
+      "types": "./lib/install.ts",
+      "default": "./lib/install.js"
+    },
+    "./lib/package_check.ts": {
+      "types": "./lib/package_check.ts",
+      "default": "./lib/package_check.js"
+    },
+    "./lib/py.ts": {
+      "types": "./lib/py.ts",
+      "default": "./lib/py.js"
+    },
+    "./lib/re.ts": {
+      "types": "./lib/re.ts",
+      "default": "./lib/re.js"
+    },
+    "./lib/struct.ts": {
+      "types": "./lib/struct.ts",
+      "default": "./lib/struct.js"
     },
     "./package.json": "./package.json"
   },
+  "commands": [
+    "compat/thugpro/scripts_hash.ts",
+    "level_port/col_check.ts",
+    "level_port/compare_nodes.ts",
+    "level_port/components.ts",
+    "level_port/layer_check.ts",
+    "level_port/ped_rig_check.ts",
+    "level_port/ramp_check.ts",
+    "level_port/script_check.ts",
+    "level_port/script_diff.ts",
+    "level_port/texture_check.ts",
+    "level_port/zfight.ts",
+    "level_port/zfight_raster.ts",
+    "level_port/zfight_resolve.ts",
+    "lib/frame_diff.ts"
+  ],
   "scripts": {
     "prepare": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json",

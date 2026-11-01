@@ -1,6 +1,6 @@
 // NOT ORIGINAL - THUG2 .qb values written as tokens (src/game/script/qb.h's token stream), and one global array of a
 // .qb file replaced in place - everything else (scripts, other globals, the name table) kept byte for byte. Used by
-// tools/pipeline/game/apply_layout.ts to write a level's node array back without NeverScript (ns.exe can't be counted on to
+// tools/game/apply_layout.ts to write a level's node array back without NeverScript (ns.exe can't be counted on to
 // round-trip every file: 454 / 470 do) - and, the same way, a level structure's entries set (Levels.qb) and scripts
 // added or replaced (a level's scripts .qb).
 //
@@ -183,7 +183,7 @@ export function addNames(data: Buffer, newNames: ReadonlyMap<number, string>): B
     return Buffer.concat([data.subarray(0, end), ...add, data.subarray(end)]);
 }
 
-// --- (tools/pipeline/game/apply_layout.ts: a level structure's entries, scripts) ----------------------------------------------
+// --- (tools/game/apply_layout.ts: a level structure's entries, scripts) ----------------------------------------------
 
 // Where the top-level global `name = { ... }` is in `data`: [start of its 0x03, end after its closing 0x04], or null.
 export function globalStructSpan(data: Buffer, name: number): [number, number] | null {

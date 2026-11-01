@@ -151,7 +151,7 @@ export function blackReport(
     findings: ReadonlyMap<BlackCause, BlackFinding>,
     nameOf: (c: number) => string = (c) => c.toString(16).toUpperCase(),
 ): string[] {
-    const lines = [`${level} - near-black surfaces (tools/pipeline/level_port/black_check.ts)`];
+    const lines = [`${level} - near-black surfaces (level_port/black_check.ts)`];
     for (const cause of CAUSES) {
         const f = findings.get(cause);
         if (!f) {

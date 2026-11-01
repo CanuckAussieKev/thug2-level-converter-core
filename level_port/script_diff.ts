@@ -1,5 +1,5 @@
 // Compares converted levels' .qb script by script (NeverScript decompiles), new vs reference staging folders.
-// usage: node tools/pipeline/level_port/script_diff.ts <new staging> <reference staging> [show N]
+// usage: node level_port/script_diff.ts <new staging> <reference staging> [show N]
 // (Its examples come in the order the scripts are found - new's, then the reference's own - where its Python
 // version's came in a set's order, different from run to run.)
 

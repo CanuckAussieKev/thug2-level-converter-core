@@ -2,7 +2,7 @@
 // barrier. THP8 streams the whole city and closes a network level off with its z_online_<x> barrier walls, which stand
 // well beyond the level's own zones - SKATE & FUN PARKS' barrier is 600 inches (15 m) east of the skate park's floor,
 // round z_outschool's ground; THP8's skater rides on over it. Our network level holds only its spawn_in zones' collision,
-// so the floor ended in the void there and THUG2's uber frig (no ground under the skater: turn him round, tools/pipeline/game
+// so the floor ended in the void there and THUG2's uber frig (no ground under the skater: turn him round, tools/game
 // collision_events.ts "uber-frig") bounced him back from nothing (the user, 2026-10-24, thp8_net_skatefunparks).
 // Here: the ground the skater can roll to from the level's own zones before a barrier or a drop stops him, and the other
 // zones' collision triangles over it, which convertLevel adds as collision (their drawn scenes stay the _lod stand-ins).

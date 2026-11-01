@@ -1,4 +1,4 @@
-// Tony Hawk's American Wasteland (PC, 1.01) level files, read into tools/pipeline/level_port's forms. Nearly every file of the
+// Tony Hawk's American Wasteland (PC, 1.01) level files, read into level_port's forms. Nearly every file of the
 // game ends in .wpc; the levels are in Game\data\worlds\worldzones\<zone>\<zone>[_net].pak.wpc.
 //
 // - Archives (.pak.wpc, + .pab.wpc): the newer Neversoft pak (the GH3 family), uncompressed. A table of 32-byte
@@ -10,7 +10,7 @@
 //   level {u32 size, data} (32-bit ones: {u16 pitch, u16 rows}, data): THUG2's .tex.xbx field for field.
 // - Collision (.col): THUG2's version 10 with 48 more bytes after the 32-byte header: {u32 0, u32 0, i32 grid x,
 //   i32 grid z, 4f box min, 4f box max} (a supersector grid THUG2 makes at load time). Without them THUG2's reader
-//   (tools/pipeline/level_port/thug2_col.ts) reads it and writes it back byte-identical.
+//   (level_port/thug2_col.ts) reads it and writes it back byte-identical.
 // - QB (.qb, .nqb node arrays, .sqb scripts): item-based (GH3 family), below (QbItems). Scripts are LZSS'd THUG2
 //   token streams with one more token, 0x4A (an inline structure in the item format). The names of the checksums
 //   are in data\pak\dbg.pak.wpc (one .dbg text file per qb: "0x1234abcd Name" lines).
@@ -151,7 +151,7 @@ export function levelSize(value: number, dxt: number): number {
     return dxt ? value : (value & 0xffff) * (value >>> 16);
 }
 
-// A .tex (or a single .img) as tools/pipeline/level_port/tex.ts's THUG2 texture dictionary.
+// A .tex (or a single .img) as level_port/tex.ts's THUG2 texture dictionary.
 export function readTex(data: Uint8Array, name = "tex"): tex.TexFile {
     const r = new Reader(data, 0, name);
     let [magic, version, count] = r.read("IHH") as [number, number, number];
@@ -260,7 +260,7 @@ export class ItemReader {
     readonly name: string;
     readonly data: Buffer;
     readonly names: Map<number, string>;
-    // the byte order of the item format's words: "<" (THAW's PC files), ">" (THP8's Xbox 360 files - tools/pipeline/thp8_levels;
+    // the byte order of the item format's words: "<" (THAW's PC files), ">" (THP8's Xbox 360 files - thug2-thp8-level-converter/thp8_levels;
     // their script bodies stay little-endian THUG2 tokens)
     readonly order: "<" | ">";
     end = 0;
@@ -359,7 +359,7 @@ export class ItemReader {
     }
 }
 
-// A THAW qb file read into tools/pipeline/level_port/qb.ts's values (globals, names, scripts as statements), so that
+// A THAW qb file read into level_port/qb.ts's values (globals, names, scripts as statements), so that
 // level_port's node code (nodes.ts) takes it as a THUG1 QbFile.
 export class QbItems extends ItemReader {
     readonly globals: [Name, QbValue][] = [];

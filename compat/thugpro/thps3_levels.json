@@ -1,8 +1,8 @@
 {
-  "_comment": "THUGPRO compatibility for the THPS3 level ports (tools/pipeline/thps3_levels), approved by the user 2026-10-20. Each entry is registered in README.md here (TP-10 .. TP-19). Capture the flag is decided on the server against its own flags; each side draws them from its own node array: these put our flags where THUGPRO's are, and our spawn points as THUGPRO's. TP-13 .. TP-19 (the user's decision 2026-10-20: everything THUGPRO changed, as data under the flag): its other hand edits of THPS3's nodes and collision - moved, flags, terrain, removed, renamed, rails, collision. Level keys are our (= THUGPRO's = THPS3's) level names. Read by tools/pipeline/compat/compat.ts; `thps3_levels.ts convert --compat none` leaves all of it out (THPS3's own two bases). Regenerate: node tools/pipeline/thps3_levels/thugpro_compare.ts --extract-thugpro tools/pipeline/compat/thugpro/thps3_levels.json",
+  "_comment": "THUGPRO compatibility for the THPS3 level ports (thug2-thps3-level-converter/thps3_levels), approved by the user 2026-10-20. Each entry is registered in README.md here (TP-10 .. TP-19). Capture the flag is decided on the server against its own flags; each side draws them from its own node array: these put our flags where THUGPRO's are, and our spawn points as THUGPRO's. TP-13 .. TP-19 (the user's decision 2026-10-20: everything THUGPRO changed, as data under the flag): its other hand edits of THPS3's nodes and collision - moved, flags, terrain, removed, renamed, rails, collision. Level keys are our (= THUGPRO's = THPS3's) level names. Read by compat/compat.ts; `thps3_levels.ts convert --compat none` leaves all of it out (THPS3's own two bases). Regenerate: node tools/pipeline/run.ts thps3_levels/thugpro_compare.ts --extract-thugpro compat/thugpro/thps3_levels.json",
   "ctf_flags": {
     "_register": "TP-10",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx, levels\\<level>\\<level>.qb: TRG_CTF_Red / _Blue (+ _Base) - pos in THUG2's world (Pos; Position with z negated), angles as they are. Extracted by tools/pipeline/thps3_levels/thugpro_compare.ts --extract-thugpro.",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx, levels\\<level>\\<level>.qb: TRG_CTF_Red / _Blue (+ _Base) - pos in THUG2's world (Pos; Position with z negated), angles as they are. Extracted by thug2-thps3-level-converter/thps3_levels/thugpro_compare.ts --extract-thugpro.",
     "rio": {
       "TRG_CTF_Red": {
         "pos": [
@@ -306,7 +306,7 @@
   },
   "team_nodes": {
     "_register": "TP-11",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx, levels\\<level>\\<level>.qb: TRG_CTF_Green / _Yellow (+ _Base), TRG_Flag_<colour> (+ _Base), TRG_Team_Restart. Extracted by tools/pipeline/thps3_levels/thugpro_compare.ts --extract-thugpro.",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx, levels\\<level>\\<level>.qb: TRG_CTF_Green / _Yellow (+ _Base), TRG_Flag_<colour> (+ _Base), TRG_Team_Restart. Extracted by thug2-thps3-level-converter/thps3_levels/thugpro_compare.ts --extract-thugpro.",
     "foun": {
       "TRG_CTF_Green": {
         "pos": [
@@ -1300,7 +1300,7 @@
   },
   "spawns": {
     "_register": "TP-12",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx, levels\\<level>\\<level>.qb against THPS3's Data\\Levels\\<Lvl>\\<lvl>.qb: every restart with a network type (MultiPlayer, Horse, Team, CTF*) THUGPRO moved, retyped, renamed or added (changed: pos in THUG2's world, angles, type, restart_types, restart_name, created), and THPS3's network restarts THUGPRO hasn't (removed). Extracted by tools/pipeline/thps3_levels/thugpro_compare.ts --extract-thugpro.",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx, levels\\<level>\\<level>.qb against THPS3's Data\\Levels\\<Lvl>\\<lvl>.qb: every restart with a network type (MultiPlayer, Horse, Team, CTF*) THUGPRO moved, retyped, renamed or added (changed: pos in THUG2's world, angles, type, restart_types, restart_name, created), and THPS3's network restarts THUGPRO hasn't (removed). Extracted by thug2-thps3-level-converter/thps3_levels/thugpro_compare.ts --extract-thugpro.",
     "foun": {
       "changed": {
         "TRG_CTF1_Restart_1P": {
@@ -2435,7 +2435,7 @@
   },
   "moved": {
     "_register": "TP-13",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx (levels\\<level>\\<level>.qb) against THPS3's Data\\Levels\\<Lvl>\\<lvl>.qb: the nodes THUGPRO moved or turned (not the network spawns - TP-12 - or the CTF / team nodes - TP-10 / TP-11): {name: pos in THUG2's world, angles}. Extracted by tools/pipeline/thps3_levels/thugpro_compare.ts --extract-thugpro (nodeEdits).",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx (levels\\<level>\\<level>.qb) against THPS3's Data\\Levels\\<Lvl>\\<lvl>.qb: the nodes THUGPRO moved or turned (not the network spawns - TP-12 - or the CTF / team nodes - TP-10 / TP-11): {name: pos in THUG2's world, angles}. Extracted by thug2-thps3-level-converter/thps3_levels/thugpro_compare.ts --extract-thugpro (nodeEdits).",
     "foun": {
       "Particle_Molten_Steam02": {
         "pos": [
@@ -2749,7 +2749,7 @@
   },
   "flags": {
     "_register": "TP-14",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx (levels\\<level>\\<level>.qb) against THPS3's Data\\Levels\\<Lvl>\\<lvl>.qb: CreatedAtStart / AbsentInNetGames / NetEnabled / TrickObject THUGPRO added or removed on the nodes it kept of the same kind (one it made another class is its toolchain's form: not here). Extracted by tools/pipeline/thps3_levels/thugpro_compare.ts --extract-thugpro (nodeEdits).",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx (levels\\<level>\\<level>.qb) against THPS3's Data\\Levels\\<Lvl>\\<lvl>.qb: CreatedAtStart / AbsentInNetGames / NetEnabled / TrickObject THUGPRO added or removed on the nodes it kept of the same kind (one it made another class is its toolchain's form: not here). Extracted by thug2-thps3-level-converter/thps3_levels/thugpro_compare.ts --extract-thugpro (nodeEdits).",
     "foun": {
       "TRG_Ledge_Crane_Beam04": {
         "add": [],
@@ -4770,7 +4770,7 @@
   },
   "terrain": {
     "_register": "TP-15",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx (levels\\<level>\\<level>.qb) against THPS3's Data\\Levels\\<Lvl>\\<lvl>.qb: every TerrainType THUGPRO changed: {name: THUGPRO's terrain}. Extracted by tools/pipeline/thps3_levels/thugpro_compare.ts --extract-thugpro (nodeEdits).",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx (levels\\<level>\\<level>.qb) against THPS3's Data\\Levels\\<Lvl>\\<lvl>.qb: every TerrainType THUGPRO changed: {name: THUGPRO's terrain}. Extracted by thug2-thps3-level-converter/thps3_levels/thugpro_compare.ts --extract-thugpro (nodeEdits).",
     "rio": {
       "TRG_Ledge_Bus_Stop_Block06": "TERRAIN_CONCSMOOTH",
       "TRG_Rail_High_Wires01": "TERRAIN_GRINDELECTRICWIRE",
@@ -5633,7 +5633,7 @@
   },
   "removed": {
     "_register": "TP-16",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx (levels\\<level>\\<level>.qb) against THPS3's Data\\Levels\\<Lvl>\\<lvl>.qb: THPS3's nodes THUGPRO hasn't (not renamed) that no script or other node of THPS3's names (the level's .qb, Data\\Scripts). Extracted by tools/pipeline/thps3_levels/thugpro_compare.ts --extract-thugpro (nodeEdits).",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx (levels\\<level>\\<level>.qb) against THPS3's Data\\Levels\\<Lvl>\\<lvl>.qb: THPS3's nodes THUGPRO hasn't (not renamed) that no script or other node of THPS3's names (the level's .qb, Data\\Scripts). Extracted by thug2-thps3-level-converter/thps3_levels/thugpro_compare.ts --extract-thugpro (nodeEdits).",
     "si": [
       "TRG_OceanNoise",
       "TRG_OceanNoise01"
@@ -5661,11 +5661,11 @@
   },
   "renamed": {
     "_register": "TP-17",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx (levels\\<level>\\<level>.qb) against THPS3's Data\\Levels\\<Lvl>\\<lvl>.qb: {THPS3's name: THUGPRO's}: a THUGPRO-only node at the place of a THPS3-only node of the same class whose name no script uses. Extracted by tools/pipeline/thps3_levels/thugpro_compare.ts --extract-thugpro (nodeEdits)."
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx (levels\\<level>\\<level>.qb) against THPS3's Data\\Levels\\<Lvl>\\<lvl>.qb: {THPS3's name: THUGPRO's}: a THUGPRO-only node at the place of a THPS3-only node of the same class whose name no script uses. Extracted by thug2-thps3-level-converter/thps3_levels/thugpro_compare.ts --extract-thugpro (nodeEdits)."
   },
   "rails": {
     "_register": "TP-18",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx (levels\\<level>\\<level>.qb) against THPS3's Data\\Levels\\<Lvl>\\<lvl>.qb: the RailNodes THUGPRO added, as node data: pos in THUG2's world, angles, TerrainType, flags, Cluster, Links by name. Extracted by tools/pipeline/thps3_levels/thugpro_compare.ts --extract-thugpro (nodeEdits).",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx (levels\\<level>\\<level>.qb) against THPS3's Data\\Levels\\<Lvl>\\<lvl>.qb: the RailNodes THUGPRO added, as node data: pos in THUG2's world, angles, TerrainType, flags, Cluster, Links by name. Extracted by thug2-thps3-level-converter/thps3_levels/thugpro_compare.ts --extract-thugpro (nodeEdits).",
     "foun": [
       {
         "name": "_TRG_Wire_Rail0",
@@ -6312,7 +6312,7 @@
   },
   "collision": {
     "_register": "TP-19",
-    "_source": "THUGPRO's installed data\\pre\\<level>col.prx / <level>scn.prx against THPS3's Data\\Levels\\<Lvl>\\<lvl>.bsp: an object THUGPRO draws without collision (drop), the faces THUGPRO's object lacks (remove: THPS3's own corners, in THPS3's order). Extracted by tools/pipeline/thps3_levels/thugpro_compare.ts --extract-thugpro (collisionEdits).",
+    "_source": "THUGPRO's installed data\\pre\\<level>col.prx / <level>scn.prx against THPS3's Data\\Levels\\<Lvl>\\<lvl>.bsp: an object THUGPRO draws without collision (drop), the faces THUGPRO's object lacks (remove: THPS3's own corners, in THPS3's order). Extracted by thug2-thps3-level-converter/thps3_levels/thugpro_compare.ts --extract-thugpro (collisionEdits).",
     "si": {
       "SI_VertRamp_01": {
         "remove": [
@@ -7420,7 +7420,7 @@
   },
   "thugpro_new": {
     "_register": "TPN-THPS3-1 ... TPN-THPS3-6 (README.md here: \"New in THUGPRO (not in any source game)\")",
-    "_source": "References only (the user's decision 2026-10-20, with Morten1337's permission): what is new in THUGPRO's THPS3 ports, in no source game - archive and file in THUGPRO's data\\pre, the item's name and a CRC-32 of it. tools/pipeline/thps3_levels/thugpro_new.ts reads the bytes from the user's THUGPRO install (--thugpro) at convert time; a missing or different item is warned about and skipped. Each entry (compat.ts Entry): id, op (add / set / remove), kind (sector, collision, node, script, model), target {level, name}, why. Found by tools/pipeline/thps3_levels/thugpro_new_extract.ts (--extract-thugpro); never typed in. _left_out: what was found and not taken, with the reason.",
+    "_source": "References only (the user's decision 2026-10-20, with Morten1337's permission): what is new in THUGPRO's THPS3 ports, in no source game - archive and file in THUGPRO's data\\pre, the item's name and a CRC-32 of it. thug2-thps3-level-converter/thps3_levels/thugpro_new.ts reads the bytes from the user's THUGPRO install (--thugpro) at convert time; a missing or different item is warned about and skipped. Each entry (compat.ts Entry): id, op (add / set / remove), kind (sector, collision, node, script, model), target {level, name}, why. Found by thug2-thps3-level-converter/thps3_levels/thugpro_new_extract.ts (--extract-thugpro); never typed in. _left_out: what was found and not taken, with the reason.",
     "entries": [
       {
         "op": "add",
@@ -11576,7 +11576,7 @@
     ]
   },
   "port_changes": {
-    "_comment": "Our own changes to THPS3's level data (tools/pipeline/thps3_levels): neither THPS3's nor THUGPRO's. Read by tools/pipeline/compat/compat.ts portChanges whatever the profile (--compat none keeps them); --no-port-changes leaves out every entry but the required ones (the game needs those to load or run the level). Each entry (compat.ts Entry): id (PC-THPS3-n), op (add / set / remove), target {what, levels: the THPS3 folders it applies to or \"*\"}, why, required (true: a level needs it to load or run - kept with --no-port-changes), and the data the converter takes from it. Registered in tools/pipeline/compat/thugpro/README.md, \"Our own changes (port_changes)\". Not extracted: --extract-thugpro keeps this section as it is.",
+    "_comment": "Our own changes to THPS3's level data (thug2-thps3-level-converter/thps3_levels): neither THPS3's nor THUGPRO's. Read by compat/compat.ts portChanges whatever the profile (--compat none keeps them); --no-port-changes leaves out every entry but the required ones (the game needs those to load or run the level). Each entry (compat.ts Entry): id (PC-THPS3-n), op (add / set / remove), target {what, levels: the THPS3 folders it applies to or \"*\"}, why, required (true: a level needs it to load or run - kept with --no-port-changes), and the data the converter takes from it. Registered in compat/thugpro/README.md, \"Our own changes (port_changes)\". Not extracted: --extract-thugpro keeps this section as it is.",
     "entries": [
       {
         "id": "PC-THPS3-1",
@@ -11730,7 +11730,7 @@
         "id": "PC-THPS3-15",
         "op": "set",
         "target": {
-          "what": "plain moving props THUGPRO made Vehicles (TPN-THPS3-3 `set`, left out for them): Foundry's molten-metal bucket and Tokyo's two bullet trains stay our LevelObjects (drawn with THPS3's own model, moved by THPS3's scripts with THPS3's timing) and get CollisionMode=Geometry - their collision the level's collision object of their name, in their own space, made from THPS3's drawn model (THPS3's own shape - the user's decision 2026-10-21; THUGPRO's smaller collision of the bucket, TPN-THPS3-1's 134 faces, is left out for it) - tools/pipeline/level_port/movers.ts",
+          "what": "plain moving props THUGPRO made Vehicles (TPN-THPS3-3 `set`, left out for them): Foundry's molten-metal bucket and Tokyo's two bullet trains stay our LevelObjects (drawn with THPS3's own model, moved by THPS3's scripts with THPS3's timing) and get CollisionMode=Geometry - their collision the level's collision object of their name, in their own space, made from THPS3's drawn model (THPS3's own shape - the user's decision 2026-10-21; THUGPRO's smaller collision of the bucket, TPN-THPS3-1's 134 faces, is left out for it) - level_port/movers.ts",
           "levels": [
             "foun",
             "tok"
@@ -11795,7 +11795,7 @@
   },
   "free_skate": {
     "_register": "TP-41",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx (levels\\<level>\\<level>_scripts.qb and <level>.qb) read against THPS3's Data\\Scripts\\*.qb, its level structures (data\\pre\\thugpro_qb.prx qb\\game\\Levels.qb: setup_script / startup_script) and Morten1337's thugpro source (game\\menu\\skateshop.q: Freeskate is THUG2's offline single session; game\\gameflow.q: ResetSkaters at the start, which runs the Player1 restart's trigger script). THUGPRO's offline free skate is not a network game (InNetGame / InMultiplayerGame false: its peds, all AbsentInNetGames, are there); its world differs from THPS3's where THUGPRO rewrote a script. Each edit makes THPS3's own script take the branch THUGPRO's rewrite runs (`conditions`: every `if` of that command in the script decided) and leaves out what the rewrite no longer does (`drop`: \"<command> Name=<node>\" / \"prefix=<text>\") - except the level's life THUGPRO's rewrite kills (peds, moving things), kept in ours (the user's decision 2026-10-21). Checked node by node: node tools/pipeline/thps3_levels/thugpro_compare.ts --start-state (tools/pipeline/thps3_levels/start_state.ts).",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx (levels\\<level>\\<level>_scripts.qb and <level>.qb) read against THPS3's Data\\Scripts\\*.qb, its level structures (data\\pre\\thugpro_qb.prx qb\\game\\Levels.qb: setup_script / startup_script) and Morten1337's thugpro source (game\\menu\\skateshop.q: Freeskate is THUG2's offline single session; game\\gameflow.q: ResetSkaters at the start, which runs the Player1 restart's trigger script). THUGPRO's offline free skate is not a network game (InNetGame / InMultiplayerGame false: its peds, all AbsentInNetGames, are there); its world differs from THPS3's where THUGPRO rewrote a script. Each edit makes THPS3's own script take the branch THUGPRO's rewrite runs (`conditions`: every `if` of that command in the script decided) and leaves out what the rewrite no longer does (`drop`: \"<command> Name=<node>\" / \"prefix=<text>\") - except the level's life THUGPRO's rewrite kills (peds, moving things), kept in ours (the user's decision 2026-10-21). Checked node by node: node tools/pipeline/run.ts thps3_levels/thugpro_compare.ts --start-state (thug2-thps3-level-converter/thps3_levels/start_state.ts).",
     "foun": {
       "scripts": {
         "CJR_Foun_Valve_Check": {

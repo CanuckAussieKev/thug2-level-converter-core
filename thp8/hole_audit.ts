@@ -5,7 +5,7 @@
 // VALLEY's skatepark bowl (2026-10-25): the bowl's round floor, a Havok cylinder, was
 // an inscribed 8-sided prism, 26 inches short of the bowl mesh at every flat.
 //
-//   node tools/pipeline/thp8_levels/hole_audit.ts [levels... | file.col.xbx ...] [--staging DIR] [--top N] [--json]
+//   node thp8/hole_audit.ts [levels... | file.col.xbx ...] [--staging DIR] [--top N] [--json]
 //
 // Levels are THP8 level names (thp8_net_beavervalley, net_beavervalley, beavervalley; default every thp8_ level in the
 // staging folder); a path ending .col.xbx is read as it is (any game's converted level). Ground: collidable faces

@@ -1631,7 +1631,7 @@ test("meanColour: a dither layer is drawn as the base's own colour x pass 0's ti
     );
 });
 
-// z-fighting gates (tools/pipeline/level_port/zfight_gate.ts): each level as the converter wrote and resolved it, at most
+// z-fighting gates (level_port/zfight_gate.ts): each level as the converter wrote and resolved it, at most
 // what it was when the gate was set (2026-10-25, C:\Games\THUG2-4) - skipped
 // where there is no such conversion (THUG2_ZFIGHT_GAME: the game folder, default the main install).
 zfightGates("thp8", {

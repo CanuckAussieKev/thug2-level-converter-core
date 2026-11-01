@@ -1,14 +1,14 @@
-// NOT ORIGINAL - offline checks of a THUG2 collision file (levels\<x>\<x>.col.xbx, tools/pipeline/level_port/thug2_col.ts's
+// NOT ORIGINAL - offline checks of a THUG2 collision file (levels\<x>\<x>.col.xbx, level_port/thug2_col.ts's
 // form): whether every face can be found through its object's BSP tree, as THUG2's queries walk it.
 //
-//   node tools/pipeline/level_port/col_check.ts <file.col.xbx | file.prx> ...
+//   node level_port/col_check.ts <file.col.xbx | file.prx> ...
 //
 // A split {axis, point in sixteenths} sends a query to the left child when its low end is below the split, to the
 // right one when its high end is at or above it (the trees are built so: a face is in the left child when its lowest
 // vertex is below the split, in the right one when its highest is at or above). The query here is a short vertical
 // segment through each face's centroid (+-1 unit on y, the axis a skater's feelers mostly run along). A face that
 // no such query reaches can't be hit: a floor the skater falls through, a wall he passes (the recentred levels'
-// trees once kept their old split points - tools/pipeline/thaw_levels/thaw_levels.ts moveTree).
+// trees once kept their old split points - thug2-thaw-level-converter/thaw_levels/thaw_levels.ts moveTree).
 
 import * as fs from "node:fs";
 import * as path from "node:path";

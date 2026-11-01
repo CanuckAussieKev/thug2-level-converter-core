@@ -3,7 +3,7 @@
 // camera and the skater still, a pixel that changes from one frame to the next is flicker (z-fighting, sorting,
 // aliasing, animation).
 //
-//     node tools/pipeline/game/frame_diff.ts <series folder> [--threshold N] [--region name:x,y,w,h]... [--heatmap out.png]
+//     node lib/frame_diff.ts <series folder> [--threshold N] [--region name:x,y,w,h]... [--heatmap out.png]
 //                                   [--skip N]
 //
 // Per pixel: the frame-to-frame changes whose summed |dR|+|dG|+|dB| is over the threshold (default 24). Printed: the
@@ -206,7 +206,7 @@ function main(): void {
     }
     if (!folder) {
         console.log(
-            "usage: node tools/pipeline/game/frame_diff.ts <series folder> [--threshold N] [--region name:x,y,w,h]... [--heatmap out.png] [--skip N]",
+            "usage: node lib/frame_diff.ts <series folder> [--threshold N] [--region name:x,y,w,h]... [--heatmap out.png] [--skip N]",
         );
         process.exit(2);
     }

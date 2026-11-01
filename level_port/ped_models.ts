@@ -1,5 +1,5 @@
 // NOT ORIGINAL - the people a level port brings with its own models: what it adds to THUG2's
-// ped profile lists, kept in its staging folder until tools/pipeline/menu_level/make_menu_level.ts puts them in the data overlay.
+// ped profile lists, kept in its staging folder until thug2-content-pipeline/menu_level/make_menu_level.ts puts them in the data overlay.
 //
 // A THUG2 ped is built from a profile (scripts\profile_ped.qb: a global structure naming a CAS part per key -
 // ped_body / ped_m_head / ped_m_torso / ped_m_legs / ped_m_accessories / ped_f_*, the keys of cas_parts.qb's

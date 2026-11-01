@@ -1,5 +1,5 @@
-// NOT ORIGINAL - what tools/pipeline/menu_level/make_menu_level.ts adds to the data overlay for the levels converted from other
-// games (tools/pipeline/thps4_levels, tools/pipeline/thug1_levels, tools/pipeline/thps3_levels): their files, their level structures in Levels.qb
+// NOT ORIGINAL - what thug2-content-pipeline/menu_level/make_menu_level.ts adds to the data overlay for the levels converted from other
+// games (thug2-thps4-level-converter/thps4_levels, thug2-thug1-level-converter/thug1_levels, thug2-thps3-level-converter/thps3_levels): their files, their level structures in Levels.qb
 // and their signs in the level select.
 //
 // Each converter writes a staging folder in the THUG2 folder (not read by the game): <thug2>\<staging>\levels\<level>\
@@ -21,7 +21,7 @@
 //                 start scripts)
 //   startup_script (optional) the same for the level structure's startup_script (THUG1's: loads its sounds)
 //
-// The manifest is read with pyJsonLoads and written with pyJsonDumps (tools/pipeline/lib/py.ts): a float stays a float (the
+// The manifest is read with pyJsonLoads and written with pyJsonDumps (lib/py.ts): a float stays a float (the
 // lighting's mod factors, "1.0"), and the file's bytes are Python's (indent 1, ASCII, CRLF line ends on Windows).
 
 import * as fs from "node:fs";
@@ -248,7 +248,7 @@ export function installFiles(game: string, overlay: string, manifest: Manifest |
             installed.push(entry);
         }
         // Game scripts a converter brings along (<staging>\scripts\...: THUG1's driving scripts, PC-THUG1-22 -
-        // tools/pipeline/thug1_levels drivingScripts) into the overlay's scripts folder, where they replace the game's file of
+        // thug2-thug1-level-converter/thug1_levels drivingScripts) into the overlay's scripts folder, where they replace the game's file of
         // the same name (THUG2's empty player_controlled_vehicle.qb / misc\car_scripts.qb).
         const scripts = path.join(game, staging, "scripts");
         if (fs.existsSync(scripts) && fs.statSync(scripts).isDirectory()) {

@@ -1,4 +1,4 @@
-// NOT ORIGINAL - tests of tools/pipeline/lib's Python-compatibility helpers against values Python 3.14 gave (no game data).
+// NOT ORIGINAL - tests of lib's Python-compatibility helpers against values Python 3.14 gave (no game data).
 
 import assert from "node:assert/strict";
 import { test } from "node:test";

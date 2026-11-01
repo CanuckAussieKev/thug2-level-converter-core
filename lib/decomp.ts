@@ -1,11 +1,14 @@
-// NOT ORIGINAL - where this repository and the THUG2 decompilation checkout around it are.
+// NOT ORIGINAL - where this repository, the project using it and the THUG2 decompilation checkout around them are.
 //
-// This repository is the decomp's submodule tools/pipeline, but it can be cloned alone. Every path into the decomp
-// comes from here, found by walking up from this repository to the first folder with the decomp's CMakeLists.txt and
-// src/game (or THUG2_DECOMP=<folder>), never by a fixed number of folders up:
-//   - PIPELINE: this repository's root (lib/..), for its own data (compat/, fonts/, menu_level/scenic_art/...);
-//   - DECOMP: the decomp's root, or null when this repository is on its own;
-//   - WORK: where out/ goes (the decomp's out/ - what the tools always used -, else this repository's out/);
+// This repository (thug2-level-converter-core) is a dependency of every level converter, of the content pipeline and
+// of the decomp's tools - installed in their node_modules - and can be cloned alone. Every path into the decomp comes
+// from here, found by walking up from the project to the first folder with the decomp's CMakeLists.txt and src/game
+// (or THUG2_DECOMP=<folder>), never by a fixed number of folders up:
+//   - CORE: this repository's root (lib/..), for its own data (compat/);
+//   - PROJECT: the project using it - the folder holding the outermost node_modules this repository is installed in
+//     (a converter's clone, the content pipeline, the decomp), or CORE itself when it is a clone of its own;
+//   - DECOMP: the decomp's root (PROJECT or a folder above it), or null when the project is on its own;
+//   - WORK: where out/ goes (the decomp's out/ - what the tools always used -, else the project's out/);
 //   - NS_DEFAULT: NeverScript's ns.exe, built by the decomp's tools\build_neverscript.ps1 into out\neverscript;
 //   - needDecomp(why): the decomp's root, or exit 1 with a message saying this tool needs the decomp checkout and why.
 
@@ -13,28 +16,37 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 
-export const PIPELINE = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+export const CORE = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+
+// The folder before a path's first node_modules (the project that installed it), or null when it has none.
+export function installedBy(dir: string): string | null {
+    const parts = path.resolve(dir).split(path.sep);
+    const at = parts.findIndex((p) => p.toLowerCase() === "node_modules");
+    return at > 0 ? parts.slice(0, at).join(path.sep) || path.sep : null;
+}
+
+export const PROJECT: string = installedBy(CORE) ?? CORE;
 
 const isDecompRoot = (dir: string): boolean =>
     fs.existsSync(path.join(dir, "CMakeLists.txt")) && fs.existsSync(path.join(dir, "src", "game"));
 
-// The decomp's root: THUG2_DECOMP if set (it must be one), else the nearest folder above this repository that is one.
-export function findDecompRoot(start: string = PIPELINE): string | null {
+// The decomp's root: THUG2_DECOMP if set (it must be one), else `start` or the nearest folder above it that is one.
+export function findDecompRoot(start: string = PROJECT): string | null {
     const env = process.env.THUG2_DECOMP;
     if (env) return isDecompRoot(env) ? path.resolve(env) : null;
-    for (let dir = path.dirname(path.resolve(start)); ; dir = path.dirname(dir)) {
+    for (let dir = path.resolve(start); ; dir = path.dirname(dir)) {
         if (isDecompRoot(dir)) return dir;
         if (path.dirname(dir) === dir) return null;
     }
 }
 
 export const DECOMP: string | null = findDecompRoot();
-export const WORK: string = DECOMP ?? PIPELINE;
+export const WORK: string = DECOMP ?? PROJECT;
 export const NS_DEFAULT: string = path.join(WORK, "out", "neverscript", "ns.exe");
 
 export const NEEDS_DECOMP =
-    "it needs the THUG2 decompilation checkout around this repository (github.com/CanuckAussieKev/thug2-decomp, " +
-    "with this repository as its submodule tools/pipeline), or THUG2_DECOMP=<its folder>";
+    "it needs the THUG2 decompilation checkout (github.com/CanuckAussieKev/thug2-decomp) around the project using " +
+    "this tool, or THUG2_DECOMP=<its folder>";
 
 // The decomp's root for a tool that can't work without it; `why` says what it reads there ("src/game/*.cpp").
 export function needDecomp(why: string): string {
@@ -55,7 +67,7 @@ export const nsMissing = (ns: string): string =>
 //   exeNames       other exe names a game folder may have besides THUG2.exe (the game tools accept them too);
 //   ghidraProject / ghidraProgram   the Ghidra project's and program's names (the decompilation's Ghidra scripts);
 //   protectedFolders   folders the tools never write into (backups you keep), besides the built-in ones;
-//   thawReferenceExe   THAW's reference build, the exe THAW's addresses (the BMX work, tools/pipeline/thaw_bmx) are
+//   thawReferenceExe   THAW's reference build, the exe THAW's addresses (the BMX work, thug2-content-pipeline/thaw_bmx) are
 //                  named after;
 //   thawGhidraProject / thawGhidraProgram   its Ghidra project's folder and the program's name in it (thaw_ghidra.py).
 export interface LocalConfig {

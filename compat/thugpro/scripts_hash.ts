@@ -3,7 +3,7 @@
 // kReleaseScriptsHash). Run it after THUGPRO updates and, if it differs, update the constant (or set
 // [online] thugpro_scripts_hash=<hex> in thug2-decomp.ini).
 //
-//   node tools/pipeline/compat/thugpro/scripts_hash.ts [<THUGPRO folder>]     (default: %LOCALAPPDATA%\THUG Pro)
+//   node compat/thugpro/scripts_hash.ts [<THUGPRO folder>]     (default: %LOCALAPPDATA%\THUG Pro)
 
 import * as fs from "node:fs";
 import * as path from "node:path";

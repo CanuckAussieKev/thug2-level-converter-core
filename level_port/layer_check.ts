@@ -3,10 +3,10 @@
 // with the same z bias - they z-fight - and how much with a different one). For comparing converted levels with
 // THUG2's own.
 //
-//     node tools/pipeline/level_port/layer_check.ts <levels folder> [<level> ...]
+//     node level_port/layer_check.ts <levels folder> [<level> ...]
 //
-// e.g. node tools/pipeline/level_port/layer_check.ts C:\Games\THUG2\Game\Data\levels LA AU
-//      node tools/pipeline/level_port/layer_check.ts C:\Games\THUG2\Game\thug2-decomp-data\levels foun alc
+// e.g. node level_port/layer_check.ts C:\Games\THUG2\Game\Data\levels LA AU
+//      node level_port/layer_check.ts C:\Games\THUG2\Game\thug2-decomp-data\levels foun alc
 
 import * as fs from "node:fs";
 import * as path from "node:path";
@@ -48,7 +48,7 @@ function check(folder: string, level: string): string {
 
 const [folder, ...levels] = process.argv.slice(2);
 if (!folder) {
-    console.log("usage: node tools/pipeline/level_port/layer_check.ts <levels folder> [<level> ...]");
+    console.log("usage: node level_port/layer_check.ts <levels folder> [<level> ...]");
     process.exit(2);
 }
 const names = levels.length

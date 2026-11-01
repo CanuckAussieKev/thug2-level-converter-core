@@ -1,4 +1,4 @@
-// NOT ORIGINAL - tests of the script translator's knowledge of THUG2 (tools/pipeline/level_port/script_port.ts): the member
+// NOT ORIGINAL - tests of the script translator's knowledge of THUG2 (level_port/script_port.ts): the member
 // table (thug2_members.ts), TriggerType's translation, and which commands a THUG2 script needs of its object.
 
 import assert from "node:assert/strict";

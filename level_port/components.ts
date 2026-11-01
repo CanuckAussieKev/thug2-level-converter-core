@@ -3,7 +3,7 @@
 // audit's method (on the safe side by ~3k against the game's own count). A ported
 // level's budget with THUG2's 86,000: about 34,750 (minus the ~51,250 in use when a level's .qb loads).
 //
-//   node tools/pipeline/level_port/components.ts <levels folder> [<levels folder, before>]
+//   node level_port/components.ts <levels folder> [<levels folder, before>]
 //
 // Each <folder>\<level>\<level>.qb: its count, and its count unshared - every node with its included structures'
 // entries in place of the include, those structures not counted (nodes.shareNodeFields undone) - largest first. With a
@@ -63,7 +63,7 @@ export function folderComponents(folder: string): Map<string, [number, number]> 
 
 function main(argv: string[]): number {
     if (argv.length < 1 || argv.length > 2) {
-        print("usage: node tools/pipeline/level_port/components.ts <levels folder> [<levels folder, before>]");
+        print("usage: node level_port/components.ts <levels folder> [<levels folder, before>]");
         return 2;
     }
     const now = folderComponents(argv[0]!);

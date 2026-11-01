@@ -1,10 +1,10 @@
 // NOT ORIGINAL - offline check of ported levels' human peds: each on the skeleton its THUG2 profile's model is
 // rigged to, and the Ped_Female animations loaded by the level's load_level_anims when any ped needs them
-// (tools/pipeline/level_port/ped_rigs.ts has why: a woman on THPS6_human is drawn twisted).
+// (level_port/ped_rigs.ts has why: a woman on THPS6_human is drawn twisted).
 //
-//   node tools/pipeline/level_port/ped_rig_check.ts [--thug2 <game folder>] <overlay or level folder | level .qb> ...
+//   node level_port/ped_rig_check.ts [--thug2 <game folder>] <overlay or level folder | level .qb> ...
 //
-// e.g. node tools/pipeline/level_port/ped_rig_check.ts C:\Games\THUG2-3\thug2-decomp-thaw C:\Games\THUG2-3\thug2-decomp-thps4
+// e.g. node level_port/ped_rig_check.ts C:\Games\THUG2-3\thug2-decomp-thaw C:\Games\THUG2-3\thug2-decomp-thps4
 // Read only. Exit status 1 when a ped or level is wrong.
 
 import * as fs from "node:fs";
@@ -26,11 +26,11 @@ export interface LevelRigs {
     ownAnimsMissing: string[];
 }
 
-// A port's own profile (THUG1's people: tools/pipeline/thug1_levels/thug1_peds.ts names them THUG1_<profile>): its rig, the man's
+// A port's own profile (THUG1's people: thug2-thug1-level-converter/thug1_levels/thug1_peds.ts names them THUG1_<profile>): its rig, the man's
 // or the woman's by the skeleton the node has; undefined for THUG2's profiles.
 export function ownRig(profile: string, node: Struct, names: ReadonlyMap<number, string>): pedRigs.Rig | undefined {
     if (profile.startsWith("THPS3_")) {
-        // (THPS3's people - tools/pipeline/thps3_levels/thps3_peds.ts: a skeleton per model, the set's animations; the rig is the
+        // (THPS3's people - thug2-thps3-level-converter/thps3_levels/thps3_peds.ts: a skeleton per model, the set's animations; the rig is the
         // node's own, checked for its animation set being loaded)
         const text = (key: string): string => {
             const v = node.get(key);

@@ -1,7 +1,7 @@
 // NOT ORIGINAL - the compatibility profiles: data that makes our generated files agree with another game's or mod's
 // for online play, kept apart from the converters so every such choice is listed in one place (<profile>\README.md,
 // its register) and can be dropped or replaced (e.g. by a run-time translation of the network messages) later.
-// (Ported from compat.py, deleted with its last importer, tools/pipeline/thaw_levels/thaw_levels.py.)
+// (Ported from compat.py, deleted with its last importer, thug2-thaw-level-converter/thaw_levels/thaw_levels.py.)
 //
 //   import * as compat from "../compat/compat.ts";
 //   const profile = compat.load("thugpro");        // or compat.load("none"): no compatibility data at all
@@ -98,4 +98,31 @@ export function load(name: string = "thugpro"): Profile {
         throw new RangeError(`no compatibility profile ${pyStrRepr(name)} (${PROFILES.join(", ")})`);
     }
     return new Profile(name);
+}
+
+// The folder of a profile's files (compat/<profile>: the THUGPRO register - README.md - and its data).
+export const profileFolder = (name: string = "thugpro"): string => path.join(HERE, name);
+
+// <profile>\<tool>.json, the file a tool reads (and its THUGPRO comparison's --extract-thugpro rewrites).
+export const profileFile = (tool: string, name: string = "thugpro"): string =>
+    path.join(profileFolder(name), `${tool}.json`);
+
+// profileFile for a tool that rewrites it: this repository's own clone only - the copy npm installs in a project's
+// node_modules is made again on the next install, so a change written there would be lost. Exits with a message
+// saying so (use a clone of thug2-level-converter-core, `npm link`ed into the project: its README).
+export function profileFileToWrite(tool: string, name: string = "thugpro"): string {
+    const file = profileFile(tool, name);
+    if (
+        fs
+            .realpathSync(HERE)
+            .split(path.sep)
+            .some((p) => p.toLowerCase() === "node_modules")
+    ) {
+        process.stderr.write(
+            `error: ${file} is in an installed copy of thug2-level-converter-core (node_modules): the register is ` +
+                'changed in a clone of that repository - link it into this project (its README, "Changing it") and run again\n',
+        );
+        process.exit(1);
+    }
+    return file;
 }

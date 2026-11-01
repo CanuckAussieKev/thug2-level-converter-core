@@ -1,4 +1,4 @@
-// NOT ORIGINAL - unit tests of tools/pipeline/game/frame_diff.ts (no game data needed).
+// NOT ORIGINAL - unit tests of lib/frame_diff.ts (no game data needed).
 
 import assert from "node:assert/strict";
 import { test } from "node:test";

@@ -2,10 +2,10 @@
 // (or so close to it that THUG2's depth buffer can't tell them apart) and overlap - the camera sees them flicker
 // through each other.
 //
-//     node tools/pipeline/level_port/zfight.ts <levels folder> [<level> ...] [--top N] [--tolerance IN] [--view M] [--near IN]
+//     node level_port/zfight.ts <levels folder> [<level> ...] [--top N] [--tolerance IN] [--view M] [--near IN]
 //                                     [--min-area M2] [--csv FILE]
 //
-// e.g. node tools/pipeline/level_port/zfight.ts C:\Games\THUG2-2\thug2-decomp-thp8\levels thp8_net_beavervalley
+// e.g. node level_port/zfight.ts C:\Games\THUG2-2\thug2-decomp-thp8\levels thp8_net_beavervalley
 //
 // How close is too close: THUG2 draws with a 24-bit depth buffer (src/game/gfx/device.cpp: D3DFMT_D24X8) and a near
 // plane of 12 inches (src/game/gfx/camera.cpp). A perspective depth buffer's step at distance z is about
@@ -371,7 +371,7 @@ export function findZFights(
     return out;
 }
 
-// A spot for tools/pipeline/game/try_spot.ts looking at a fight: on ground (an up-facing plane) its centre; at a wall or a
+// A spot for tools/game/try_spot.ts looking at a fight: on ground (an up-facing plane) its centre; at a wall or a
 // ceiling 3 m out from it, facing it (heading: degrees, 0 = +z, 90 = +x).
 export function spotFor(centre: readonly number[], normal: readonly number[]): [number, number, number, number] {
     if (normal[1]! > 0.7) return [centre[0]!, centre[1]!, centre[2]!, 0];
@@ -542,7 +542,7 @@ export function main(argv: readonly string[] = process.argv.slice(2)): number {
     const [folder, ...levels] = positionals;
     if (!folder) {
         print(
-            "usage: node tools/pipeline/level_port/zfight.ts <levels folder> [<level> ...] [--top N] [--tolerance IN] [--view M] [--near IN] [--min-area M2] [--csv FILE]",
+            "usage: node level_port/zfight.ts <levels folder> [<level> ...] [--top N] [--tolerance IN] [--view M] [--near IN] [--min-area M2] [--csv FILE]",
         );
         return 2;
     }

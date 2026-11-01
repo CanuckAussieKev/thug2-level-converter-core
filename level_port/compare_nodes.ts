@@ -3,7 +3,7 @@
 // shared differently (or not at all) compares equal when its nodes still mean the same. Shared structures themselves
 // (`<level>_inc_<n>`) aren't compared as globals; every other global is, and every script (its bytes).
 //
-//   node tools/pipeline/level_port/compare_nodes.ts <levels folder, before> <levels folder, after> [--verbose]
+//   node level_port/compare_nodes.ts <levels folder, before> <levels folder, after> [--verbose]
 //
 // Each folder: <folder>\<level>\<level>.qb (a converter's staging levels folder or an installed overlay's). One line a
 // level: its nodes, the nodes that resolve differently, the other globals and the scripts that differ, and its script
@@ -99,9 +99,7 @@ function main(argv: string[]): number {
     const verbose = argv.includes("--verbose");
     const [beforeDir, afterDir] = argv.filter((x) => x !== "--verbose");
     if (!beforeDir || !afterDir) {
-        print(
-            "usage: node tools/pipeline/level_port/compare_nodes.ts <levels folder, before> <levels folder, after> [--verbose]",
-        );
+        print("usage: node level_port/compare_nodes.ts <levels folder, before> <levels folder, after> [--verbose]");
         return 2;
     }
     print("level\tnodes\tdiffering nodes\tother globals differing\tscripts differing\tcomponents before\tafter\tsaved");

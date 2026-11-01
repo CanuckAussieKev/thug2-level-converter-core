@@ -1,4 +1,4 @@
-// NOT ORIGINAL - tests of tools/pipeline/lib/install.ts: each game's folder found in both layouts (the install root with a Game
+// NOT ORIGINAL - tests of lib/install.ts: each game's folder found in both layouts (the install root with a Game
 // subfolder, or the game folder itself), any case, and the message when neither matches (temp folders, no game data).
 
 import assert from "node:assert/strict";

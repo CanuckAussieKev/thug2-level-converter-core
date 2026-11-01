@@ -1,27 +1,27 @@
 // NOT ORIGINAL - what THP8's converted levels draw wrong: z-fighting and missing textures, traced back to THP8's data
-// and to what tools/pipeline/thp8_levels/thp8_levels.ts made of it. Reads the converted levels (the staging folder convert
+// and to what thug2-thp8-level-converter/thp8_levels/thp8_levels.ts made of it. Reads the converted levels (the staging folder convert
 // writes) and THP8's zone archives; writes nothing.
 //
-//   node tools/pipeline/thp8_levels/render_audit.ts textures [levels...] [--top N]
+//   node thp8/render_audit.ts textures [levels...] [--top N]
 //       Per level: every material of its zones (and stand-ins / barriers) as convertScenes draws it - pass 0's texture
 //       (baseTexture) - checked against THP8's data: a blank picked (a flat colour or THP8's stipple placeholder) while
 //       the material lists a real one, a material with nothing but blanks, a texture not in the zone's .tex (and
 //       where it is), a format not converted, and further layers not drawn (templates whose passes aren't read).
-//       Then the converted files checked as THUG2 sees them (tools/pipeline/level_port/texture_check.ts).
-//   node tools/pipeline/thp8_levels/render_audit.ts zfight [levels...] [--top N] [--csv FILE] [--tolerance IN] [--view M]
-//       Per level: tools/pipeline/level_port/zfight.ts over its .scn.xbx, the pairs named after THP8's sectors and grouped by
+//       Then the converted files checked as THUG2 sees them (level_port/texture_check.ts).
+//   node thp8/render_audit.ts zfight [levels...] [--top N] [--csv FILE] [--tolerance IN] [--view M]
+//       Per level: level_port/zfight.ts over its .scn.xbx, the pairs named after THP8's sectors and grouped by
 //       why they overlap - our own additions (the zones' _lod stand-ins, the network barriers' veils), two zones'
 //       copies at a seam, THP8's decals and layers (THP8 draws them with its own depth bias; we give none), duplicates.
-//   node tools/pipeline/thp8_levels/render_audit.ts black [levels...]
-//       Per level: materials drawn near black, by cause (tools/pipeline/level_port/black_check.ts) - over every material.
-//   node tools/pipeline/thp8_levels/render_audit.ts spot <level> <x,y,z> [radius]
+//   node thp8/render_audit.ts black [levels...]
+//       Per level: materials drawn near black, by cause (level_port/black_check.ts) - over every material.
+//   node thp8/render_audit.ts spot <level> <x,y,z> [radius]
 //       The drawn meshes at a place (a screenshot sidecar's skater or camera position, THUG2 units): sector, THP8
 //       template, every texture of the material and what pass 0 is drawn with.
 //
 //   [--thp8 C:\Games\THP8] [--thug2 C:\Games\THUG2 | --staging <folder>]   (default staging: <thug2>\thug2-decomp-thp8)
 //
 // Levels as convert names them (beavervalley, net_skatepark, training...); the default is all, BEAVER VALLEY first.
-// It follows the converter's game profile (thp8_levels.useGame): tools/pipeline/thpg_levels/thpg_levels.ts audit runs it
+// It follows the converter's game profile (thp8_levels.useGame): thug2-thpg-level-converter/thpg_levels/thpg_levels.ts audit runs it
 // over Tony Hawk's Proving Ground's levels.
 
 import * as fs from "node:fs";

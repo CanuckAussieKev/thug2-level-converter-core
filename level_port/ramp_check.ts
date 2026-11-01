@@ -1,15 +1,15 @@
-// NOT ORIGINAL - how a converted level's ramps ride in THUG2, from its .col.xbx (tools/pipeline/level_port/ramp_collision.ts
+// NOT ORIGINAL - how a converted level's ramps ride in THUG2, from its .col.xbx (level_port/ramp_collision.ts
 // has THUG2's rules).
 //
-//   node tools/pipeline/level_port/ramp_check.ts <col.xbx | level folder | levels folder>...
+//   node level_port/ramp_check.ts <col.xbx | level folder | levels folder>...
 //       per level: faces, concave ramp edges (both faces facing up) by bend in 10-degree steps, those over THUG2's
 //       Ground_stick_angle (30), and what ramp_collision would still change - steep faces left walls inside a ramp
 //       ("ramp walls"), faces lying on a more rideable one with other flags ("overlays"), vert faces flatter than 40
 //       degrees ("low vert") and ramp faces of 45 or more left unflagged under a vert face ("band"). 0 after the fix.
-//   node tools/pipeline/level_port/ramp_check.ts --flags <col.xbx | folder | THUG2 <level>col.prx>...
+//   node level_port/ramp_check.ts --flags <col.xbx | folder | THUG2 <level>col.prx>...
 //       how a level flags its up-facing faces by slope (10-degree steps): vert / skatable / nothing / wall - THUG2's
 //       own levels (Data\pre\<level>col.prx) against a port.
-//   node tools/pipeline/level_port/ramp_check.ts --spot <col.xbx> <x,y,z> [radius]
+//   node level_port/ramp_check.ts --spot <col.xbx> <x,y,z> [radius]
 //       the collision faces near a point (THUG2 inches, a screenshot sidecar's position): object, face, slope, height,
 //       normal, flags; the bends between joined ones.
 

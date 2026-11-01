@@ -1,12 +1,12 @@
 {
-  "_comment": "THUGPRO compatibility for the THPS4 level ports (tools/pipeline/thps4_levels). Each entry is registered in README.md here (TP-20 ... TP-29). Online a level is known only by its load script's checksum (messages 0x46 / 0x33): these make our level structures agree with THUGPRO's own THPS4 ports where THPS4's own names can't; TP-22 ... TP-29 are THUGPRO's hand edits of its ports (thps4_levels/thugpro_edits.ts). Read by tools/pipeline/compat/compat.ts; `thps4_levels.ts convert --compat none` leaves all of it out.",
+  "_comment": "THUGPRO compatibility for the THPS4 level ports (thug2-thps4-level-converter/thps4_levels). Each entry is registered in README.md here (TP-20 ... TP-29). Online a level is known only by its load script's checksum (messages 0x46 / 0x33): these make our level structures agree with THUGPRO's own THPS4 ports where THPS4's own names can't; TP-22 ... TP-29 are THUGPRO's hand edits of its ports (thps4_levels/thugpro_edits.ts). Read by compat/compat.ts; `thps4_levels.ts convert --compat none` leaves all of it out.",
   "load_names": {
     "_register": "TP-20",
     "SkateShop": "practice"
   },
   "net_nodes": {
     "_register": "TP-21",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays, extracted by `node tools/pipeline/thps4_levels/thugpro_compare.ts --extract-thugpro` (places only: pos = THUG2's Pos axes)",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays, extracted by `node tools/pipeline/run.ts thps4_levels/thugpro_compare.ts --extract-thugpro` (places only: pos = THUG2's Pos axes)",
     "SkateShop": {
       "crowns": [
         {
@@ -127,7 +127,7 @@
   },
   "node_moves": {
     "_register": "TP-22",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / <level>col.prx against THPS4's own Game\\data\\levels files, extracted by `node tools/pipeline/thps4_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.ts; pos = THUG2's Pos axes)",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / <level>col.prx against THPS4's own Game\\data\\levels files, extracted by `node tools/pipeline/run.ts thps4_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.ts; pos = THUG2's Pos axes)",
     "Cnv": {
       "TRG_G_HS_RestartNode": {
         "pos": [
@@ -205,7 +205,7 @@
   },
   "node_renames": {
     "_register": "TP-23",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / <level>col.prx against THPS4's own Game\\data\\levels files, extracted by `node tools/pipeline/thps4_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.ts; pos = THUG2's Pos axes)",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / <level>col.prx against THPS4's own Game\\data\\levels files, extracted by `node tools/pipeline/run.ts thps4_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.ts; pos = THUG2's Pos axes)",
     "Hof": {
       "TRG_G_HighCombo_Pro": "TRG_G_PS_Pro",
       "TRG_G_HighCombo_RestartNode": "TRG_G_PS_RestartNode"
@@ -213,7 +213,7 @@
   },
   "node_flags": {
     "_register": "TP-24",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / <level>col.prx against THPS4's own Game\\data\\levels files, extracted by `node tools/pipeline/thps4_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.ts; pos = THUG2's Pos axes)",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / <level>col.prx against THPS4's own Game\\data\\levels files, extracted by `node tools/pipeline/run.ts thps4_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.ts; pos = THUG2's Pos axes)",
     "Alc": {
       "Proset2_aw_FloatingTargetFroth01": {
         "remove": [
@@ -986,7 +986,7 @@
   },
   "trick_objects": {
     "_register": "TP-25",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / <level>col.prx against THPS4's own Game\\data\\levels files, extracted by `node tools/pipeline/thps4_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.ts; pos = THUG2's Pos axes)",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / <level>col.prx against THPS4's own Game\\data\\levels files, extracted by `node tools/pipeline/run.ts thps4_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.ts; pos = THUG2's Pos axes)",
     "Sch": {
       "Sk3Ed_Gb_20x11": {
         "trick_object": true,
@@ -1040,7 +1040,7 @@
   },
   "rail_terrains": {
     "_register": "TP-26",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / <level>col.prx against THPS4's own Game\\data\\levels files, extracted by `node tools/pipeline/thps4_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.ts; pos = THUG2's Pos axes)",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / <level>col.prx against THPS4's own Game\\data\\levels files, extracted by `node tools/pipeline/run.ts thps4_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.ts; pos = THUG2's Pos axes)",
     "Alc": {
       "ter_DockLampWire01": {
         "type": "Metal",
@@ -2496,14 +2496,14 @@
   },
   "removed_nodes": {
     "_register": "TP-27",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / <level>col.prx against THPS4's own Game\\data\\levels files, extracted by `node tools/pipeline/thps4_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.ts; pos = THUG2's Pos axes)",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / <level>col.prx against THPS4's own Game\\data\\levels files, extracted by `node tools/pipeline/run.ts thps4_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.ts; pos = THUG2's Pos axes)",
     "Zoo": [
       "TRG_meerkat_10"
     ]
   },
   "added_nodes": {
     "_register": "TP-27",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / <level>col.prx against THPS4's own Game\\data\\levels files, extracted by `node tools/pipeline/thps4_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.ts; pos = THUG2's Pos axes)",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / <level>col.prx against THPS4's own Game\\data\\levels files, extracted by `node tools/pipeline/run.ts thps4_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.ts; pos = THUG2's Pos axes)",
     "Kon": [
       {
         "name": "TRG_Night_LevelLight_thugpro_2770",
@@ -3839,7 +3839,7 @@
   },
   "collision_duplicates": {
     "_register": "TP-28",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / <level>col.prx against THPS4's own Game\\data\\levels files, extracted by `node tools/pipeline/thps4_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.ts; pos = THUG2's Pos axes)",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / <level>col.prx against THPS4's own Game\\data\\levels files, extracted by `node tools/pipeline/run.ts thps4_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.ts; pos = THUG2's Pos axes)",
     "Sch": [
       "dt_Post_LOD",
       "dt_Post_LOD01",
@@ -4249,7 +4249,7 @@
   },
   "thugpro_new": {
     "_register": "TPN-THPS4-1 ... TPN-THPS4-5 (README.md here: \"New in THUGPRO (not in any source game)\")",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx (its level files: <level>.qb, <level>_scripts.qb, <level>_thugpro.qb, models) against THPS4's own Game\\data\\levels files, extracted by `node tools/pipeline/thps4_levels/thugpro_compare.ts --extract-thugpro` (thugpro_new.ts)",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx (its level files: <level>.qb, <level>_scripts.qb, <level>_thugpro.qb, models) against THPS4's own Game\\data\\levels files, extracted by `node tools/pipeline/run.ts thps4_levels/thugpro_compare.ts --extract-thugpro` (thugpro_new.ts)",
     "_note": "THUGPRO's own content, in no source game - by reference only: `files` name THUGPRO's archive, the entry, its size and SHA-256; the converter reads the bytes from the user's install (--thugpro) and leaves a level's content out with a warning when the install or a file differs. --compat none and --no-thugpro-new leave all of it out; models (shown_by_thugpro false: THUGPRO's shipped scripts don't place them) only with --thugpro-banners",
     "files": {
       "hof/hof": {

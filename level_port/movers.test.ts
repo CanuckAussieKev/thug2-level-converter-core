@@ -1,4 +1,4 @@
-// NOT ORIGINAL - tests of tools/pipeline/level_port/movers.ts (moving props made solid LevelObjects: PC-THPS3-15).
+// NOT ORIGINAL - tests of level_port/movers.ts (moving props made solid LevelObjects: PC-THPS3-15).
 
 import assert from "node:assert/strict";
 import { test } from "node:test";

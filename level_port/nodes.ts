@@ -201,7 +201,7 @@ export function killCommands(
 // Keys every node keeps for itself when the rest is shared (shareParts): what THUG2's own levels keep on the node
 // (their ncomp_* hold the rest) - a node's identity, place and links. The level editor reads a node's fields through
 // its includes and edits them as the node's own overrides (src/game/front/level_editor_fields.cpp), as on THUG2's own
-// levels; tools/pipeline/game/apply_layout.ts the same.
+// levels; tools/game/apply_layout.ts the same.
 export const OWN_KEYS: ReadonlySet<number> = new Set(
     ["Pos", "Position", "Angles", "Name", "Links", "TriggerScript"].map(checksum),
 );
@@ -431,8 +431,8 @@ export function convertNodes(
     // kills: the kill scripts (a map or set of their checksums). extraKeys: more keys kept (THUG1's Pos). asIs: nodes
     // (the objects themselves - Python's id()s) already made THUG2's - kept whole, their Links renumbered (THPS3's game
     // objects, waypoints, peds). scripts: trigger scripts that are kept besides the kill scripts (THPS3's, brought along
-    // by tools/pipeline/level_port/script_port.ts). player1First: false keeps the array's own order (the swap below left out -
-    // tools/pipeline/thug1_levels' TP-31: THUG2's net spawns go by the restarts' order).
+    // by level_port/script_port.ts). player1First: false keeps the array's own order (the swap below left out -
+    // thug2-thug1-level-converter/thug1_levels' TP-31: THUG2's net spawns go by the restarts' order).
     const killMap = kills ?? new Set<number>();
     const asIsSet = new Set<Struct>(asIs);
     const keepKeys = new Set([...KEYS, ...extraKeys.map(checksum)]);
@@ -947,7 +947,7 @@ export function netGameNodes(
     withRestarts = true,
 ): [string, number] {
     // What a network game needs of a ported level's node array: absentInNetGames, then netRestarts (withRestarts:
-    // false leaves those out - tools/pipeline/thps3_levels' PC-4 under --no-port-changes). Returns [text, nodes changed].
+    // false leaves those out - thug2-thps3-level-converter/thps3_levels' PC-4 under --no-port-changes). Returns [text, nodes changed].
     const [absentText, absent] = absentInNetGames(text, scripts);
     const [restartText, restarts] = withRestarts ? netRestarts(absentText) : [absentText, 0];
     return [restartText, absent + restarts];

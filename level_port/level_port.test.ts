@@ -1,4 +1,4 @@
-// NOT ORIGINAL - tests of tools/pipeline/level_port against values its Python twin gave. The game-data ones are skipped when
+// NOT ORIGINAL - tests of level_port against values its Python twin gave. The game-data ones are skipped when
 // the game isn't installed.
 
 import assert from "node:assert/strict";

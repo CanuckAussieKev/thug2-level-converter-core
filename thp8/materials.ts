@@ -57,7 +57,7 @@ const SPECULAR_FIRST_TWO = new Set([T_DIFFUSE_SPEC_TERRAIN]);
 // Templates whose float4s are the passes' colours alone (no specular power first: passColour reads them as they are).
 const COLOURS_FIRST = new Set([T_DIFFUSE_TERRAIN]);
 
-// Another game's template read as a layered one (Tony Hawk's Proving Ground's: tools/pipeline/thpg_levels/layers.ts):
+// Another game's template read as a layered one (Tony Hawk's Proving Ground's: thug2-thpg-level-converter/thpg_levels/layers.ts):
 // its texture list laid out as the layered templates' above, its pass colours at `colourAt` (none: not read).
 // `samplerTiling`: the float4 after each pass's colour is its samplers' tilings - x the diffuse map's (u and v alike),
 // y the mask's (passTiling / passMaskTiling).

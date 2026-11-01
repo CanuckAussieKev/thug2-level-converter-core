@@ -15,7 +15,7 @@
 //   - a node's animation set (AnimName / Extra_Anims) that the level's load_level_anims doesn't load: the ped plays an
 //     animation of a set never loaded - FrameIndex on null, 0x00482BA2 (THUG1 Venice's THUGPRO seagulls).
 //
-//   node tools/pipeline/level_port/script_check.ts [--thug2 C:\Games\THUG2] <levels folder | level .qb>...
+//   node level_port/script_check.ts [--thug2 C:\Games\THUG2] <levels folder | level .qb>...
 //
 // Prints each finding (level: kind: script / node: detail) and a count per kind; exit code 1 when a level has one.
 
@@ -298,7 +298,7 @@ function main(argv: string[]): number {
         argv = argv.filter((_, i) => i !== at && i !== at + 1);
     }
     if (!argv.length) {
-        print("usage: node tools/pipeline/level_port/script_check.ts [--thug2 <THUG2>] <levels folder | level .qb>...");
+        print("usage: node level_port/script_check.ts [--thug2 <THUG2>] <levels folder | level .qb>...");
         return 2;
     }
     const thug2 = thug2Names(game);

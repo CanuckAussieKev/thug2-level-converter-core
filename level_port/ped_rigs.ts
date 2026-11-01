@@ -26,7 +26,7 @@ export interface Rig {
 
 export const MALE: Rig = { type: "Ped_From_Profile", skeleton: "THPS6_human", anims: "animload_THPS6_human" };
 export const FEMALE: Rig = { type: "Ped_F_From_Profile", skeleton: "Ped_Female", anims: "animload_ped_female" };
-// THUG1's own people (tools/pipeline/thug1_levels/thug1_peds.ts): its men on THUG1's THPS5_human skeleton (THUG2 ships the file,
+// THUG1's own people (thug2-thug1-level-converter/thug1_levels/thug1_peds.ts): its men on THUG1's THPS5_human skeleton (THUG2 ships the file,
 // byte-identical to THUG1's, and never loads it) with THUG1's animations; its women on Ped_Female (THUG1's file is
 // THUG2's, byte for byte) with THUG1's women's animations under a reference of their own - THUG2's own Ped_Female
 // animations have the same names.

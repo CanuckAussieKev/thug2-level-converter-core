@@ -1,5 +1,5 @@
 {
-  "_comment": "THUGPRO compatibility for the THAW level ports (tools/pipeline/thaw_levels). Each entry is registered in README.md here (TP-1...). Online a level is known only by its load script's checksum (messages 0x46 / 0x33) and positions travel as world coordinates (0x23): these make our files agree with THUGPRO's own THAW ports. Read by tools/pipeline/compat/compat.py; `thaw_levels.py convert --compat none` leaves all of it out.",
+  "_comment": "THUGPRO compatibility for the THAW level ports (thug2-thaw-level-converter/thaw_levels). Each entry is registered in README.md here (TP-1...). Online a level is known only by its load script's checksum (messages 0x46 / 0x33) and positions travel as world coordinates (0x23): these make our files agree with THUGPRO's own THAW ports. Read by compat/compat.py; `thaw_levels.py convert --compat none` leaves all of it out.",
   "level_names": {
     "_register": "TP-1",
     "Z_CH": "skatepark",
@@ -9,7 +9,7 @@
   },
   "net_position_scale": {
     "_register": "TP-R6",
-    "_source": "THUGPRO's Levels.q (its source: `IsBigLevel` in level_z_ma only; `IsTallLevel` in its unreleased beach only) and THUGPRO_SetBigLevel (cfuncs.cpp): in network games those levels' skater positions travel in whole units. Read at run time from the level select entry's flags (tools/pipeline/menu_level/level_select.ts thawPositionScaleFlags -> src/game/net/thugpro_compat.cpp)",
+    "_source": "THUGPRO's Levels.q (its source: `IsBigLevel` in level_z_ma only; `IsTallLevel` in its unreleased beach only) and THUGPRO_SetBigLevel (cfuncs.cpp): in network games those levels' skater positions travel in whole units. Read at run time from the level select entry's flags (thug2-content-pipeline/menu_level/level_select.ts thawPositionScaleFlags -> src/game/net/thugpro_compat.cpp)",
     "big": ["Z_MA"],
     "tall": []
   },
@@ -24,7 +24,7 @@
   },
   "spawns": {
     "_register": "TP-4",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays against THAW's own (<zone>_net.pak.wpc), extracted by `node tools/pipeline/thaw_levels/thugpro_compare.ts --extract-thugpro` (pos: THAW's frame)",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays against THAW's own (<zone>_net.pak.wpc), extracted by `node tools/pipeline/run.ts thaw_levels/thugpro_compare.ts --extract-thugpro` (pos: THAW's frame)",
     "Z_CH": {
       "edits": [
         {
@@ -616,7 +616,7 @@
   },
   "node_edits": {
     "_register": "TP-5",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / scn.prx / col.prx against THAW's own zone archives, extracted by `node tools/pipeline/thaw_levels/thugpro_compare.ts --extract-thugpro` (thugpro_extract.ts; positions: THAW's frame); applied by thugpro_edits.ts",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / scn.prx / col.prx against THAW's own zone archives, extracted by `node tools/pipeline/run.ts thaw_levels/thugpro_compare.ts --extract-thugpro` (thugpro_extract.ts; positions: THAW's frame); applied by thugpro_edits.ts",
     "Z_CH": {
       "moved": [
         {
@@ -1914,7 +1914,7 @@
   },
   "node_flags": {
     "_register": "TP-6",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / scn.prx / col.prx against THAW's own zone archives, extracted by `node tools/pipeline/thaw_levels/thugpro_compare.ts --extract-thugpro` (thugpro_extract.ts; positions: THAW's frame); applied by thugpro_edits.ts",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / scn.prx / col.prx against THAW's own zone archives, extracted by `node tools/pipeline/run.ts thaw_levels/thugpro_compare.ts --extract-thugpro` (thugpro_extract.ts; positions: THAW's frame); applied by thugpro_edits.ts",
     "Z_CH": {
       "nodes": [
         {
@@ -8679,7 +8679,7 @@
   },
   "removed": {
     "_register": "TP-7",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / scn.prx / col.prx against THAW's own zone archives, extracted by `node tools/pipeline/thaw_levels/thugpro_compare.ts --extract-thugpro` (thugpro_extract.ts; positions: THAW's frame); applied by thugpro_edits.ts",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / scn.prx / col.prx against THAW's own zone archives, extracted by `node tools/pipeline/run.ts thaw_levels/thugpro_compare.ts --extract-thugpro` (thugpro_extract.ts; positions: THAW's frame); applied by thugpro_edits.ts",
     "Z_CH": {
       "nodes": ["Z_CH_SkVans_Rail_Col02", "Z_CH_SkVans_Rail_Col01"],
       "collision": ["Z_CH_SkVans_Rail_Col02", "Z_CH_SkVans_Rail_Col01", "Z_CH_SkVans_Sign03_LOD"]
@@ -8739,7 +8739,7 @@
   },
   "added": {
     "_register": "TP-8",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / scn.prx / col.prx against THAW's own zone archives, extracted by `node tools/pipeline/thaw_levels/thugpro_compare.ts --extract-thugpro` (thugpro_extract.ts; positions: THAW's frame); applied by thugpro_edits.ts",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / scn.prx / col.prx against THAW's own zone archives, extracted by `node tools/pipeline/run.ts thaw_levels/thugpro_compare.ts --extract-thugpro` (thugpro_extract.ts; positions: THAW's frame); applied by thugpro_edits.ts",
     "Z_JA": {
       "nodes": [
         {
@@ -17563,7 +17563,7 @@
   },
   "collision": {
     "_register": "TP-9",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / scn.prx / col.prx against THAW's own zone archives, extracted by `node tools/pipeline/thaw_levels/thugpro_compare.ts --extract-thugpro` (thugpro_extract.ts; positions: THAW's frame); applied by thugpro_edits.ts",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / scn.prx / col.prx against THAW's own zone archives, extracted by `node tools/pipeline/run.ts thaw_levels/thugpro_compare.ts --extract-thugpro` (thugpro_extract.ts; positions: THAW's frame); applied by thugpro_edits.ts",
     "Z_CH": {
       "faces": {
         "Z_CH_SkVans_Rail01": {
@@ -21018,7 +21018,7 @@
   "thugpro_new": {
     "_register": "TPN-THAW-1...TPN-THAW-5",
     "_note": "New in THUGPRO (in no source game): its meshes and collision, reshaped meshes, content nodes, scripts and host-option defaults - by reference only: each entry names THUGPRO's item and a CRC-32 of it; the converter reads the bytes from the THUGPRO install (--thugpro) and skips (with a warning) what is missing or differs. Entries in the differences files' shared form (compat.Entry: id, op add / set / remove, target {zone, kind, name}, why); left_out: what wasn't taken, and why. --no-thugpro-new leaves the whole section out.",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / scn.prx / col.prx and thugpro_qb.prx, against THAW's own zone archives; written by `node tools/pipeline/thaw_levels/thugpro_compare.ts --extract-thugpro` (thugpro_extract.ts)",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx / scn.prx / col.prx and thugpro_qb.prx, against THAW's own zone archives; written by `node tools/pipeline/run.ts thaw_levels/thugpro_compare.ts --extract-thugpro` (thugpro_extract.ts)",
     "entries": [
       {
         "id": "TPN-THAW-4",
@@ -26270,7 +26270,7 @@
   },
   "port_changes": {
     "_register": "PC-THAW-1...PC-THAW-15 (README.md: Our own changes (port_changes))",
-    "_note": "Our own changes to THAW's levels: neither THAW's data nor THUGPRO's. Applied whatever --compat (also none); --no-port-changes leaves out all but the `required` ones (the level needs them to load). op: add / set / remove; switch: the name tools/pipeline/thaw_levels/thaw_levels.ts checks (portChange).",
+    "_note": "Our own changes to THAW's levels: neither THAW's data nor THUGPRO's. Applied whatever --compat (also none); --no-port-changes leaves out all but the `required` ones (the level needs them to load). op: add / set / remove; switch: the name thug2-thaw-level-converter/thaw_levels/thaw_levels.ts checks (portChange).",
     "entries": [
       {
         "id": "PC-THAW-1",

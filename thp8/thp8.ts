@@ -1,11 +1,11 @@
-// Tony Hawk's Project 8 (Xbox 360) data files, read into tools/pipeline/level_port's forms. Everything is big-endian except
+// Tony Hawk's Project 8 (Xbox 360) data files, read into level_port's forms. Everything is big-endian except
 // the script bodies (THUG2's little-endian token streams). The files are under game\DATA:
 //
 // - COMPRESSED\...\<x>.xen: each file one raw deflate stream (no zlib header). compress.toc.xen lists them:
 //   "TOC1", u32 0x8FF, u32 0x20 (header size), u32 0x00E90020, 16 bytes of 0, then 16-byte entries {u32 checksum
 //   of the file's path, u32 unpacked size, u32 packed size, u32 0}; compress.toc.lst.xen is the same list as text
 //   ("Name: <path> <packed size> <checksum>"). The archives are read by unpacking the file itself (unpack below).
-// - Archives (.pak.xen, + .pab.xen): THAW's pak (tools/pipeline/thaw_levels/thaw.ts) big-endian: 32-byte entries {u32
+// - Archives (.pak.xen, + .pab.xen): THAW's pak (thaw/thaw.ts) big-endian: 32-byte entries {u32
 //   extension checksum, u32 data offset (from the entry), u32 size, u32 pak name checksum, u32 full name checksum,
 //   u32 name checksum, u32 (a checksum: the scene's / collision's own), u32 flags}; flags & 0x20: a 160-byte path
 //   follows. The table ends with a "last" entry. A zone's archive holds the zone and its sub-zones (flags 2, 4...).

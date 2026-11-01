@@ -2,7 +2,7 @@
 // is, before the game ever draws it - step 1 of the plan to end z-fighting in ported levels (step 0: the detector,
 // zfight_raster.ts; step 2: a NOT ORIGINAL slope-scaled depth bias for what is left here).
 //
-//     node tools/pipeline/level_port/zfight_resolve.ts <levels folder> [<level> ...] [--out FOLDER] [--dry-run] [--quiet]
+//     node level_port/zfight_resolve.ts <levels folder> [<level> ...] [--out FOLDER] [--dry-run] [--quiet]
 //
 // The converters call resolveLevelFolder() on each level they write, after its qb (common.resolveZFight): the scene
 // file (<level>.scn.xbx) is read, changed and written again; collision (.col.xbx), textures and scripts are never

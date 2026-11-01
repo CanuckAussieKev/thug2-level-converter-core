@@ -1,9 +1,9 @@
 {
-  "_comment": "THUGPRO compatibility for the THUG1 level ports (tools/pipeline/thug1_levels). Each entry is registered in README.md here (TP-30 level_names, TP-31 spawns, TP-32 ... TP-39 THUGPRO's other hand edits: moved_nodes, net_presence, created_at_start, node_values, rails, face_values, collision_removed, collision_reshaped - their form: tools/pipeline/thug1_levels/hand_edits.ts). spawns and TP-32 ... TP-39 are written by `node tools/pipeline/thug1_levels/thugpro_compare.ts --extract-thugpro`, never by hand. Online a level is known only by its load script's checksum (messages 0x46 / 0x33). The other THUG1 levels are named by THUG1's own Levels.qb (Load_NJ...) - THUG1 data, no entry. Read by tools/pipeline/compat/compat.ts; `thug1_levels.ts convert --compat none` leaves all of it out but port_changes (ours, not THUGPRO's). thugpro_new (TPN-THUG1-1 ... 4): what is new in THUGPRO, by reference (README: New in THUGPRO); port_changes (PC-THUG1-n): our own changes (README: Our own changes).",
+  "_comment": "THUGPRO compatibility for the THUG1 level ports (thug2-thug1-level-converter/thug1_levels). Each entry is registered in README.md here (TP-30 level_names, TP-31 spawns, TP-32 ... TP-39 THUGPRO's other hand edits: moved_nodes, net_presence, created_at_start, node_values, rails, face_values, collision_removed, collision_reshaped - their form: thug2-thug1-level-converter/thug1_levels/hand_edits.ts). spawns and TP-32 ... TP-39 are written by `node tools/pipeline/run.ts thug1_levels/thugpro_compare.ts --extract-thugpro`, never by hand. Online a level is known only by its load script's checksum (messages 0x46 / 0x33). The other THUG1 levels are named by THUG1's own Levels.qb (Load_NJ...) - THUG1 data, no entry. Read by compat/compat.ts; `thug1_levels.ts convert --compat none` leaves all of it out but port_changes (ours, not THUGPRO's). thugpro_new (TPN-THUG1-1 ... 4): what is new in THUGPRO, by reference (README: New in THUGPRO); port_changes (PC-THUG1-n): our own changes (README: Our own changes).",
   "level_names": {"_register": "TP-30", "SE": "hh"},
   "spawns": {
     "_register": "TP-31",
-    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays against THUG1's own, extracted by `node tools/pipeline/thug1_levels/thugpro_compare.ts --extract-thugpro` (pos = THUG2's Pos axes; order: every Multiplayer / Horse / CTF / Team restart in THUGPRO's order, by THUG1's names)",
+    "_source": "THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays against THUG1's own, extracted by `node tools/pipeline/run.ts thug1_levels/thugpro_compare.ts --extract-thugpro` (pos = THUG2's Pos axes; order: every Multiplayer / Horse / CTF / Team restart in THUGPRO's order, by THUG1's names)",
     "NJ": {
       "order": [
         "TRG_restartforgary01",
@@ -391,7 +391,7 @@
   },
   "moved_nodes": {
     "_register": "TP-32",
-    "_source": "nodes THUGPRO moved: THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays and <level>col.prx collision against THUG1's own, extracted by `node tools/pipeline/thug1_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.handEdits; never typed in)",
+    "_source": "nodes THUGPRO moved: THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays and <level>col.prx collision against THUG1's own, extracted by `node tools/pipeline/run.ts thug1_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.handEdits; never typed in)",
     "NJ": {
       "TRG_TrainTest_00": {"pos": [-8590.66015625, -241.1761932373047, -3070.037109375], "angles": [0, 0, 0]},
       "TRG_TrainTest_01": {"pos": [-15707.2734375, -241.1761932373047, -3070.037109375], "angles": [0, 0, 0]},
@@ -409,7 +409,7 @@
   },
   "net_presence": {
     "_register": "TP-33",
-    "_source": "AbsentInNetGames put on / taken off: THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays and <level>col.prx collision against THUG1's own, extracted by `node tools/pipeline/thug1_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.handEdits; never typed in)",
+    "_source": "AbsentInNetGames put on / taken off: THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays and <level>col.prx collision against THUG1's own, extracted by `node tools/pipeline/run.ts thug1_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.handEdits; never typed in)",
     "NJ": {
       "absent": ["TRGP_Vis_Playground_Medium"],
       "present": [
@@ -1461,7 +1461,7 @@
   },
   "created_at_start": {
     "_register": "TP-34",
-    "_source": "CreatedAtStart put on / taken off: THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays and <level>col.prx collision against THUG1's own, extracted by `node tools/pipeline/thug1_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.handEdits; never typed in)",
+    "_source": "CreatedAtStart put on / taken off: THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays and <level>col.prx collision against THUG1's own, extracted by `node tools/pipeline/run.ts thug1_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.handEdits; never typed in)",
     "NJ": {
       "off": [
         "NJ_Small_SouthEast07",
@@ -1551,7 +1551,7 @@
   },
   "node_values": {
     "_register": "TP-35",
-    "_source": "classes, rail / waypoint types and terrains, other flags and values: THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays and <level>col.prx collision against THUG1's own, extracted by `node tools/pipeline/thug1_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.handEdits; never typed in)",
+    "_source": "classes, rail / waypoint types and terrains, other flags and values: THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays and <level>col.prx collision against THUG1's own, extracted by `node tools/pipeline/run.ts thug1_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.handEdits; never typed in)",
     "NJ": {
       "NJ_Small_SouthEast07": {"CollisionMode": null},
       "TRG_rail_e_midhouse1_06": {"Type": null},
@@ -2258,7 +2258,7 @@
   },
   "rails": {
     "_register": "TP-36",
-    "_source": "rails added from node data, links changed: THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays and <level>col.prx collision against THUG1's own, extracted by `node tools/pipeline/thug1_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.handEdits; never typed in)",
+    "_source": "rails added from node data, links changed: THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays and <level>col.prx collision against THUG1's own, extracted by `node tools/pipeline/run.ts thug1_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.handEdits; never typed in)",
     "NJ": {
       "added": [
         {
@@ -2824,7 +2824,7 @@
   },
   "face_values": {
     "_register": "TP-37",
-    "_source": "per-face collision flags and terrain: THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays and <level>col.prx collision against THUG1's own, extracted by `node tools/pipeline/thug1_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.handEdits; never typed in)",
+    "_source": "per-face collision flags and terrain: THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays and <level>col.prx collision against THUG1's own, extracted by `node tools/pipeline/run.ts thug1_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.handEdits; never typed in)",
     "NY": {
       "NY_Chase_EG_fountain_new": {
         "faces": 304,
@@ -2930,7 +2930,7 @@
   },
   "collision_removed": {
     "_register": "TP-38",
-    "_source": "collision objects and faces taken out: THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays and <level>col.prx collision against THUG1's own, extracted by `node tools/pipeline/thug1_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.handEdits; never typed in)",
+    "_source": "collision objects and faces taken out: THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays and <level>col.prx collision against THUG1's own, extracted by `node tools/pipeline/run.ts thug1_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.handEdits; never typed in)",
     "SE": {
       "dt_choptail01": {"faces": 28, "remove": "all"},
       "dt_soda01": {"faces": 14, "remove": "all"},
@@ -3028,7 +3028,7 @@
   },
   "collision_reshaped": {
     "_register": "TP-39",
-    "_source": "collision vertices moved: THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays and <level>col.prx collision against THUG1's own, extracted by `node tools/pipeline/thug1_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.handEdits; never typed in)",
+    "_source": "collision vertices moved: THUGPRO's installed data\\pre\\<level>_scripts.prx node arrays and <level>col.prx collision against THUG1's own, extracted by `node tools/pipeline/run.ts thug1_levels/thugpro_compare.ts --extract-thugpro` (thugpro_edits.handEdits; never typed in)",
     "SE": {"SE_JO_CatWalk41": {"faces": 24, "verts": [[37, -4635.375, 500.5625, 2028.9375]]}},
     "HN": {
       "Inviso_SnowBlocker": {
@@ -3039,7 +3039,7 @@
   },
   "thugpro_new": {
     "_register": "TPN-THUG1-1 ... TPN-THUG1-4",
-    "_comment": "NEW in THUGPRO - content THUGPRO made that is in no source game (the user's decision 2026-10-20, with Morten's agreement): BY REFERENCE ONLY - references and checksums of THUGPRO's files, read from the user's THUGPRO install when converting (--thugpro), never their bytes. Written by `node tools/pipeline/thug1_levels/thugpro_compare.ts --extract-thugpro` (thugpro_new.extract); its form: tools/pipeline/thug1_levels/thugpro_new.ts (entries: compat.Entry, target {level, name}; levels: each level's THUGPRO key and archive). --no-thugpro-new or --compat none leave it out.",
+    "_comment": "NEW in THUGPRO - content THUGPRO made that is in no source game (the user's decision 2026-10-20, with Morten's agreement): BY REFERENCE ONLY - references and checksums of THUGPRO's files, read from the user's THUGPRO install when converting (--thugpro), never their bytes. Written by `node tools/pipeline/run.ts thug1_levels/thugpro_compare.ts --extract-thugpro` (thugpro_new.extract); its form: thug2-thug1-level-converter/thug1_levels/thugpro_new.ts (entries: compat.Entry, target {level, name}; levels: each level's THUGPRO key and archive). --no-thugpro-new or --compat none leave it out.",
     "levels": {
       "NJ": {"key": "nj", "archive": "data\\pre\\NJ_scripts.prx"},
       "NY": {"key": "ny", "archive": "data\\pre\\NY_scripts.prx"},
@@ -12957,7 +12957,7 @@
     ]
   },
   "port_changes": {
-    "_comment": "Our own changes to THUG1's levels (PC-THUG1-1 ...): what tools/pipeline/thug1_levels does that comes neither from THUG1 nor from THUGPRO (tools/pipeline/thug1_levels/port_changes.ts; README.md here, \"Our own changes (port_changes)\"). Read whatever --compat says; --no-port-changes switches off every entry that isn't required (required: needed for THUG2 to load the level or to avoid a crash). Each entry (compat.Entry): id, op (add / set / remove), rule, required, target {levels, what}, why.",
+    "_comment": "Our own changes to THUG1's levels (PC-THUG1-1 ...): what thug2-thug1-level-converter/thug1_levels does that comes neither from THUG1 nor from THUGPRO (thug2-thug1-level-converter/thug1_levels/port_changes.ts; README.md here, \"Our own changes (port_changes)\"). Read whatever --compat says; --no-port-changes switches off every entry that isn't required (required: needed for THUG2 to load the level or to avoid a crash). Each entry (compat.Entry): id, op (add / set / remove), rule, required, target {levels, what}, why.",
     "entries": [
       {
         "id": "PC-THUG1-1",
@@ -13226,7 +13226,7 @@
         "required": false,
         "target": {
           "levels": ["VC"],
-          "what": "THUG1's drivable cars: THUG1's driving scripts (scripts\\game\\player_controlled_vehicle.qb, scripts\\game\\misc\\car_scripts.qb - THUG2 ships both empty, its engine and its goal_initialize_skater still drive) installed in their THUG2 form (tools/pipeline/thug1_levels/driving.ts); VC's limo (TRG_drive_veh_limo) kept drivable, its goal (VC_Goal_Race4, which unlocks it in THUG1) counted as won"
+          "what": "THUG1's drivable cars: THUG1's driving scripts (scripts\\game\\player_controlled_vehicle.qb, scripts\\game\\misc\\car_scripts.qb - THUG2 ships both empty, its engine and its goal_initialize_skater still drive) installed in their THUG2 form (thug2-thug1-level-converter/thug1_levels/driving.ts); VC's limo (TRG_drive_veh_limo) kept drivable, its goal (VC_Goal_Race4, which unlocks it in THUG1) counted as won"
         },
         "why": "the user's report (2026-10-21): THUG1's Vancouver has a limousine you can drive by the SJ kill zone; ours had none (no goals: the goal condition was never true; THUGPRO emptied the car's script and VC_startup; THUG2 hasn't the driving scripts)",
         "scripts": ["scripts\\game\\player_controlled_vehicle.qb", "scripts\\game\\misc\\car_scripts.qb"],

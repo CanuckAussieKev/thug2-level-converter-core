@@ -1,0 +1,28 @@
+{
+  // `npm run prepare` (npm runs it on install - also when another project installs this one from git): every .ts
+  // also as .js beside it, imports as .js. Node strips no types under node_modules, so a project that depends on this
+  // one runs these .js files (package.json "exports": ./x.ts -> ./x.js; tsc still reads the .ts).
+  "compilerOptions": {
+    "target": "es2024",
+    "lib": ["es2024"],
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "types": ["node"],
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    "isolatedModules": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noCheck": true,
+    "rewriteRelativeImportExtensions": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "out"]
+}

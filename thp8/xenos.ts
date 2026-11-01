@@ -1,4 +1,4 @@
-// THP8's texture dictionaries (.tex in the zone archives, Xbox 360) read into tools/pipeline/level_port/tex.ts's THUG2 form.
+// THP8's texture dictionaries (.tex in the zone archives, Xbox 360) read into level_port/tex.ts's THUG2 form.
 //
 // File (big-endian): u32 0xFACECAA7, u16 0x011C, u16 count, u32 offset of the records, u32 offset of the data (the
 // first texture's is the 4 KB after it), u32 -1, u32 10, u32 0x1C, 0xEF filler; then 0x28 bytes per texture

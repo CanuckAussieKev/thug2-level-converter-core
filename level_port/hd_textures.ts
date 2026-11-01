@@ -1,10 +1,10 @@
 // NOT ORIGINAL - an optional pass that upscales a converted level's textures with an AI upscaler (Real-ESRGAN's
-// standalone realesrgan-ncnn-vulkan: Vulkan, no CUDA / PyTorch - tools/pipeline/hd_textures/README.md; fetched by
-// tools/pipeline/hd_textures/fetch.ts into out\, never committed). Off by default; a converter turns it on with
-// `--hd-textures [2|4]` (tools/pipeline/thps3_levels).
+// standalone realesrgan-ncnn-vulkan: Vulkan, no CUDA / PyTorch - thug2-content-pipeline/hd_textures/README.md; fetched by
+// thug2-content-pipeline/hd_textures/fetch.ts into out\, never committed). Off by default; a converter turns it on with
+// `--hd-textures [2|4]` (thug2-thps3-level-converter/thps3_levels).
 //
 // Per texture of a level's dictionary (tex.TexFile, before it's written):
-// - the top level as BGRA texels (DXT ones decoded - tools/pipeline/level_port/dxt.ts);
+// - the top level as BGRA texels (DXT ones decoded - level_port/dxt.ts);
 // - skipped: textures smaller than --hd-min (default 16) on their longer side, single-colour ones, and ones already
 //   at the size cap (--hd-max, default 1024: the scale halves until the longer side fits);
 // - the colour upscaled on its own, as RGB: the texels under alpha 0 first filled from their visible neighbours (what
@@ -37,7 +37,7 @@ import { REPO } from "./common.ts";
 import * as dxt from "./dxt.ts";
 import type { TexFile, Texture } from "./tex.ts";
 
-// The pinned release (tools/pipeline/hd_textures/fetch.ts): Real-ESRGAN v0.2.5.0's Windows build.
+// The pinned release (thug2-content-pipeline/hd_textures/fetch.ts): Real-ESRGAN v0.2.5.0's Windows build.
 export const TOOL_RELEASE = "realesrgan-ncnn-vulkan-20220424";
 export const DEFAULT_TOOL = path.join(REPO, "out", "hd_textures", TOOL_RELEASE, "realesrgan-ncnn-vulkan.exe");
 export const MODELS = ["realesrgan-x4plus", "realesrgan-x4plus-anime"] as const;

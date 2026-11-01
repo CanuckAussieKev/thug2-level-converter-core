@@ -78,7 +78,7 @@ const floats = (d: Buffer, at: number, n: number): number[] =>
     Array.from({ length: n }, (_, k) => d.readFloatBE(at + 4 * k));
 
 // Readers of other material block versions, by version (Tony Hawk's Proving Ground's 0x0410:
-// tools/pipeline/thpg_levels/scene.ts registers its own).
+// thug2-thpg-level-converter/thpg_levels/scene.ts registers its own).
 export const READERS = new Map<number, (data: Buffer, name: string) => Geom>();
 
 export function readGeom(data: Buffer, name = "geom"): Geom {

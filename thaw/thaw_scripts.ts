@@ -1,9 +1,9 @@
-// NOT ORIGINAL - a THAW level's scripts, moving objects, peds and cars in THUG2's free skate (tools/pipeline/thaw_levels).
+// NOT ORIGINAL - a THAW level's scripts, moving objects, peds and cars in THUG2's free skate (thug2-thaw-level-converter/thaw_levels).
 // Nothing of either game is stored: everything is read from the user's files each time.
 //
 // Scripts: THAW's compiled scripts are THUG2's token stream (the same if / else / random / switch tokens) with one more
 // token, 0x4A: an inline structure in THAW's item format - a call's arguments, mostly. They are read here into
-// tools/pipeline/level_port/script_port.ts's form (ThawSource: if / else as its 0x25 / 0x26, jumps as target indices, the
+// level_port/script_port.ts's form (ThawSource: if / else as its 0x25 / 0x26, jumps as target indices, the
 // randoms' own weights, switch short jumps, the inline structures as THUG2's { } tokens - a call's own one as plain
 // arguments) and brought along by its Translator: from the level's node scripts down through everything they call,
 // statement by statement left out where THUG2 hasn't the command (or the member function for the object running it,
@@ -189,7 +189,7 @@ function inManual(toks: readonly qb.Token[], k: number, out: Tok[]): number | nu
 }
 
 // A THAW script body as script_port's token list (Tok.i: the index of the THAW token it comes from).
-// (order: the inline structures' byte order - ">" for THP8's Xbox 360 files, tools/pipeline/thp8_levels)
+// (order: the inline structures' byte order - ">" for THP8's Xbox 360 files, thug2-thp8-level-converter/thp8_levels)
 export function scriptToks(
     body: Uint8Array,
     names: Map<number, string>,

@@ -1,4 +1,4 @@
-// NOT ORIGINAL - tests of tools/pipeline/lib/converter_args.ts against what Python's argparse gives the converters' command lines.
+// NOT ORIGINAL - tests of lib/converter_args.ts against what Python's argparse gives the converters' command lines.
 
 import assert from "node:assert/strict";
 import { test } from "node:test";

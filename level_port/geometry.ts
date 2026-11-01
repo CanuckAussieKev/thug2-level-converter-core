@@ -1,6 +1,6 @@
 // Level geometry in THUG2's form: scenes whose sectors keep one vertex array per sector (THPS4's scn.dat, THUG1's
 // scn.xbx) become THUG2's per-mesh vertex buffers, and collision objects become THUG2's version 10 ones (in memory;
-// tools/pipeline/thps4_levels and tools/pipeline/thug1_levels write them).
+// thug2-thps4-level-converter/thps4_levels and thug2-thug1-level-converter/thug1_levels write them).
 
 import { hex8, pyBytes, pyMax, pyMin, pySum, roundHalfEven } from "../lib/py.ts";
 import { pack } from "../lib/struct.ts";
@@ -47,7 +47,7 @@ export function bounds(points: readonly (readonly number[])[]): [number[], numbe
     return [lo, hi, center, radius];
 }
 
-// A sector as tools/pipeline/thps4_levels' / tools/pipeline/thug1_levels' readers make it: one vertex array for all its meshes.
+// A sector as thug2-thps4-level-converter/thps4_levels' / thug2-thug1-level-converter/thug1_levels' readers make it: one vertex array for all its meshes.
 export interface SourceSector {
     checksum: number;
     bone: number;
@@ -181,7 +181,7 @@ export function convertScene(
 
 // --- collision --------------------------------------------------------------------------------------------------
 
-// A collision object as tools/pipeline/thps4_levels' reader makes it.
+// A collision object as thug2-thps4-level-converter/thps4_levels' reader makes it.
 export interface SourceColObject {
     checksum: number;
     flags: number;

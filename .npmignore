@@ -1,0 +1,3 @@
+# what an install from git leaves out (the .js files made by prepare stay in)
+node_modules/
+out/

@@ -1,6 +1,6 @@
 // Little-endian binary reading and writing for the level file formats.
 //
-// Formats are Python struct strings without the byte order ("8I", "IHHHBBI", `${n}H`): tools/pipeline/lib/struct.ts, "<"
+// Formats are Python struct strings without the byte order ("8I", "IHHHBBI", `${n}H`): lib/struct.ts, "<"
 // added here.
 
 import { calcsize, packInto, type StructValue, unpackFrom, unpackNumbers } from "../lib/struct.ts";

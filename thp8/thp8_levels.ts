@@ -1,5 +1,5 @@
 // NOT ORIGINAL - Tony Hawk's Project 8's levels (the Xbox 360 game's data) converted to THUG2's formats, for its level
-// select's PROJECT 8 section (tools/pipeline/menu_level/make_menu_level.ts). Nothing of either game is in the repo: the files
+// select's PROJECT 8 section (thug2-content-pipeline/menu_level/make_menu_level.ts). Nothing of either game is in the repo: the files
 // are made from the user's own copies each time. README.md has how to run it and what is converted.
 //
 // THP8's world is one city streamed in zones (game\DATA\COMPRESSED\ZONES\z_<zone>.pak.xen, each with its _lod
@@ -139,7 +139,7 @@ export function signText(info: ZoneInfo, areaNames: ReadonlyMap<string, string>)
 // --- the game converted -------------------------------------------------------------------------------------------
 
 // What differs between THP8 and another game of its engine whose data this converter reads too (Tony Hawk's Proving
-// Ground: tools/pipeline/thpg_levels sets its own with useGame). The defaults are THP8's.
+// Ground: thug2-thpg-level-converter/thpg_levels sets its own with useGame). The defaults are THP8's.
 export interface GameProfile {
     key: string; // the level names' prefix (thp8_net_skatepark, thp8_sky)
     label: string; // the level select's game ("THP8")
@@ -289,7 +289,7 @@ const THP8_TO_THUG2: Record<string, (typeof THUG2_TERRAIN_TYPES)[number]> = {
     GOLDCOINS: "METALTIN",
     ZEROFRICTION: "ICE",
     HIGHFRICTION: "CARPET",
-    // (Tony Hawk's Proving Ground's own names - tools/pipeline/thpg_levels)
+    // (Tony Hawk's Proving Ground's own names - thug2-thpg-level-converter/thpg_levels)
     CARPET: "CARPET",
     CORRPLASTIC: "FIBERGLASS",
     LEAVESCONC: "CONCROUGH",
@@ -303,7 +303,7 @@ const THP8_TO_THUG2: Record<string, (typeof THUG2_TERRAIN_TYPES)[number]> = {
 // THP8 makes much of its zones' geometry from node flags (`CreatedFromVariable=NODEFLAG_...`: the gates between zones,
 // goal pieces, the turf war's signs), as THAW does. The flags as THP8's non-story games set them (qb.pak's
 // game_progress_set_non_story_mode_nodeflags - the unlocked state: gates open, barriers down) - read with
-// tools/pipeline/thaw_levels' nodeFlagScript; the nodes they make get CreatedAtStart (applyNodeFlags).
+// thug2-thaw-level-converter/thaw_levels' nodeFlagScript; the nodes they make get CreatedAtStart (applyNodeFlags).
 export const NODEFLAG_SCRIPT = "game_progress_set_non_story_mode_nodeflags";
 
 export function nonStoryNodeFlags(compressed: string, names: Map<number, string>): Map<number, boolean> {
@@ -2449,7 +2449,7 @@ export function soloRestarts(text: string): [string, number] {
     return [out, changed];
 }
 
-// What bringing a zone's scripts along needs (tools/pipeline/thaw_levels/thaw_scripts.ts, which reads THP8's scripts too: the
+// What bringing a zone's scripts along needs (thaw/thaw_scripts.ts, which reads THP8's scripts too: the
 // same token stream, big-endian inline structures): THUG2's commands and assets.
 export interface ScriptPort {
     thug2: scriptPort.Thug2;

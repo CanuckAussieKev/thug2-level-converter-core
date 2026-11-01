@@ -1,16 +1,16 @@
 // NOT ORIGINAL - missing-texture finder for converted levels (any port): per level folder, the surfaces THUG2 draws
 // without a real texture.
 //
-//     node tools/pipeline/level_port/texture_check.ts <levels folder> [<level> ...] [--top N]
+//     node level_port/texture_check.ts <levels folder> [<level> ...] [--top N]
 //
-// e.g. node tools/pipeline/level_port/texture_check.ts C:\Games\THUG2-2\thug2-decomp-thp8\levels thp8_net_beavervalley
+// e.g. node level_port/texture_check.ts C:\Games\THUG2-2\thug2-decomp-thp8\levels thp8_net_beavervalley
 //
 // In the game's terms a texture is missing when a material's pass names a checksum the level's .tex.xbx doesn't hold
 // (THUG2 draws that pass untextured: its vertex colour only), or a pass has none at all. Converted textures can also
 // be there and still show nothing: a flat colour (a converter took a source's blank stand-in - THP8's 32 x 32 grey,
 // its white 32 x 32) or a tiny stipple (THP8's 16 x 16 dither of see-through texels) - found from the texels.
 // Reported by cause and texture, with the triangles and area drawn with it and an example place for
-// tools/pipeline/game/try_spot.ts.
+// tools/game/try_spot.ts.
 
 import * as fs from "node:fs";
 import * as path from "node:path";
@@ -219,7 +219,7 @@ export function main(argv: readonly string[] = process.argv.slice(2)): number {
     });
     const [folder, ...levels] = positionals;
     if (!folder) {
-        print("usage: node tools/pipeline/level_port/texture_check.ts <levels folder> [<level> ...] [--top N]");
+        print("usage: node level_port/texture_check.ts <levels folder> [<level> ...] [--top N]");
         return 2;
     }
     const names = levels.length

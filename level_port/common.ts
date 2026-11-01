@@ -1,4 +1,4 @@
-// What the level converters (tools/pipeline/thps4_levels, tools/pipeline/thug1_levels) share besides the formats: compiling NeverScript,
+// What the level converters (thug2-thps4-level-converter/thps4_levels, thug2-thug1-level-converter/thug1_levels) share besides the formats: compiling NeverScript,
 // writing a converted level's files (each read back first), the level structure's lighting keys, and the self-check's
 // THUG2 round trips.
 
@@ -69,7 +69,7 @@ export function writeLevel(
 }
 
 // NOT ORIGINAL - z-fighting resolved in a written level (its scene and qb in `levelDir`): coplanar copies cut away,
-// opposite sides made one-sided, layers biased over their bases (tools/pipeline/level_port/zfight_resolve.ts). Only the scene
+// opposite sides made one-sided, layers biased over their bases (level_port/zfight_resolve.ts). Only the scene
 // file is rewritten - collision, textures and scripts stay as written. Every converter calls it once the level's
 // scene and final qb are written.
 export function resolveZFight(levelDir: string, name: string, report: string[]): void {

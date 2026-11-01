@@ -1,5 +1,5 @@
 // NOT ORIGINAL - DXT1 / DXT5 (S3TC, Direct3D's BC1 / BC3) decoding and a small encoder, for passes that rework a
-// level's textures and must write them back in the format they came in (tools/pipeline/level_port/hd_textures.ts). THUG2's
+// level's textures and must write them back in the format they came in (level_port/hd_textures.ts). THUG2's
 // .tex.xbx DXT values (tex.ts): 1 and 2 are DXT1 (2: with 1-bit alpha), 5 is DXT5. Texels are B, G, R, A bytes - the
 // A8R8G8B8 layout the 32-bit textures use.
 //

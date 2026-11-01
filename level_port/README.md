@@ -1,7 +1,7 @@
 # level_port - shared code of the level converters
 
-Used by `tools/pipeline/thps4_levels` (THPS4), `tools/pipeline/thug1_levels` (THUG1), `tools/pipeline/thps3_levels` and `tools/pipeline/thaw_levels` (THAW); `ported_levels.ts` also by
-`tools/pipeline/menu_level/make_menu_level.ts`, which installs what they convert.
+Used by `thug2-thps4-level-converter/thps4_levels` (THPS4), `thug2-thug1-level-converter/thug1_levels` (THUG1), `thug2-thps3-level-converter/thps3_levels` and `thug2-thaw-level-converter/thaw_levels` (THAW); `ported_levels.ts` also by
+`thug2-content-pipeline/menu_level/make_menu_level.ts`, which installs what they convert.
 
 - `binio.ts` - little-endian reading / writing.
 - `prx.ts` - THUG2 `.prx` / THUG1 `.pre` archives (same format), LZSS.
@@ -17,9 +17,9 @@ Used by `tools/pipeline/thps4_levels` (THPS4), `tools/pipeline/thug1_levels` (TH
   a view distance (default 100 m) at THUG2's depth precision (24-bit, near plane 12: `fightDistance`); pairs whose z
   biases differ and opposite-facing ones counted apart (the same triangles are not safe: each copy is lit and
   triangulated on its own - the report's FLICKER line counts everything a player sees fight, coplanar copies, gap ~0, apart); a `try_spot.ts` spot each
-  (`node tools/pipeline/level_port/zfight.ts <levels folder> [<level> ...] [--top N] [--tolerance IN] [--view M] [--near IN]
+  (`node level_port/zfight.ts <levels folder> [<level> ...] [--top N] [--tolerance IN] [--view M] [--near IN]
   [--min-area M2] [--csv FILE]`). `findZFights` takes a Scene - a .scn.xbx read, or a converter's output before
-  it's written. `tools/pipeline/thp8_levels/render_audit.ts zfight` names THP8's pairs and their causes.
+  it's written. `thp8/render_audit.ts zfight` names THP8's pairs and their causes.
 - `zfight_raster.ts` - CLI (`npm run zfight-raster -- ...`): z-fighting as the player sees it - a software rasterizer
   drawing the level from the skater camera at a few hundred spots over its ground (or `--at` / `--camera`) with
   THUG2's projection (near 2, far 96000, the widened 72-degree lens), 24-bit LESSEQUAL depth, material z bias,
@@ -33,7 +33,7 @@ Used by `tools/pipeline/thps4_levels` (THPS4), `tools/pipeline/thug1_levels` (TH
   and re-triangulated), opposite sides made one-sided (a one-sided copy of the material), layers biased over their
   bases (the smaller snapped onto the other's plane; draw order raised over an opaque base), alternate states left
   alone; only the .scn.xbx is rewritten. A note per level in `<staging>\zfight\<level>.json` (what was done, the
-  see-through materials left for step 2's slope-scaled bias). `node tools/pipeline/level_port/zfight_resolve.ts <levels
+  see-through materials left for step 2's slope-scaled bias). `node level_port/zfight_resolve.ts <levels
   folder> [<level> ...] [--out FOLDER] [--dry-run] [--explain HEX]`. Header: the rules.
 - `script_toggles.ts` - which sectors a level's scripts show and hide, in runs of statements (`thereWhenever`: one
   sector there whenever another is).
@@ -42,14 +42,14 @@ Used by `tools/pipeline/thps4_levels` (THPS4), `tools/pipeline/thug1_levels` (TH
   `THUG2_ZFIGHT_GAME` (default C:\Games\THUG2\Game).
 - `texture_check.ts` - CLI: surfaces drawn without a real texture - a pass's checksum not in the level's .tex.xbx, no
   texture, a flat colour, a tiny see-through dither (a source's placeholder) - by cause and texture, with area and a
-  spot (`node tools/pipeline/level_port/texture_check.ts <levels folder> [<level> ...] [--top N]`).
+  spot (`node level_port/texture_check.ts <levels folder> [<level> ...] [--top N]`).
 - `layer_check.ts` - CLI: per level, mip chains that stop short and how much layer area has a z bias between -
-  a port compared with THUG2's own (`node tools/pipeline/level_port/layer_check.ts <levels folder> [<level> ...]`).
+  a port compared with THUG2's own (`node level_port/layer_check.ts <levels folder> [<level> ...]`).
 - `qb.ts` - THPS4 / THUG1 qb files: globals, names, script statements; values as NeverScript text.
 - `nodes.ts` - node arrays: what's kept, kill zones, THUG1's included structures.
 - `ped_rigs.ts` - every ported human ped on the skeleton its THUG2 profile's model is rigged to (Ped_Female for
   women, else THPS6_human) and the level's load_level_anims for Ped_Female's animations; `ped_rig_check.ts` audits
-  converted levels (`node tools/pipeline/level_port/ped_rig_check.ts <overlay folders>`).
+  converted levels (`node level_port/ped_rig_check.ts <overlay folders>`).
 - `peds_cars.ts` - THPS4's peds and cars made again as THUG2's own (THUG2's ped AI walking / vert skating, its
   Car_Generic01 on the same paths, THUG2's profiles and models).
 - `script_port.ts` - the script translator (all four games); its TriggerType translation (`triggerType`) is shared.
@@ -63,7 +63,7 @@ Used by `tools/pipeline/thps4_levels` (THPS4), `tools/pipeline/thug1_levels` (TH
 - `ramp_collision.ts` - collision flags for ramps of ports whose source decides skatability itself (THPS2): steep
   faces continuing a ramp made skatable, faces lying on a more rideable one given its flags (THUG2's rules in its
   header). `ramp_check.ts` - CLI: per level, concave ramp joins by bend and what ramp_collision would still change
-  (`node tools/pipeline/level_port/ramp_check.ts <col.xbx | folder>...`; `--list` face by face; `--spot <col.xbx> <x,y,z>
+  (`node level_port/ramp_check.ts <col.xbx | folder>...`; `--list` face by face; `--spot <col.xbx> <x,y,z>
   [radius]` the faces near a screenshot sidecar's position). Faces of LevelObjects (each in its own space) are
   counted as if in the level's.
 

@@ -1,5 +1,5 @@
 // NOT ORIGINAL - collision flags for ramps of converted levels whose source game decides skatability by itself
-// (THPS2: tools/pipeline/thps2_levels).
+// (THPS2: thug2-thps2-level-converter/thps2_levels).
 //
 // THUG2's skater (src/game/skater/core_physics_feelers.cpp CheckFeeler) takes a face as ground when it is flagged
 // skatable (0x1) or vert (0x8); flagged not skatable (0x2) or wallridable (0x4) it is a wall; with none of those, a
@@ -16,7 +16,7 @@
 // over a ramp - NY's graffiti over a vert wall) takes the flags of the face under it when those make it more
 // rideable (vert over skatable over none over a wall): the skater meets the decal first.
 //
-// Vert, as THUG2's own quarter pipes have it (2026-10-24; tools/pipeline/level_port/ramp_check.ts --flags on a level's
+// Vert, as THUG2's own quarter pipes have it (2026-10-24; level_port/ramp_check.ts --flags on a level's
 // collision: their faces are vert from ~45 degrees up, never under 40, and no face steeper than 65 rides without
 // it): the steep ramp faces above are vert (flagged skatable, the skater left a 73-degree face into ordinary air
 // pitched over and landed on the deck behind on his back); the unflagged faces of 45 degrees and more concave under

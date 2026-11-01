@@ -3,13 +3,13 @@
 // culling and draw order, and counts the pixels whose visible surface depends on depth differences the hardware
 // can't resolve - real z-fight pixels, per mesh pair, per level, per viewpoint.
 //
-//     node tools/pipeline/level_port/zfight_raster.ts <levels folder> [<level> ...] [--views N] [--headings K] [--seed S]
+//     node level_port/zfight_raster.ts <levels folder> [<level> ...] [--views N] [--headings K] [--seed S]
 //            [--size WxH] [--aspect A] [--jitter UNITS] [--top N] [--workers N] [--orders] [--draw-distance-scale X]
 //            [--at x,y,z[,heading]]... [--camera x,y,z,dx,dy,dz]... [--png FILE] [--csv FILE] [--json FILE]
 //
-// e.g. node tools/pipeline/level_port/zfight_raster.ts C:\Games\THUG2-4\thug2-decomp-thp8\levels thp8_net_beavervalley
-//      node tools/pipeline/level_port/zfight_raster.ts C:\Games\THUG2\Game\Data\levels AP
-//      node tools/pipeline/level_port/zfight_raster.ts <levels> thp8_net_beavervalley --camera -5720,1010,8244,-0.983,-0.18,-0.033
+// e.g. node level_port/zfight_raster.ts C:\Games\THUG2-4\thug2-decomp-thp8\levels thp8_net_beavervalley
+//      node level_port/zfight_raster.ts C:\Games\THUG2\Game\Data\levels AP
+//      node level_port/zfight_raster.ts <levels> thp8_net_beavervalley --camera -5720,1010,8244,-0.983,-0.18,-0.033
 //           --png out\bv.png          (one view: the user's screenshot; fights in magenta)
 // (npm run zfight-raster -- <args>)
 //

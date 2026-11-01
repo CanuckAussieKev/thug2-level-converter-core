@@ -1,4 +1,4 @@
-// NOT ORIGINAL - another game's level scripts made runnable in THUG2 (tools/pipeline/thps3_levels: THPS3's): a translation of
+// NOT ORIGINAL - another game's level scripts made runnable in THUG2 (thug2-thps3-level-converter/thps3_levels: THPS3's): a translation of
 // the compiled scripts' token streams, script by script, from the level's node scripts down through everything they
 // call, spawn or hand out as exception / gap scripts. Nothing of either game is stored: the scripts are read from the
 // user's files each time and written into the converted level's .qb.
@@ -56,7 +56,7 @@ export const BOUNCY = "bouncy";
 export type Context = typeof OBJECT | typeof SKATER | typeof NONE | typeof PED | typeof VEHICLE | typeof BOUNCY;
 const CONTEXTS: Context[] = [OBJECT, SKATER, NONE, PED, VEHICLE, BOUNCY];
 
-// What each context's objects have: the names of THUG2's components (tools/pipeline/level_port/thug2_members.ts, generated
+// What each context's objects have: the names of THUG2's components (level_port/thug2_members.ts, generated
 // from the exe by tools/extract_members.ts) and two names of the objects themselves - "object" (every object: CObject's
 // own members, Die, Obj_GetId... and the table 0x57525413) and "skater" (the skater object, CSkater's
 // CallMemberFunction 0x005835D0: SparksOff, SkaterIsNamed...). "compositeobject": a composite object's own table
@@ -181,7 +181,7 @@ export const BY_NAME: Readonly<Record<Context, ReadonlySet<string>>> = {
     [BOUNCY]: new Set(),
 };
 
-// A converter's own context (THAW's skater: tools/pipeline/thaw_levels/thaw_scripts.ts), with its SAFE_COMPONENTS and BY_NAME
+// A converter's own context (THAW's skater: thaw/thaw_scripts.ts), with its SAFE_COMPONENTS and BY_NAME
 // - as Python's SAFE_COMPONENTS.setdefault / BY_NAME.setdefault: a context already there is kept. Every Translator
 // made after knows it. Returns the context.
 export function addContext(context: string, components: ReadonlySet<string>, byName: ReadonlySet<string>): Context {
@@ -319,7 +319,7 @@ export const RENAMES: Readonly<Record<string, string>> = {
 // A condition that is always false (an `if` whose command is left out): GotParam of a name no script passes.
 export const NEVER = "thps3_port_never";
 // Markers a converter writes into the source game's scripts before translating them (THPS3's TP-41 edits -
-// tools/pipeline/thps3_levels editScripts): an `if` command decided true (ALWAYS) or false (NEVER), and a statement left out
+// thug2-thps3-level-converter/thps3_levels editScripts): an `if` command decided true (ALWAYS) or false (NEVER), and a statement left out
 // (DROPPED). The translator makes ALWAYS `not GotParam <never>` and NEVER `GotParam <never>`, and leaves DROPPED out.
 export const ALWAYS = "thps3_port_always";
 export const DROPPED = "thps3_port_dropped";
@@ -513,7 +513,7 @@ const SAME_OBJECT_SCRIPTS: ReadonlySet<number> = new Set(
 // --- what THUG2 has ------------------------------------------------------------------------------------------------
 
 // THUG2's commands, read from the user's game: its C functions (the CFunction table in the reference build: name, function),
-// its member functions (tools/pipeline/level_port/thug2_members.ts: the components' tables and the members registered by name,
+// its member functions (level_port/thug2_members.ts: the components' tables and the members registered by name,
 // with the components that run them) and its scripts and globals (Data\pre\qb_scripts.prx).
 export class Thug2 {
     static readonly CFUNC_TABLE = 0x67f3a0;

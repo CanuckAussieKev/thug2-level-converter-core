@@ -1,13 +1,11 @@
 {
-  // For this repository on its own (`npm install`, `npm run typecheck`); inside the decomp its root tsconfig.json
-  // checks these files too. Node runs them directly (type stripping): nothing is emitted.
+  // `npm run typecheck`: Node runs the .ts files directly (type stripping), tsc only checks them.
   "compilerOptions": {
     "target": "es2024",
     "lib": ["es2024"],
     "module": "nodenext",
     "moduleResolution": "nodenext",
     "types": ["node"],
-    "noEmit": true,
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "erasableSyntaxOnly": true,
@@ -19,7 +17,8 @@
     "noFallthroughCasesInSwitch": true,
     "noPropertyAccessFromIndexSignature": false,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules", "out"]

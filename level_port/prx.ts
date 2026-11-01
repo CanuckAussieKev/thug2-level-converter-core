@@ -8,7 +8,7 @@ import { decodeAsciiReplace } from "../lib/py.ts";
 import { unpackNumbers } from "../lib/struct.ts";
 
 export function lzssDecode(data: Uint8Array, size: number): Buffer {
-    // A 4096-byte window filled with spaces, writing from 4096 - 18 (as tools/pipeline/menu_level/make_menu_level.ts's).
+    // A 4096-byte window filled with spaces, writing from 4096 - 18 (as thug2-content-pipeline/menu_level/make_menu_level.ts's).
     const window = Buffer.alloc(4096, 0x20);
     let r = 4096 - 18;
     const out = Buffer.alloc(Math.max(0, size) + 18);

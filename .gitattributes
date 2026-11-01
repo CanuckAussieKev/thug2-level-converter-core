@@ -2,10 +2,3 @@
 *.ts text eol=lf
 *.mjs text eol=lf
 *.json text eol=lf
-*.ttf binary
-# Edits to game scripts and their own-text halves (lib/edits.ts): byte-exact (trailing spaces matter)
-*.edits -text diff
-thaw_bmx/bike_scripts.ns -text diff
-menu_level/main_menu.ns -text diff
-# PartyMod's binary patches: bytes
-*.bps binary

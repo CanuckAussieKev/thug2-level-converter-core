@@ -9,16 +9,15 @@ import * as os from "node:os";
 import * as path from "node:path";
 import { helpFromHeader } from "../lib/cli.ts";
 import { unifiedDiff } from "../lib/difflib.ts";
+import { requireNs } from "../lib/neverscript.ts";
 import { isMain, print, pyJoin, pyParseInt, pyRepr, pySplitlines, readTextPy, runMain } from "../lib/py.ts";
 import { finditer, sub } from "../lib/re.ts";
-
-export const NS = "C:\\Dev\\thug2-decomp\\out\\neverscript\\ns.exe";
 
 const SCRIPT = /^script (\S+) \{(.*?)^\} *$/ms;
 
 function scripts(file: string, tmp: string): [Map<string, string>, string] {
     const out = path.join(tmp, "x.ns");
-    const result = spawnSync(NS, ["-d", file, "-o", out]);
+    const result = spawnSync(requireNs(), ["-d", file, "-o", out]);
     if (result.error) throw result.error;
     let text = readTextPy(out, "replace");
     const found = new Map<string, string>();

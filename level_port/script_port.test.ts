@@ -2,10 +2,12 @@
 // table (thug2_members.ts), TriggerType's translation, and which commands a THUG2 script needs of its object.
 
 import assert from "node:assert/strict";
+import * as fs from "node:fs";
 import { test } from "node:test";
 import { pack } from "../lib/struct.ts";
 import { checksum } from "./qb.ts";
 import * as sp from "./script_port.ts";
+import { CFUNC_NAMES } from "./thug2_cfuncs.ts";
 
 test("member table: the members THUG2 handles by name, and its tables", () => {
     const [members, table] = sp.Thug2.memberTable();
@@ -210,4 +212,16 @@ test("condition: `if inside` - our proximity ghosts' parameter, or THUG2's Insid
     assert.deepEqual(words(tr.condition([name("inside")], new Set(), false)), ["GotParam", "inside"]);
     Object.assign(tr, { proximInside: true }); // (THUG1's ProximNodes: THUG2's own, which set Inside)
     assert.deepEqual(words(tr.condition([name("inside")], new Set(), false)), ["inside"]);
+});
+
+test("THUG2's C functions are data (no exe needed); the list is the exe's table when a game is there", (t) => {
+    assert.equal(CFUNC_NAMES.length, sp.Thug2.CFUNC_COUNT);
+    assert.equal(CFUNC_NAMES[0], "Wait");
+    assert.equal(new Set(CFUNC_NAMES.map((n) => n.toLowerCase())).size, CFUNC_NAMES.length);
+    const exe = process.env.THUG2_EXE ?? String.raw`C:\Games\THUG2\Game\THUG2.exe`;
+    if (!fs.existsSync(exe)) {
+        t.skip(`no ${exe} (THUG2_EXE)`);
+        return;
+    }
+    assert.deepEqual(sp.Thug2.cfuncNames(fs.readFileSync(exe)), CFUNC_NAMES);
 });

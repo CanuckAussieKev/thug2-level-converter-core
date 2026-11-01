@@ -31,14 +31,13 @@
 // are randomised); where that order mattered there the Python tool wasn't deterministic. Here a set keeps the order
 // the contexts were added in.)
 
-import * as fs from "node:fs";
 import * as path from "node:path";
-import { GAME_EXE_NAMES } from "../lib/decomp.ts";
 import { decodeLatin1, encodeLatin1, hex8, sortedNumbers } from "../lib/py.ts";
 import { pack, unpackNumbers } from "../lib/struct.ts";
 import * as prx from "./prx.ts";
 import * as qb from "./qb.ts";
 import { checksum } from "./qb.ts";
+import { CFUNC_NAMES } from "./thug2_cfuncs.ts";
 import { NAMED_MEMBERS, TABLE_MEMBERS, COMPONENTS as THUG2_COMPONENTS } from "./thug2_members.ts";
 
 export const EOL: readonly number[] = [0x01, 0x02];
@@ -512,7 +511,7 @@ const SAME_OBJECT_SCRIPTS: ReadonlySet<number> = new Set(
 
 // --- what THUG2 has ------------------------------------------------------------------------------------------------
 
-// THUG2's commands, read from the user's game: its C functions (the CFunction table in the reference build: name, function),
+// THUG2's commands: its C functions (thug2_cfuncs.ts, the game's CFunction table; cfuncNames reads it from an exe),
 // its member functions (level_port/thug2_members.ts: the components' tables and the members registered by name,
 // with the components that run them) and its scripts and globals (Data\pre\qb_scripts.prx).
 export class Thug2 {
@@ -538,17 +537,8 @@ export class Thug2 {
     readonly needs = new Map<string, Set<string>>();
 
     constructor(thug2: string) {
-        let exe: Buffer | null = null;
-        for (const name of GAME_EXE_NAMES) {
-            const file = path.join(thug2, name);
-            if (fs.existsSync(file)) {
-                exe = fs.readFileSync(file);
-                break;
-            }
-        }
         this.root = thug2;
-        if (exe === null) throw new Error(`no game exe in ${thug2}`);
-        this.cfuncs = new Set(Thug2.cfuncNames(exe).map(checksum));
+        this.cfuncs = new Set(CFUNC_NAMES.map(checksum));
         [this.members, this.tableMembers] = Thug2.memberTable();
         for (const [, data] of prx.entries(path.join(thug2, "Data", "pre", "qb_scripts.prx"), (n) =>
             n.toLowerCase().endsWith(".qb"),

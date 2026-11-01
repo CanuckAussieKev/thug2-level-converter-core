@@ -9,7 +9,6 @@
 //     (a converter's clone, the content pipeline, the decomp), or CORE itself when it is a clone of its own;
 //   - DECOMP: the decomp's root (PROJECT or a folder above it), or null when the project is on its own;
 //   - WORK: where out/ goes (the decomp's out/ - what the tools always used -, else the project's out/);
-//   - NS_DEFAULT: NeverScript's ns.exe, built by the decomp's tools\build_neverscript.ps1 into out\neverscript;
 //   - needDecomp(why): the decomp's root, or exit 1 with a message saying this tool needs the decomp checkout and why.
 
 import * as fs from "node:fs";
@@ -42,7 +41,6 @@ export function findDecompRoot(start: string = PROJECT): string | null {
 
 export const DECOMP: string | null = findDecompRoot();
 export const WORK: string = DECOMP ?? PROJECT;
-export const NS_DEFAULT: string = path.join(WORK, "out", "neverscript", "ns.exe");
 
 export const NEEDS_DECOMP =
     "it needs the THUG2 decompilation checkout (github.com/CanuckAussieKev/thug2-decomp) around the project using " +
@@ -54,12 +52,6 @@ export function needDecomp(why: string): string {
     process.stderr.write(`error: this tool reads the decomp's ${why}: ${NEEDS_DECOMP}\n`);
     process.exit(1);
 }
-
-// The message for a missing ns.exe (the converters' and builders' --ns).
-export const nsMissing = (ns: string): string =>
-    DECOMP
-        ? `${ns} not found: build it with tools\\build_neverscript.ps1 (in the decomp) or pass --ns`
-        : `${ns} not found: NeverScript's ns.exe is built by the THUG2 decomp (tools\\build_neverscript.ps1); pass --ns <ns.exe>`;
 
 // The decomp checkout's local.json (gitignored - this machine's settings, the decomp's README "Contributing"):
 //   referenceExe   the reference build of THUG2.exe the decompilation's addresses come from (the tools that read the

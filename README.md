@@ -94,9 +94,12 @@ GitHub Actions runs them on every push (`.github/workflows/ci.yml`).
 
 ## Versions
 
-Releases are tagged `v<major>.<minor>.<patch>`; this is `v2.0.0` (the THUGPRO profile - its register and data,
-`compat/hand_edits.ts`, `compat/thugpro_nodes.ts`, `compat/thugpro/scripts_hash.ts` - moved to thug2-thugpro-compat;
-`compat/compat.ts` keeps only the mechanism). `v1.0.0`: THAW's and Project 8's formats moved to their converters;
+Releases are tagged `v<major>.<minor>.<patch>`; this is `v3.0.0`: NeverScript found without the decomp
+(`lib/neverscript.ts`, `npx thug2-neverscript fetch`; `common.NS` / `nsMissing` and `decomp.ts`'s `NS_DEFAULT` are
+gone), converters' output folders made safe (`level_port/staging.ts`), THUG2's C functions as data
+(`level_port/thug2_cfuncs.ts` - the converters read no exe). `v2.0.0`: the THUGPRO profile - its register and data,
+`compat/hand_edits.ts`, `compat/thugpro_nodes.ts`, `compat/thugpro/scripts_hash.ts` - moved to thug2-thugpro-compat
+(`compat/compat.ts` keeps only the mechanism). `v1.0.0`: THAW's and Project 8's formats moved to their converters;
 explicit exports. The repositories that use it pin the tagged commit.
 
 ## With or without the decomp
@@ -104,9 +107,22 @@ explicit exports. The repositories that use it pin the tagged commit.
 `lib/decomp.ts` finds the project using this repository - the folder holding the `node_modules` it is installed in (a
 converter's clone, the content pipeline, the decomp), or this clone - and the THUG2 decompilation checkout: that
 folder or the first one above it with the decomp's `CMakeLists.txt` and `src/game` (or `THUG2_DECOMP=<folder>`).
-`out\` is the decomp's when there is one, else the project's. NeverScript's `ns.exe` (QB scripts compiled and
-decompiled) is looked for in `out\neverscript` - the decomp builds it there (`tools\build_neverscript.ps1`) - or given
-with `--ns <ns.exe>`. A test that reads the decomp's source is skipped without it.
+`out\` is the decomp's when there is one, else the project's. A test that reads the decomp's source is skipped
+without it.
+
+## NeverScript
+
+The converters compile their level scripts with NeverScript's `ns` (QB scripts;
+[CanuckAussieKev/NeverScript](https://github.com/CanuckAussieKev/NeverScript), violetvandal's THUG2 fork of byxor's).
+`lib/neverscript.ts` finds it - `--ns`, then `NEVERSCRIPT=<ns>`, then the decomp's own build
+(`out\neverscript\ns.exe`, `tools\build_neverscript.ps1`), then a downloaded release, then `ns` on PATH - and
+downloads the release's build for this system (Windows, Linux, macOS; SHA-256 checked) only when asked:
+
+    npx thug2-neverscript fetch      (in a project that installed this package; in this clone: node lib/neverscript.ts fetch)
+    npx thug2-neverscript where      (the ns the converters would use)
+
+Downloads go to `THUG2_CONVERTERS_CACHE`, else `%LOCALAPPDATA%\thug2-level-converters` (Windows),
+`~/Library/Caches/thug2-level-converters` (macOS) or `~/.cache/thug2-level-converters`.
 
 ## Changing it
 

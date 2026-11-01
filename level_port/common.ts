@@ -7,7 +7,7 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import { NS_DEFAULT, WORK } from "../lib/decomp.ts";
+import { WORK } from "../lib/decomp.ts";
 import { decodeCp1252, Float, print, pyExit, pyRound, roundHalfEven, writeTextPy } from "../lib/py.ts";
 import { FormatError } from "./binio.ts";
 import * as prx from "./prx.ts";
@@ -20,8 +20,6 @@ import * as zfightResolve from "./zfight_resolve.ts";
 export const HERE = path.dirname(fileURLToPath(import.meta.url));
 // (REPO: where out/ is - the decomp's root, or this repository's on its own: lib/decomp.ts)
 export const REPO = WORK;
-export const NS = NS_DEFAULT;
-export { nsMissing } from "../lib/decomp.ts"; // (the message for a missing --ns)
 
 // A process's output as Python's subprocess.run(..., capture_output=True, text=True) gives it: the locale's code page
 // (cp1252), "\r\n" read as "\n".

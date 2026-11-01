@@ -1,6 +1,6 @@
 {
   "name": "thug2-level-converter-core",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "private": true,
   "type": "module",
   "description": "THUG2 Level Converter Core: THUG2's formats and what the THUG2 level converters share (TypeScript, Node 24).",
@@ -11,6 +11,9 @@
   },
   "engines": {
     "node": ">=24"
+  },
+  "bin": {
+    "thug2-neverscript": "lib/neverscript.js"
   },
   "exports": {
     "./compat/compat.ts": {
@@ -109,6 +112,10 @@
       "types": "./level_port/script_port.ts",
       "default": "./level_port/script_port.js"
     },
+    "./level_port/staging.ts": {
+      "types": "./level_port/staging.ts",
+      "default": "./level_port/staging.js"
+    },
     "./level_port/tex.ts": {
       "types": "./level_port/tex.ts",
       "default": "./level_port/tex.js"
@@ -116,6 +123,10 @@
     "./level_port/texture_check.ts": {
       "types": "./level_port/texture_check.ts",
       "default": "./level_port/texture_check.js"
+    },
+    "./level_port/thug2_cfuncs.ts": {
+      "types": "./level_port/thug2_cfuncs.ts",
+      "default": "./level_port/thug2_cfuncs.js"
     },
     "./level_port/thug2_col.ts": {
       "types": "./level_port/thug2_col.ts",
@@ -185,6 +196,10 @@
       "types": "./lib/install.ts",
       "default": "./lib/install.js"
     },
+    "./lib/neverscript.ts": {
+      "types": "./lib/neverscript.ts",
+      "default": "./lib/neverscript.js"
+    },
     "./lib/package_check.ts": {
       "types": "./lib/package_check.ts",
       "default": "./lib/package_check.js"
@@ -216,7 +231,8 @@
     "level_port/zfight.ts",
     "level_port/zfight_raster.ts",
     "level_port/zfight_resolve.ts",
-    "lib/frame_diff.ts"
+    "lib/frame_diff.ts",
+    "lib/neverscript.ts"
   ],
   "scripts": {
     "prepare": "tsc -p tsconfig.build.json",

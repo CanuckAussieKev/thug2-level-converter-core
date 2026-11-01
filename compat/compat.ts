@@ -1,39 +1,37 @@
-// NOT ORIGINAL - the compatibility profiles: data that makes our generated files agree with another game's or mod's
-// for online play, kept apart from the converters so every such choice is listed in one place (<profile>\README.md,
-// its register) and can be dropped or replaced (e.g. by a run-time translation of the network messages) later.
-// (Ported from compat.py, deleted with its last importer, thug2-thaw-level-converter/thaw_levels/thaw_levels.py.)
+// NOT ORIGINAL - the compatibility profiles' mechanism: a profile is data that makes our generated files agree with
+// another game's or mod's for online play, kept apart from the converters so every such choice is listed in one place
+// (the profile's register) and can be dropped or replaced (e.g. by a run-time translation of the network messages)
+// later. This repository knows no profile but "none" (no compatibility data at all): a profile is a package of its own
+// that builds its Profile on this one with its data folder - THUGPRO's is thug2-thugpro-compat (its profile.ts:
+// load("thugpro" | "none"), the register and its data), which the converters that use it depend on.
 //
-//   import * as compat from "../compat/compat.ts";
-//   const profile = compat.load("thugpro");        // or compat.load("none"): no compatibility data at all
+//   const profile = new Profile("thugpro", "<its data folder>");   // (what a profile package does)
 //   profile.section("thaw_levels", "level_names")  ->  {Z_CH: "skatepark", ...}
+//   none().section(...)                            ->  {}
+// (Ported from compat.py, deleted with its last importer, thug2-thaw-level-converter/thaw_levels/thaw_levels.py.)
 
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { fileURLToPath } from "node:url";
-import { pyStrRepr } from "../lib/py.ts";
-
-const HERE = path.dirname(fileURLToPath(import.meta.url));
-export const PROFILES = ["thugpro", "none"] as const;
-export type ProfileName = (typeof PROFILES)[number];
 
 type JsonObject = Record<string, unknown>;
 
 export class Profile {
     readonly name: string;
+    readonly folder: string | null; // (null: no files - "none")
     private readonly files = new Map<string, JsonObject>();
 
-    constructor(name: string) {
+    constructor(name: string, folder: string | null) {
         this.name = name;
+        this.folder = folder;
     }
 
-    // <profile>\<tool>.json as an object ({} for "none" or when the profile has no such file).
+    // <folder>\<tool>.json as an object ({} for "none" or when the profile has no such file).
     file(tool: string): JsonObject {
         let data = this.files.get(tool);
         if (data === undefined) {
-            const file = path.join(HERE, this.name, `${tool}.json`);
             data = {};
-            if (this.name !== "none" && fs.existsSync(file))
-                data = JSON.parse(fs.readFileSync(file, "utf-8")) as JsonObject;
+            const file = this.folder === null ? null : path.join(this.folder, `${tool}.json`);
+            if (file !== null && fs.existsSync(file)) data = JSON.parse(fs.readFileSync(file, "utf-8")) as JsonObject;
             this.files.set(tool, data);
         }
         return data;
@@ -46,15 +44,14 @@ export class Profile {
     }
 }
 
-// The two sections of a differences file (<profile>\<tool>.json) written as a list of entries, each
-// {id, op, target, why, ...}: op "add" (something the source game hasn't: a node, sector, collision object, script),
-// "set" (fields of something that exists change, merged; set on something missing is an error the converter
-// reports, never an add) or "remove" (something that exists left out or suppressed).
-//   thugpro_new   THUGPRO's own content (not in any source game) - a THUGPRO profile section like the TP-n ones
-//                 (`--compat none` leaves it out);
-//   port_changes  this project's own changes to a source game's levels (neither the source game's nor THUGPRO's):
-//                 not THUGPRO data, so applied whatever the profile (`--compat none` too); a converter's
-//                 `--no-port-changes` leaves them out (the source game's data as it is).
+// The profile without compatibility data (`--compat none`): every file {}.
+export const none = (): Profile => new Profile("none", null);
+
+// A section of a profile's file written as a list of entries ("differences"), each {id, op, target, why, ...}: op
+// "add" (something the source game hasn't: a node, sector, collision object, script), "set" (fields of something that
+// exists change, merged; set on something missing is an error the converter reports, never an add) or "remove"
+// (something that exists left out or suppressed). Which sections are lists so is the profile's (thug2-thugpro-compat:
+// thugpro_new and port_changes).
 export type Op = "add" | "set" | "remove";
 export const OPS: readonly Op[] = ["add", "set", "remove"];
 export interface Entry {
@@ -66,7 +63,9 @@ export interface Entry {
     [key: string]: unknown;
 }
 
-function entries(data: unknown, where: string): Entry[] {
+// A section's entries ({entries: [...]}; none when absent), each checked for id, op, target and why. `where` names the
+// section in the error.
+export function entryList(data: unknown, where: string): Entry[] {
     const list = (data as { entries?: unknown } | undefined)?.entries ?? [];
     if (!Array.isArray(list)) throw new TypeError(`${where}: entries is not a list`);
     for (const e of list as Entry[]) {
@@ -83,44 +82,20 @@ function entries(data: unknown, where: string): Entry[] {
     return list as Entry[];
 }
 
-// A tool's port_changes (from the THUGPRO profile's folder - the game's differences file - whatever profile is in use).
-export function portChanges(tool: string): Entry[] {
-    return entries(load("thugpro").file(tool).port_changes, `thugpro\\${tool}.json port_changes`);
-}
-
-// A profile's thugpro_new entries for a tool (none with --compat none).
-export function thugproNew(profile: Profile, tool: string): Entry[] {
-    return entries(profile.file(tool).thugpro_new, `${profile.name}\\${tool}.json thugpro_new`);
-}
-
-export function load(name: string = "thugpro"): Profile {
-    if (!(PROFILES as readonly string[]).includes(name)) {
-        throw new RangeError(`no compatibility profile ${pyStrRepr(name)} (${PROFILES.join(", ")})`);
-    }
-    return new Profile(name);
-}
-
-// The folder of a profile's files (compat/<profile>: the THUGPRO register - README.md - and its data).
-export const profileFolder = (name: string = "thugpro"): string => path.join(HERE, name);
-
-// <profile>\<tool>.json, the file a tool reads (and its THUGPRO comparison's --extract-thugpro rewrites).
-export const profileFile = (tool: string, name: string = "thugpro"): string =>
-    path.join(profileFolder(name), `${tool}.json`);
-
-// profileFile for a tool that rewrites it: this repository's own clone only - the copy npm installs in a project's
-// node_modules is made again on the next install, so a change written there would be lost. Exits with a message
-// saying so (use a clone of thug2-level-converter-core, `npm link`ed into the project: its README).
-export function profileFileToWrite(tool: string, name: string = "thugpro"): string {
-    const file = profileFile(tool, name);
+// A profile's file for a tool that rewrites it (a comparison's --extract-thugpro): in the profile package's own clone
+// only - the copy npm installs in a project's node_modules is made again on the next install, so a change written
+// there would be lost. Exits with a message saying so (use a clone of `repository`, `npm link`ed into the project: its
+// README, "Changing it").
+export function fileToWrite(file: string, repository: string): string {
     if (
         fs
-            .realpathSync(HERE)
+            .realpathSync(path.dirname(file))
             .split(path.sep)
             .some((p) => p.toLowerCase() === "node_modules")
     ) {
         process.stderr.write(
-            `error: ${file} is in an installed copy of thug2-level-converter-core (node_modules): the register is ` +
-                'changed in a clone of that repository - link it into this project (its README, "Changing it") and run again\n',
+            `error: ${file} is in an installed copy of ${repository} (node_modules): the register is changed in a ` +
+                'clone of that repository - link it into this project (its README, "Changing it") and run again\n',
         );
         process.exit(1);
     }

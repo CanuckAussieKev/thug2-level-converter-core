@@ -1,6 +1,6 @@
 {
   "name": "thug2-level-converter-core",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "type": "module",
   "description": "THUG2 Level Converter Core: THUG2's formats and what the THUG2 level converters share (TypeScript, Node 24).",
@@ -16,14 +16,6 @@
     "./compat/compat.ts": {
       "types": "./compat/compat.ts",
       "default": "./compat/compat.js"
-    },
-    "./compat/hand_edits.ts": {
-      "types": "./compat/hand_edits.ts",
-      "default": "./compat/hand_edits.js"
-    },
-    "./compat/thugpro_nodes.ts": {
-      "types": "./compat/thugpro_nodes.ts",
-      "default": "./compat/thugpro_nodes.js"
     },
     "./level_port/binio.ts": {
       "types": "./level_port/binio.ts",
@@ -212,7 +204,6 @@
     "./package.json": "./package.json"
   },
   "commands": [
-    "compat/thugpro/scripts_hash.ts",
     "level_port/col_check.ts",
     "level_port/compare_nodes.ts",
     "level_port/components.ts",

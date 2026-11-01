@@ -4,7 +4,7 @@
 // of the decomp's tools - installed in their node_modules - and can be cloned alone. Every path into the decomp comes
 // from here, found by walking up from the project to the first folder with the decomp's CMakeLists.txt and src/game
 // (or THUG2_DECOMP=<folder>), never by a fixed number of folders up:
-//   - CORE: this repository's root (lib/..), for its own data (compat/);
+//   - CORE: this repository's root (lib/..);
 //   - PROJECT: the project using it - the folder holding the outermost node_modules this repository is installed in
 //     (a converter's clone, the content pipeline, the decomp), or CORE itself when it is a clone of its own;
 //   - DECOMP: the decomp's root (PROJECT or a folder above it), or null when the project is on its own;

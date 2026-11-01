@@ -26,9 +26,10 @@ export interface PackageJson {
     commands?: string[];
 }
 
-// One of this project's repositories: thug2-level-converter-core, thug2-<game>-level-converter,
-// thug2-content-pipeline.
-export const OUR_PACKAGE = /^thug2-(?:level-converter-core|[a-z0-9]+-level-converter|content-pipeline)$/;
+// One of this project's repositories: thug2-level-converter-core, thug2-<game>-level-converter, a compatibility
+// profile's thug2-<profile>-compat (thug2-thugpro-compat), thug2-content-pipeline.
+export const OUR_PACKAGE =
+    /^thug2-(?:level-converter-core|[a-z0-9]+-level-converter|[a-z0-9]+-compat|content-pipeline)$/;
 export const PIN = /^git\+https:\/\/git@github\.com\/CanuckAussieKev\/(thug2-[a-z0-9-]+)\.git#([0-9a-f]{40})$/;
 
 export const readPackage = (root: string): PackageJson =>

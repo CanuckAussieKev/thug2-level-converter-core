@@ -7,15 +7,18 @@
 > Rights holders: open an issue and it will be dealt with promptly.
 
 What every level converter for Tony Hawk's Underground 2 (PC) shares: THUG2's side of a conversion - the readers and
-writers of THUG2's formats and the level port's common steps - the THUGPRO compatibility register, and the tools'
-helpers. No source game's formats or converter: those are in the game's own repository. The converters depend on
+writers of THUG2's formats and the level port's common steps - the compatibility profiles' mechanism, and the tools'
+helpers. No source game's formats or converter: those are in the game's own repository; no compatibility profile's
+data: THUGPRO's is [thug2-thugpro-compat](https://github.com/CanuckAussieKev/thug2-thugpro-compat). The converters depend on
 this one and on the converters of the games their game is built on (specific to general, core at the bottom; no
 cycles):
 
-    thug2-content-pipeline -> every converter below
+    thug2-content-pipeline -> every converter below, thug2-thugpro-compat
     thug2-thpg-level-converter -> thug2-thp8-level-converter, thug2-thaw-level-converter, core
     thug2-thp8-level-converter -> thug2-thaw-level-converter, core
-    thug2-thaw- / -thps2- / -thps3- / -thps4- / -thug1-level-converter -> core
+    thug2-thaw- / -thps3- / -thps4- / -thug1-level-converter -> thug2-thugpro-compat, core
+    thug2-thps2-level-converter -> core
+    thug2-thugpro-compat -> core
     thug2-level-converter-core -> nothing
 
 | Converter | Converts | Built on |
@@ -42,16 +45,19 @@ the [THUG2 decompilation](https://github.com/CanuckAussieKev/thug2-decomp) runs 
   `package.test.ts`).
 - `level_port/` - THUG2's scene, collision, texture, archive, script, skeleton and animation formats and what the
   converters share (README.md there).
-- `compat/` - the compatibility profiles: `compat/thugpro` is the THUGPRO register (README.md there: every TP-n entry)
-  and its data, one file per converter; `compat.ts` reads them, `thugpro_nodes.ts` holds the node array helpers of
-  the comparisons with THUGPRO's levels, `hand_edits.ts` applies the register's node and collision edits.
+- `compat/compat.ts` - the compatibility profiles' mechanism: `Profile` (a profile's data folder, one file per
+  converter, read by section), `none()` (the profile without data: `--compat none`), the entry lists of its
+  difference sections (`entryList`) and the refusal to rewrite an installed copy's data (`fileToWrite`). No profile's
+  data or knowledge: a profile is a package of its own that builds its `Profile` on this one - THUGPRO's is
+  thug2-thugpro-compat (its `profile.ts` loads "thugpro" or "none"; the register, its data, the hand edits and the node
+  helpers of the comparisons with THUGPRO's levels), a dependency of the converters that use it, never of this one.
 
 Here although only some converters use them - each THUG2-side, or shared by converters of unrelated games:
 `level_port/thug2_material.ts` and `tri_strip.ts` (THUG2's materials and strips: the THPS2, THPS3 and Project 8
 converters), `mips.ts` (THPS2, THPS3), `ped_ai.ts` (THUG2's ped animations: THPS3, THUG1), `ramp_collision.ts`
 (THUG2's ramp flags: THPS2), `movers.ts` (THUG2's solid moving props: THPS3), `script_check.ts` (THUG2's script
 faults: THUG1), `thug2_skeleton.ts` (THUG2's skeletons and animations: THPS3's people and the content pipeline's
-THAW BMX), `compat/hand_edits.ts` (THUG1's levels and the pipeline's THUG2 levels), `lib/frame_diff.ts` (the THPS2
+THAW BMX), `lib/frame_diff.ts` (the THPS2
 converter, the pipeline's HD art and menus).
 
 ## Public API
@@ -88,8 +94,10 @@ GitHub Actions runs them on every push (`.github/workflows/ci.yml`).
 
 ## Versions
 
-Releases are tagged `v<major>.<minor>.<patch>`; this is `v1.0.0` (THAW's and Project 8's formats moved to their
-converters; explicit exports). The repositories that use it pin the tagged commit.
+Releases are tagged `v<major>.<minor>.<patch>`; this is `v2.0.0` (the THUGPRO profile - its register and data,
+`compat/hand_edits.ts`, `compat/thugpro_nodes.ts`, `compat/thugpro/scripts_hash.ts` - moved to thug2-thugpro-compat;
+`compat/compat.ts` keeps only the mechanism). `v1.0.0`: THAW's and Project 8's formats moved to their converters;
+explicit exports. The repositories that use it pin the tagged commit.
 
 ## With or without the decomp
 
@@ -98,15 +106,13 @@ converter's clone, the content pipeline, the decomp), or this clone - and the TH
 folder or the first one above it with the decomp's `CMakeLists.txt` and `src/game` (or `THUG2_DECOMP=<folder>`).
 `out\` is the decomp's when there is one, else the project's. NeverScript's `ns.exe` (QB scripts compiled and
 decompiled) is looked for in `out\neverscript` - the decomp builds it there (`tools\build_neverscript.ps1`) - or given
-with `--ns <ns.exe>`. `compat/thugpro/scripts_hash.ts` reads the decomp's `src/game/net/thugpro_join.h`; a test that
-reads the decomp's source is skipped without it.
+with `--ns <ns.exe>`. A test that reads the decomp's source is skipped without it.
 
 ## Changing it
 
 Work in a clone, and link it into the project you test with (`npm link` in the clone, `npm link
 thug2-level-converter-core` in the project: its `node_modules` entry then points at the clone; `npm run prepare` in
-the clone after each change rebuilds the `.js`). The THUGPRO comparisons' `--extract-thugpro` rewrite the register's
-data in `compat/thugpro` - only in a clone (an installed copy refuses: `compat.profileFileToWrite`). Then commit, push,
+the clone after each change rebuilds the `.js`). Then commit, push,
 tag it (`v<version>`, package.json's version bumped) and move every dependent's pin (`#<commit>`) to the new commit.
 
 Nothing from the games is in this repository: everything is read from your own installed copies each time.

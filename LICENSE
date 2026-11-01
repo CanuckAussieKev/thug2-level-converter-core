@@ -3,8 +3,7 @@ THUG2 Level Converter Core - licensing
 1. Material from the games (no licence granted)
 
    Not covered by the MIT licence below, and not owned by this project:
-   - facts about the games and about THUGPRO's levels recorded in compat/ and in the tables of level_port/, thaw/ and
-     thp8/ (names, checksums, coordinates, offsets);
+   - facts about the games recorded in the tables of level_port/ (names, checksums, coordinates, offsets);
    - anything these tools produce from your game files (converted levels, scripts, textures, the data overlay): that
      output is derived from the games, whose copyright belongs to Activision Publishing, Inc. and its licensors.
 

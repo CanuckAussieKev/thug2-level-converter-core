@@ -6,11 +6,11 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { test } from "node:test";
 import { Float } from "../lib/numbers.ts";
-import { fixProfiles, nameValue, supportStreams, useModelLights } from "./nodes.ts";
+import { fixProfiles, killCommands, nameValue, supportStreams, useModelLights } from "./nodes.ts";
 import * as pedRigs from "./ped_rigs.ts";
 import { Thug2Assets } from "./peds_cars.ts";
 import { lzssDecode } from "./prx.ts";
-import { checksum, fmtFloat, Name, nameText, QbFile, Struct, toNs, Vector } from "./qb.ts";
+import { checksum, fmtFloat, Name, nameText, QbFile, type Statement, Struct, toNs, Vector } from "./qb.ts";
 import * as tex from "./tex.ts";
 import * as thug2Col from "./thug2_col.ts";
 import * as thug2Scene from "./thug2_scene.ts";
@@ -370,4 +370,37 @@ test("mergeManifest: a partial convert keeps the other levels", async () => {
         ],
     );
     assert.equal(mergeManifest(null, old), old);
+});
+
+test("killCommands skipGoalOnly: a kill only while a goal is on isn't a kill zone (THAW Downtown's Line03)", () => {
+    const word = (name: string): [number, Buffer] => {
+        const payload = Buffer.alloc(4);
+        payload.writeUInt32LE(checksum(name));
+        return [0x16, payload];
+    };
+    const op = (t: number): [number, Buffer] => [t, Buffer.alloc(0)];
+    const names = new Map(
+        ["GoalManager_GoalIsActive", "Name", "KillSkater", "Bell_Kill", "Line03Script", "Edge_Kill", "Goal1"].map(
+            (n) => [checksum(n), n] as const,
+        ),
+    );
+    const goalIf = [op(0x47), word("GoalManager_GoalIsActive"), word("Name"), op(0x07), word("Goal1")];
+    const scripts = new Map<number, Statement[]>([
+        // if GoalManager_GoalIsActive Name=Goal1 KillSkater endif - only while the goal is on
+        [checksum("Bell_Kill"), [goalIf, [word("KillSkater")], [op(0x28)]]],
+        [checksum("Line03Script"), [[word("Bell_Kill")]]],
+        // if GoalManager_GoalIsActive Name=Goal1 else KillSkater endif - with no goal on
+        [checksum("Edge_Kill"), [goalIf, [op(0x48)], [word("KillSkater")], [op(0x28)]]],
+    ]);
+    const q = {
+        scripts,
+        calls: (s: number): [number, Statement][] =>
+            (scripts.get(s) ?? []).filter((l) => l[0]?.[0] === 0x16).map((l) => [l[0]![1].readUInt32LE(0), l]),
+    };
+    const sorted = (keys: Iterable<number>): number[] => [...keys].sort((a, b) => a - b);
+    assert.deepEqual(
+        sorted(killCommands([q], new Set(), names).keys()),
+        sorted(["Bell_Kill", "Line03Script", "Edge_Kill"].map(checksum)),
+    );
+    assert.deepEqual([...killCommands([q], new Set(), names, { skipGoalOnly: true }).keys()], [checksum("Edge_Kill")]);
 });

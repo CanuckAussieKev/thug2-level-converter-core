@@ -155,11 +155,59 @@ export function killArgs(
     return args;
 }
 
+// The if / else / elseif / endif tokens: THUG2's and THAW's (0x47 / 0x48 / 0x27 / 0x28) and THPS3's (0x25 / 0x26).
+const IF_TOKENS: ReadonlySet<number> = new Set([0x47, 0x25]);
+const ELSE_TOKENS: ReadonlySet<number> = new Set([0x48, 0x26]);
+const ELSEIF_TOKEN = 0x27;
+const ENDIF_TOKEN = 0x28;
+
+export function goalOnlyStatements(lines: readonly Statement[], names: ReadonlyMap<number, string>): Set<Statement> {
+    // The statements of a script that run only while a goal is on: those in the first branch of an
+    // `if GoalManager_GoalIsActive ...` (or of an elseif asking it), not in its else. THAW's goal boundaries kill the
+    // skater only there - Downtown's Line03, the wall round the Olivera plaza, calls DT_Bell_Kill_Skater_Respawn:
+    // `if GoalManager_GoalIsActive Name=Z_DT_Goal_Gaps20 KillSkater Node=Z_DT_TRG_Goal_Bell_Restart01 ... endif`
+    // (and the same for Z_DT_Goal_Counter3) - and in free skate no goal is on.
+    const asksGoal = (line: Statement): boolean => {
+        const [, first] = line;
+        return (
+            first !== undefined &&
+            first[0] === 0x16 &&
+            (names.get(intFromBytesLE(first[1])) ?? "").toLowerCase() === "goalmanager_goalisactive"
+        );
+    };
+    const open: { goal: boolean; inElse: boolean }[] = [];
+    const out = new Set<Statement>();
+    for (const line of lines) {
+        const head = line[0]?.[0];
+        if (head !== undefined && IF_TOKENS.has(head)) {
+            open.push({ goal: asksGoal(line), inElse: false });
+            continue;
+        }
+        const top = open.at(-1);
+        if (head !== undefined && ELSE_TOKENS.has(head) && top) {
+            top.inElse = true;
+            continue;
+        }
+        if (head === ELSEIF_TOKEN && top) {
+            top.goal = asksGoal(line);
+            top.inElse = false;
+            continue;
+        }
+        if (head === ENDIF_TOKEN) {
+            open.pop();
+            continue;
+        }
+        if (open.some((branch) => branch.goal && !branch.inElse)) out.add(line);
+    }
+    return out;
+}
+
 export function killCommands(
     // (QbFile, or anything with its scripts and calls: THAW's QbItems)
     scriptQbs: readonly Pick<QbFile, "scripts" | "calls">[],
     restarts: { has(value: number): boolean },
     names: ReadonlyMap<number, string>,
+    { skipGoalOnly = false }: { skipGoalOnly?: boolean } = {},
 ): Map<number, string> {
     // THUG1's trigger scripts that kill the skater: TriggerScript -> the THUG2 command line that does the same. A
     // script counts when one of its statements calls something with "killskater" in its name (SK3_Killskater,
@@ -167,11 +215,19 @@ export function killCommands(
     // (NY_KillWater, HI_Pool_Water: goal checks around Sk3_Killskater_Water): it becomes THUG2's SK3_KillSkater
     // (_Water when the name says water, or the level script's call does) with the call's parameters that THUG2's
     // takes (killArgs); a level script's own kill call gives the ones the trigger script's call doesn't
-    // (HI_Pool_Water's nodename=TRG_Restart_Boardwalk).
+    // (HI_Pool_Water's nodename=TRG_Restart_Boardwalk). skipGoalOnly (THAW): a call that runs only while a goal is on
+    // (goalOnlyStatements) doesn't count - the goals aren't ported, and kept, such a goal's boundary killed the
+    // skater in free skate.
+    const calls = (q: Pick<QbFile, "scripts" | "calls">, script: number): [number, Statement][] => {
+        const all = q.calls(script);
+        if (!skipGoalOnly) return all;
+        const goalOnly = goalOnlyStatements(q.scripts.get(script) ?? [], names);
+        return all.filter(([, line]) => !goalOnly.has(line));
+    };
     const wrappers = new Map<number, [boolean, Map<string, string>]>();
     for (const q of scriptQbs) {
         for (const script of q.scripts.keys()) {
-            for (const [called, line] of q.calls(script)) {
+            for (const [called, line] of calls(q, script)) {
                 const text = (names.get(called) ?? "").toLowerCase();
                 if (text.includes("killskater") && isKillCall(text) && !wrappers.has(script)) {
                     wrappers.set(script, [text.includes("water"), killArgs(line, restarts, names)]);
@@ -183,7 +239,7 @@ export function killCommands(
     for (const q of scriptQbs) {
         for (const script of q.scripts.keys()) {
             if (found.has(script)) continue;
-            for (const [called, line] of q.calls(script)) {
+            for (const [called, line] of calls(q, script)) {
                 const text = (names.get(called) ?? "").toLowerCase();
                 if ((!text.includes("killskater") || !isKillCall(text)) && !wrappers.has(called)) continue;
                 const [wrapperWater, wrapperArgs] = wrappers.get(called) ?? [false, new Map<string, string>()];

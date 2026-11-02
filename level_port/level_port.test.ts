@@ -6,7 +6,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import { test } from "node:test";
 import { Float } from "../lib/numbers.ts";
-import { fixProfiles, killCommands, nameValue, supportStreams, useModelLights } from "./nodes.ts";
+import { fixProfiles, killCommands, killScripts, nameValue, supportStreams, useModelLights } from "./nodes.ts";
 import * as pedRigs from "./ped_rigs.ts";
 import { Thug2Assets } from "./peds_cars.ts";
 import { lzssDecode } from "./prx.ts";
@@ -372,7 +372,7 @@ test("mergeManifest: a partial convert keeps the other levels", async () => {
     assert.equal(mergeManifest(null, old), old);
 });
 
-test("killCommands skipGoalOnly: a kill only while a goal is on isn't a kill zone (THAW Downtown's Line03)", () => {
+test("killCommands: a kill only while a goal is on isn't a kill zone (THAW Downtown's Line03)", () => {
     const word = (name: string): [number, Buffer] => {
         const payload = Buffer.alloc(4);
         payload.writeUInt32LE(checksum(name));
@@ -399,8 +399,15 @@ test("killCommands skipGoalOnly: a kill only while a goal is on isn't a kill zon
     };
     const sorted = (keys: Iterable<number>): number[] => [...keys].sort((a, b) => a - b);
     assert.deepEqual(
-        sorted(killCommands([q], new Set(), names).keys()),
+        sorted(killCommands([q], new Set(), names, { skipGoalOnly: false }).keys()),
         sorted(["Bell_Kill", "Line03Script", "Edge_Kill"].map(checksum)),
     );
-    assert.deepEqual([...killCommands([q], new Set(), names, { skipGoalOnly: true }).keys()], [checksum("Edge_Kill")]);
+    assert.deepEqual([...killCommands([q], new Set(), names).keys()], [checksum("Edge_Kill")]);
+    // THPS4's killScripts: a script's own calls with "kill" in the name (Line03Script's call of Bell_Kill counts)
+    const nodeQ = { ...q, names } as unknown as QbFile;
+    assert.deepEqual(sorted(killScripts(nodeQ, null).keys()), sorted(["Line03Script", "Edge_Kill"].map(checksum)));
+    assert.deepEqual(
+        sorted(killScripts(nodeQ, null, { skipGoalOnly: false }).keys()),
+        sorted(["Bell_Kill", "Line03Script", "Edge_Kill"].map(checksum)),
+    );
 });

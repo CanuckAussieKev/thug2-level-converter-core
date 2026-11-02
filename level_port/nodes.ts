@@ -83,16 +83,23 @@ export function isKillCall(text: string): boolean {
     return text.includes("kill") && text !== "kill" && !NOT_KILLS.some((word) => text.includes(word));
 }
 
-export function killScripts(nodeQ: QbFile, levelQ: QbFile | null): Map<number, string> {
+export function killScripts(
+    nodeQ: QbFile,
+    levelQ: QbFile | null,
+    { skipGoalOnly = true }: { skipGoalOnly?: boolean } = {},
+): Map<number, string> {
     // THPS4's trigger scripts that kill the skater (out of bounds, water): TriggerScript -> the THUG2 command that
     // does the same (THUG2's global SK3_KillSkater / SK3_KillSkater_Water: back to a restart). A trigger script
     // counts when it calls a script or command with "kill" in its name (ALC_KillWater, SK3_KillSkater,
-    // xxx_Kill_Plane...; not the Kill command, which removes objects, or KillSpawnedScript).
+    // xxx_Kill_Plane...; not the Kill command, which removes objects, or KillSpawnedScript). As in killCommands, a
+    // call that runs only while a goal is on (goalOnlyStatements) doesn't count unless skipGoalOnly is false.
     const names: Names = new Map(levelQ ? levelQ.names : []);
     for (const [k, v] of nodeQ.names) names.set(k, v);
     const found = new Map<number, string>();
     for (const script of nodeQ.scripts.keys()) {
+        const goalOnly = skipGoalOnly ? goalOnlyStatements(nodeQ.scripts.get(script) ?? [], names) : null;
         for (const [called, line] of nodeQ.calls(script)) {
+            if (goalOnly?.has(line)) continue;
             const text = (names.get(called) ?? "").toLowerCase();
             if (!text.includes("kill") || !isKillCall(text)) continue;
             const water =
@@ -207,7 +214,7 @@ export function killCommands(
     scriptQbs: readonly Pick<QbFile, "scripts" | "calls">[],
     restarts: { has(value: number): boolean },
     names: ReadonlyMap<number, string>,
-    { skipGoalOnly = false }: { skipGoalOnly?: boolean } = {},
+    { skipGoalOnly = true }: { skipGoalOnly?: boolean } = {},
 ): Map<number, string> {
     // THUG1's trigger scripts that kill the skater: TriggerScript -> the THUG2 command line that does the same. A
     // script counts when one of its statements calls something with "killskater" in its name (SK3_Killskater,
@@ -215,9 +222,11 @@ export function killCommands(
     // (NY_KillWater, HI_Pool_Water: goal checks around Sk3_Killskater_Water): it becomes THUG2's SK3_KillSkater
     // (_Water when the name says water, or the level script's call does) with the call's parameters that THUG2's
     // takes (killArgs); a level script's own kill call gives the ones the trigger script's call doesn't
-    // (HI_Pool_Water's nodename=TRG_Restart_Boardwalk). skipGoalOnly (THAW): a call that runs only while a goal is on
-    // (goalOnlyStatements) doesn't count - the goals aren't ported, and kept, such a goal's boundary killed the
-    // skater in free skate.
+    // (HI_Pool_Water's nodename=TRG_Restart_Boardwalk). A call that runs only while a goal is on (goalOnlyStatements)
+    // doesn't count - the goals aren't ported, and in free skate no goal is on: THAW's goal boundaries (Downtown's
+    // Line03) would kill the skater in free skate, and THUG1's free-skate kills are the else branches (NY_KillWater's
+    // `else sk3_killskater_water nodename=<nodename>`, not its Special2 goal's restart). skipGoalOnly=false counts them
+    // all, as before v5.2.0.
     const calls = (q: Pick<QbFile, "scripts" | "calls">, script: number): [number, Statement][] => {
         const all = q.calls(script);
         if (!skipGoalOnly) return all;

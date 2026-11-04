@@ -44,9 +44,45 @@ export function fileOf(list: string): "cas_ped_m" | "cas_ped_f" {
     return FEMALE_LISTS.has(list.toLowerCase()) ? "cas_ped_f" : "cas_ped_m";
 }
 
+// What names an entry: a profile's global name, a part's desc_id (a list's entries are told apart by it).
+export function profileKey(profile: string): string {
+    return (/^\s*([^\s=]+)\s*=/.exec(profile)?.[1] ?? profile).toLowerCase();
+}
+export function partKey(part: string): string {
+    return (/\bdesc_id\s*=\s*([^\s}]+)/i.exec(part)?.[1] ?? part).toLowerCase();
+}
+
+// `old` with `added` put in: an entry of the same key is replaced where it stands, the others go at the end.
+function mergeEntries(old: readonly string[], added: readonly string[], key: (e: string) => string): string[] {
+    const out = [...old];
+    const at = new Map(out.map((e, i) => [key(e), i] as const));
+    for (const e of added) {
+        const i = at.get(key(e));
+        if (i === undefined) {
+            at.set(key(e), out.length);
+            out.push(e);
+        } else out[i] = e;
+    }
+    return out;
+}
+
+// The staging folder's peds.json. A whole convert starts from an emptied folder (staging.prepareStaging), so it holds
+// just `additions`; a partial one finds the file of the earlier converts and keeps the people of the levels it didn't
+// convert: its entries are merged in by profile name / CAS desc_id (a re-converted level's replace their old ones).
 export function writeAdditions(staging: string, additions: Additions): void {
     fs.mkdirSync(staging, { recursive: true });
-    fs.writeFileSync(path.join(staging, FILE), `${JSON.stringify(additions, null, 1)}\n`);
+    const file = path.join(staging, FILE);
+    let merged = additions;
+    if (fs.existsSync(file)) {
+        const old = JSON.parse(fs.readFileSync(file, "utf-8")) as Additions;
+        const cas: Record<string, string[]> = {};
+        for (const [list, entries] of Object.entries(old.cas)) cas[list] = [...entries];
+        for (const [list, entries] of Object.entries(additions.cas)) {
+            cas[list] = mergeEntries(cas[list] ?? [], entries, partKey);
+        }
+        merged = { cas, profiles: mergeEntries(old.profiles, additions.profiles, profileKey) };
+    }
+    fs.writeFileSync(file, `${JSON.stringify(merged, null, 1)}\n`);
 }
 
 // Every staging folder's additions in the game folder, merged (in stagingFolders' order).

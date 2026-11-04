@@ -3,6 +3,7 @@
 
 import assert from "node:assert/strict";
 import * as fs from "node:fs";
+import * as os from "node:os";
 import * as path from "node:path";
 import { test } from "node:test";
 import * as pedModels from "./ped_models.ts";
@@ -149,4 +150,43 @@ test("fixPedRigs: a port's own profile gets its own rig, ReferenceChecksum with 
     // (and nothing more to change the second time)
     assert.equal(pedRigs.fixPedRigs(array, names, () => false, own).changed.length, 0);
     assert.deepEqual(pedRigs.otherAnims(array, names), []);
+});
+
+test("writeAdditions: a partial convert keeps the people of the levels it didn't convert", (t) => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), "peds-"));
+    t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+    const part = (id: string, mesh: string): string => `{\n    desc_id=${id}\n    mesh="${mesh}"\n}`;
+    const profile = (name: string, body: string): string => `${name} = {\n    ped_body={desc_id=${body}}\n}`;
+    const read = (): pedModels.Additions => JSON.parse(fs.readFileSync(path.join(dir, pedModels.FILE), "utf-8"));
+
+    // first convert (a whole one: nothing there before)
+    const first: pedModels.Additions = {
+        cas: { ped_body: [part("A_Body", "a"), part("B_Body", "b")], ped_f_head: [part("A_Head", "ah")] },
+        profiles: [profile("A_Ped", "A_Body"), profile("B_Ped", "B_Body")],
+    };
+    pedModels.writeAdditions(dir, first);
+    assert.deepEqual(read(), first);
+    assert.equal(fs.readFileSync(path.join(dir, pedModels.FILE), "utf-8"), `${JSON.stringify(first, null, 1)}\n`);
+
+    // a partial one: B again (changed), C new - A's stay, B's are replaced where they stood, C's come last
+    pedModels.writeAdditions(dir, {
+        cas: { ped_body: [part("B_Body", "b2"), part("C_Body", "c")], ped_m_head: [part("C_Head", "ch")] },
+        profiles: [profile("b_ped", "B_Body2"), profile("C_Ped", "C_Body")],
+    });
+    assert.deepEqual(read(), {
+        cas: {
+            ped_body: [part("A_Body", "a"), part("B_Body", "b2"), part("C_Body", "c")],
+            ped_f_head: [part("A_Head", "ah")],
+            ped_m_head: [part("C_Head", "ch")],
+        },
+        profiles: [profile("A_Ped", "A_Body"), profile("b_ped", "B_Body2"), profile("C_Ped", "C_Body")],
+    });
+
+    // the same convert again changes nothing
+    const again = fs.readFileSync(path.join(dir, pedModels.FILE), "utf-8");
+    pedModels.writeAdditions(dir, {
+        cas: { ped_body: [part("C_Body", "c")] },
+        profiles: [profile("C_Ped", "C_Body")],
+    });
+    assert.equal(fs.readFileSync(path.join(dir, pedModels.FILE), "utf-8"), again);
 });
